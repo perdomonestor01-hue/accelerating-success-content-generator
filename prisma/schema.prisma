@@ -1,0 +1,103 @@
+// Prisma schema for Accelerating Success Content Generator
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Main content table - stores all generated social media posts
+model Content {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Content metadata
+  ideaTitle       String // e.g., "The Sunday Prep Struggle"
+  topic           String // Topic enum values as strings
+  specificConcept String // e.g., "weather & water cycle"
+  gradeLevel      String // e.g., "4th-5th", "3rd", "6-8"
+  contentAngle    String // ContentAngle enum values as strings
+
+  // Generated posts for each platform
+  linkedinPost  String
+  redditPost    String
+  facebookPost  String
+  twitterPost   String
+
+  // Testimonial video used
+  testimonialId String?
+  testimonial   Testimonial? @relation(fields: [testimonialId], references: [id])
+
+  // Workflow status
+  status       String @default("DRAFT") // ContentStatus enum values as strings
+  scheduledFor DateTime?
+  postedAt     DateTime?
+
+  // Recycling tracking
+  isRecycled        Boolean  @default(false)
+  originalContentId String? // Reference to original if this is a recycled version
+  originalContent   Content? @relation("ContentRecycling", fields: [originalContentId], references: [id])
+  recycledVersions  Content[] @relation("ContentRecycling")
+
+  // Performance tracking (optional - for future analytics)
+  performanceScore Int? // 0-100 based on engagement
+
+  // Error logging
+  errorLog String?
+
+  @@index([status])
+  @@index([topic])
+  @@index([createdAt])
+  @@index([scheduledFor])
+}
+
+// Testimonial videos from YouTube
+model Testimonial {
+  id         String    @id @default(uuid())
+  title      String
+  youtubeUrl String
+  duration   String // e.g., "56s", "41s"
+  theme      String // TestimonialTheme enum values as strings
+  usageCount Int       @default(0) // Track how many times it's been used
+  createdAt  DateTime  @default(now())
+
+  contents   Content[]
+
+  @@index([theme])
+}
+
+// Schedule configuration for daily auto-generation
+model ScheduleConfig {
+  id                    String   @id @default(uuid())
+  dayOfWeek             Int // 0-6 (Sunday-Saturday)
+  topicPreference       String? // Topic enum values as strings
+  contentAnglePreference String? // ContentAngle enum values as strings
+  enabled               Boolean  @default(true)
+  customPromptOverride  String?
+
+  @@unique([dayOfWeek])
+}
+
+// Enums (as String values for SQLite compatibility)
+// Topic: "SCIENCE" | "BIOLOGY"
+// ContentAngle: "TIME_SAVER" | "BILINGUAL" | "ENGAGEMENT" | "STAAR_PREP" | "STUDENT_SUCCESS" | "TEACHER_TESTIMONIAL"
+// ContentStatus: "DRAFT" | "APPROVED" | "SCHEDULED" | "POSTED" | "FAILED" | "REJECTED"
+// TestimonialTheme: "GENERAL" | "LOW_PREP" | "ENGAGEMENT" | "TEACHER_LOVE"
+// UserRole: "ADMIN" | "EDITOR" | "VIEWER"
+
+// User model for authentication
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password      String    // Hashed password
+  name          String?
+  role          String    @default("ADMIN") // UserRole enum values as strings
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([email])
+}

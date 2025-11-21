@@ -1,0 +1,45 @@
+VERCEL ENVIRONMENT VARIABLES TO ADD
+====================================
+
+After creating the Postgres database, add these environment variables:
+
+Go to: https://vercel.com/fabien-ps-projects/accelerating-success-content-generator/settings/environment-variables
+
+Add each of these (click "Add" for each one):
+
+1. ANTHROPIC_API_KEY
+   Value: your-anthropic-api-key-here
+
+2. GROQ_API_KEY
+   Value: your-groq-api-key-here
+
+3. DEEPSEEK_API_KEY
+   Value: your-deepseek-api-key-here
+
+4. DEFAULT_AI_PROVIDER
+   Value: claude
+
+5. NEXTAUTH_SECRET
+   Value: accelerating-success-prod-secret-2025
+
+6. SUBSCRIPTION_URL
+   Value: https://accelerating-success.com/subscriptions/
+
+7. BRAND_NAME
+   Value: Accelerating Success
+
+8. BRAND_HANDLE
+   Value: @AccSuccess
+
+9. TESTIMONIAL_VIDEO_1
+   Value: https://youtube.com/shorts/FC_5CXTUl9o?si=QV-bYUf9TAuACg-j
+
+10. TESTIMONIAL_VIDEO_2
+    Value: https://youtube.com/shorts/fcXj7ms7oqQ?si=RzMZDMs2x5ZykB4y
+
+11. TESTIMONIAL_VIDEO_3
+    Value: https://youtube.com/shorts/3wWcl8OHDXs?si=QpmmQTqC3g77AlYH
+
+IMPORTANT: Select "Production", "Preview", and "Development" for all variables!
+
+After adding all variables, we'll deploy to production.
