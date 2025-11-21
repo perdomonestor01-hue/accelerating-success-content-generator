@@ -26,7 +26,7 @@ BRAND FACTS:
 
 REQUIREMENTS:
 1. Create a relatable teacher pain point or engaging question for the content idea
-2. Generate 4 EXTENDED posts (LinkedIn, Reddit, Facebook, Twitter/X)
+2. Generate 7 EXTENDED posts (LinkedIn, Reddit, Facebook, Twitter/X, Blogger, Tumblr, Pinterest)
 3. Include CONCRETE EXAMPLES showing how teachers actually use the platform
 4. Add testimonial video naturally in the posts
 5. End with DUAL CTAs (offer choice):
@@ -37,6 +37,8 @@ REQUIREMENTS:
    - Reddit: Authentic, conversational, use [text](url) for markdown links, ask for community input, 3-4 paragraphs
    - Facebook: Friendly, shareable, visual, tag-a-friend style, use [text](url) for links, 3-4 paragraphs
    - Twitter/X: Concise (under 280 chars), punchy, use "text → url" format
+   - Blogger: Article-style blog post with HTML formatting, 5-7 paragraphs, educational tone, include <h2> headings
+   - Tumblr: Creative, casual, mix of text and personality, 3-4 paragraphs, use emojis
 
 EXTENDED CONTENT STRUCTURE:
 📌 Hook (relatable pain point or question)
@@ -99,10 +101,14 @@ Return ONLY valid JSON in this exact format (no markdown, no code blocks):
   "redditPost": "full Reddit post here in ENGLISH...",
   "facebookPost": "full Facebook post here in ENGLISH...",
   "twitterPost": "full Twitter post here in ENGLISH (under 280 chars)...",
+  "bloggerPost": "full Blogger article with HTML tags in ENGLISH...",
+  "tumblrPost": "full Tumblr post in ENGLISH...",
   "linkedinPostEs": "full LinkedIn post here in SPANISH...",
   "redditPostEs": "full Reddit post here in SPANISH...",
   "facebookPostEs": "full Facebook post here in SPANISH...",
-  "twitterPostEs": "full Twitter post here in SPANISH (under 280 chars)..."
+  "twitterPostEs": "full Twitter post here in SPANISH (under 280 chars)...",
+  "bloggerPostEs": "full Blogger article with HTML tags in SPANISH...",
+  "tumblrPostEs": "full Tumblr post in SPANISH..."
 }`;
 }
 

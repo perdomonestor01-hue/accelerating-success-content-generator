@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { aiProvider } from '@/lib/ai/provider';
 import { Topic, ContentAngle } from '@prisma/client';
+import { PostingManager } from '@/lib/social-media/posting-manager';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -104,6 +105,8 @@ export async function GET(request: NextRequest) {
         redditPost: generatedContent.redditPost,
         facebookPost: generatedContent.facebookPost,
         twitterPost: generatedContent.twitterPost,
+        bloggerPost: generatedContent.bloggerPost,
+        tumblrPost: generatedContent.tumblrPost,
         testimonialId: testimonial.id,
         status: 'DRAFT',
       },
@@ -117,6 +120,35 @@ export async function GET(request: NextRequest) {
 
     console.log(`✅ Daily content generated: ${content.ideaTitle}`);
 
+    // Check if automated posting is enabled
+    let postingResults = null;
+    if (process.env.POSTING_ENABLED === 'true') {
+      console.log('📤 Automated posting enabled - posting to all platforms...');
+
+      try {
+        const postingManager = new PostingManager();
+        postingResults = await postingManager.postToAll(content.id);
+
+        const allSucceeded = postingResults.every(r => r.success);
+        const anySucceeded = postingResults.some(r => r.success);
+
+        await prisma.content.update({
+          where: { id: content.id },
+          data: {
+            status: allSucceeded ? 'POSTED' : anySucceeded ? 'FAILED' : 'FAILED',
+            postedAt: allSucceeded ? new Date() : null,
+          },
+        });
+
+        console.log(`✅ Posting complete - ${postingResults.filter(r => r.success).length}/${postingResults.length} succeeded`);
+      } catch (postError) {
+        console.error('❌ Error during automated posting:', postError);
+        // Don't fail the entire cron job if posting fails
+      }
+    } else {
+      console.log('📋 Automated posting disabled (POSTING_ENABLED=false)');
+    }
+
     return NextResponse.json({
       success: true,
       message: 'Daily content generated successfully',
@@ -125,6 +157,12 @@ export async function GET(request: NextRequest) {
         ideaTitle: content.ideaTitle,
         topic: content.topic,
         concept: content.specificConcept,
+      },
+      posting: postingResults ? {
+        enabled: true,
+        results: postingResults,
+      } : {
+        enabled: false,
       },
     });
   } catch (error) {

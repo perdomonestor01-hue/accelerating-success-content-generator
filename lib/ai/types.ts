@@ -17,11 +17,15 @@ export interface GeneratedContent {
   redditPost: string;
   facebookPost: string;
   twitterPost: string;
+  bloggerPost?: string;
+  tumblrPost?: string;
   // Spanish versions
   linkedinPostEs?: string;
   redditPostEs?: string;
   facebookPostEs?: string;
   twitterPostEs?: string;
+  bloggerPostEs?: string;
+  tumblrPostEs?: string;
 }
 
 export interface AIProviderClient {

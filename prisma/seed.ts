@@ -40,6 +40,40 @@ async function main() {
         theme: 'LOW_PREP',
       },
     }),
+    // New student testimonials showing improvement
+    prisma.testimonial.upsert({
+      where: { id: 'testimonial-4' },
+      update: {},
+      create: {
+        id: 'testimonial-4',
+        title: 'Student improvement testimonial',
+        youtubeUrl: 'https://www.youtube.com/watch?v=lhT6sSU-pdE&t=1s',
+        duration: '1m',
+        theme: 'ENGAGEMENT',
+      },
+    }),
+    prisma.testimonial.upsert({
+      where: { id: 'testimonial-5' },
+      update: {},
+      create: {
+        id: 'testimonial-5',
+        title: 'Kids detecting improvement in their level',
+        youtubeUrl: 'https://www.youtube.com/watch?v=EiCvdwoJjks',
+        duration: '45s',
+        theme: 'ENGAGEMENT',
+      },
+    }),
+    prisma.testimonial.upsert({
+      where: { id: 'testimonial-6' },
+      update: {},
+      create: {
+        id: 'testimonial-6',
+        title: 'Student success story',
+        youtubeUrl: 'https://www.youtube.com/watch?v=6leGU2LynA4',
+        duration: '50s',
+        theme: 'ENGAGEMENT',
+      },
+    }),
   ]);
 
   console.log(`✅ Created ${testimonials.length} testimonial videos`);

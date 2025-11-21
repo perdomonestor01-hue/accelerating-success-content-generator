@@ -780,11 +780,26 @@ export default function Home() {
             <p className="text-lg">
               ✨ Fill out the form above and click <strong className="text-acs-navy">"Generate Content"</strong> to see AI-powered posts!
             </p>
-            <p className="mt-2 text-sm">
-              Powered by Claude AI with Groq and DeepSeek fallback
-            </p>
           </div>
         )}
+
+        {/* Powered by Jufipai */}
+        <div className="mt-16 mb-8 flex items-center justify-center gap-3 text-acs-gray-medium">
+          <span className="text-sm font-medium">Powered by</span>
+          <a
+            href="https://jufipai.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-900 to-blue-700 text-white px-4 py-2 rounded-lg hover:from-blue-800 hover:to-blue-600 transition-all shadow-md font-bold text-sm hover:scale-105 transform duration-200"
+          >
+            <img
+              src="/jufipai-logo.svg"
+              alt="Jufipai"
+              className="w-6 h-6"
+            />
+            Jufipai.com
+          </a>
+        </div>
       </div>
     </main>
   );

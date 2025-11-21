@@ -27,10 +27,15 @@ model Content {
   redditPost    String
   facebookPost  String
   twitterPost   String
+  bloggerPost   String?
+  tumblrPost    String?
 
   // Testimonial video used
   testimonialId String?
   testimonial   Testimonial? @relation(fields: [testimonialId], references: [id])
+
+  // Posting history
+  postingHistory PostingHistory[]
 
   // Workflow status
   status       String @default("DRAFT") // ContentStatus enum values as strings
@@ -82,12 +87,57 @@ model ScheduleConfig {
   @@unique([dayOfWeek])
 }
 
+// Social media platform configuration
+model SocialMediaConfig {
+  id        String   @id @default(uuid())
+  platform  String   @unique // "TWITTER" | "FACEBOOK" | "LINKEDIN" | "BLOGGER" | "TUMBLR"
+  enabled   Boolean  @default(false)
+
+  // OAuth credentials (will be encrypted in code)
+  accessToken       String?
+  refreshToken      String?
+  tokenExpiresAt    DateTime?
+
+  // Platform-specific config (JSON string)
+  config            String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([platform])
+}
+
+// Posting history tracking
+model PostingHistory {
+  id          String   @id @default(uuid())
+  contentId   String
+  content     Content  @relation(fields: [contentId], references: [id], onDelete: Cascade)
+
+  platform    String   // "TWITTER" | "FACEBOOK" | "LINKEDIN" | "BLOGGER" | "TUMBLR"
+  status      String   // "PENDING" | "SUCCESS" | "FAILED" | "RATE_LIMITED"
+
+  platformPostId String? // ID of post on the platform
+  platformUrl    String? // URL to the posted content
+
+  error       String?  // Error message if failed
+  retryCount  Int      @default(0)
+
+  postedAt    DateTime?
+  createdAt   DateTime @default(now())
+
+  @@index([contentId])
+  @@index([platform])
+  @@index([status])
+}
+
 // Enums (as String values for SQLite compatibility)
 // Topic: "SCIENCE" | "BIOLOGY"
 // ContentAngle: "TIME_SAVER" | "BILINGUAL" | "ENGAGEMENT" | "STAAR_PREP" | "STUDENT_SUCCESS" | "TEACHER_TESTIMONIAL"
 // ContentStatus: "DRAFT" | "APPROVED" | "SCHEDULED" | "POSTED" | "FAILED" | "REJECTED"
 // TestimonialTheme: "GENERAL" | "LOW_PREP" | "ENGAGEMENT" | "TEACHER_LOVE"
 // UserRole: "ADMIN" | "EDITOR" | "VIEWER"
+// Platform: "TWITTER" | "FACEBOOK" | "LINKEDIN" | "BLOGGER" | "TUMBLR"
+// PostingStatus: "PENDING" | "SUCCESS" | "FAILED" | "RATE_LIMITED"
 
 // User model for authentication
 model User {
