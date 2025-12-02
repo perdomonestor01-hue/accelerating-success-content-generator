@@ -1,0 +1,44 @@
+name: Daily Content Posting
+
+on:
+  schedule:
+    # 12:00 PM Central Time = 6:00 PM UTC (CST) or 5:00 PM UTC (CDT)
+    # Using 6 PM UTC for Central Standard Time
+    - cron: '0 18 * * *'
+  workflow_dispatch: # Allow manual trigger for testing
+
+jobs:
+  trigger-posting:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Daily Content Generation & Posting
+        run: |
+          echo "🚀 Triggering daily content posting at $(date)"
+
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X GET "${{ secrets.RAILWAY_URL }}/api/cron" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -H "Content-Type: application/json")
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+
+          echo "Response Code: $HTTP_CODE"
+          echo "Response Body: $BODY"
+
+          if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+            echo "✅ Daily posting triggered successfully!"
+          else
+            echo "❌ Failed to trigger daily posting"
+            exit 1
+          fi
+
+      - name: Log Result
+        if: always()
+        run: |
+          echo "📊 Daily posting workflow completed at $(date)"
+          echo "Check your social media accounts for new posts:"
+          echo "  - Twitter: https://twitter.com/AccSuccess1"
+          echo "  - LinkedIn: https://www.linkedin.com/in/isaac-accelerating"
+          echo "  - Blogger: https://acceleratingsuccess25.blogspot.com"
+          echo "  - Tumblr: https://acceleratingsuccess.tumblr.com"
