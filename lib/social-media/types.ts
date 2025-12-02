@@ -1,8 +1,13 @@
 // Social Media Posting Types
+import { Platform as PrismaPlatform, PostingStatus as PrismaPostingStatus } from '@prisma/client';
+
+// Re-export Prisma enums
+export type Platform = PrismaPlatform;
+export type PostingStatus = PrismaPostingStatus;
 
 export interface PostingResult {
   success: boolean;
-  platform: string;
+  platform: Platform;
   postId?: string;
   postUrl?: string;
   error?: string;
@@ -11,15 +16,12 @@ export interface PostingResult {
 }
 
 export interface SocialMediaPoster {
-  platform: string;
+  platform: Platform;
   isEnabled(): Promise<boolean>;
   post(content: string, mediaUrl?: string): Promise<PostingResult>;
   testConnection(): Promise<boolean>;
   refreshToken?(): Promise<void>;
 }
-
-export type Platform = 'TWITTER' | 'FACEBOOK' | 'LINKEDIN' | 'BLOGGER' | 'TUMBLR';
-export type PostingStatus = 'PENDING' | 'SUCCESS' | 'FAILED' | 'RATE_LIMITED';
 
 export interface PlatformConfig {
   enabled: boolean;

@@ -38,3 +38,16 @@ next-env.d.ts
 
 # prisma
 prisma/migrations/
+*.db
+prisma/*.db
+
+# railway sensitive files
+railway-env-vars-filled.txt
+railway-env-setup.sh
+
+# backup files
+*.backup
+.env.backup
+
+# test files
+test-*.js

@@ -3,7 +3,7 @@ import { BasePoster } from './base-poster';
 import { PostingResult } from './types';
 
 export class FacebookPoster extends BasePoster {
-  platform = 'FACEBOOK';
+  platform = 'FACEBOOK' as const;
 
   async isEnabled(): Promise<boolean> {
     return !!(

@@ -5,7 +5,7 @@ import { BasePoster } from './base-poster';
 import { PostingResult } from './types';
 
 export class TumblrPoster extends BasePoster {
-  platform = 'TUMBLR';
+  platform = 'TUMBLR' as const;
   private oauth: OAuth;
 
   constructor() {
@@ -48,7 +48,7 @@ export class TumblrPoster extends BasePoster {
       );
 
       const response = await axios.get(url, {
-        headers: authHeader,
+        headers: authHeader as any,
       });
 
       console.log('✓ Tumblr connection successful:', response.data.response.user.name);

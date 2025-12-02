@@ -4,16 +4,35 @@ import { FacebookPoster } from './facebook-poster';
 import { LinkedInPoster } from './linkedin-poster';
 import { BloggerPoster } from './blogger-poster';
 import { TumblrPoster } from './tumblr-poster';
-import { PostingResult, Platform } from './types';
+import { MockPoster } from './mock-poster';
+import { PostingResult, Platform, SocialMediaPoster } from './types';
 
 export class PostingManager {
-  private posters = {
-    TWITTER: new TwitterPoster(),
-    FACEBOOK: new FacebookPoster(),
-    LINKEDIN: new LinkedInPoster(),
-    BLOGGER: new BloggerPoster(),
-    TUMBLR: new TumblrPoster(),
-  };
+  private posters: Record<Platform, SocialMediaPoster>;
+  private isMockMode: boolean;
+
+  constructor() {
+    this.isMockMode = process.env.MOCK_POSTING === 'true';
+
+    if (this.isMockMode) {
+      console.log('🧪 [MOCK MODE] Using simulated posting - no real posts will be made');
+      this.posters = {
+        TWITTER: new MockPoster('TWITTER'),
+        FACEBOOK: new MockPoster('FACEBOOK'),
+        LINKEDIN: new MockPoster('LINKEDIN'),
+        BLOGGER: new MockPoster('BLOGGER'),
+        TUMBLR: new MockPoster('TUMBLR'),
+      };
+    } else {
+      this.posters = {
+        TWITTER: new TwitterPoster(),
+        FACEBOOK: new FacebookPoster(),
+        LINKEDIN: new LinkedInPoster(),
+        BLOGGER: new BloggerPoster(),
+        TUMBLR: new TumblrPoster(),
+      };
+    }
+  }
 
   async postToAll(contentId: string, platforms?: Platform[]): Promise<PostingResult[]> {
     // Get content from database

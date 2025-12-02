@@ -1,7 +1,7 @@
-import { PostingResult, SocialMediaPoster } from './types';
+import { PostingResult, SocialMediaPoster, Platform } from './types';
 
 export abstract class BasePoster implements SocialMediaPoster {
-  abstract platform: string;
+  abstract platform: Platform;
 
   async retryWithBackoff<T>(
     fn: () => Promise<T>,

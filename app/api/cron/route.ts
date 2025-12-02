@@ -31,6 +31,19 @@ const angleDescriptions: Record<ContentAngle, string> = {
 
 export async function GET(request: NextRequest) {
   try {
+    // Verify cron secret for automated calls (Railway cron, external schedulers)
+    const authHeader = request.headers.get('authorization');
+    const cronSecret = process.env.CRON_SECRET;
+
+    // Allow access if: valid cron secret OR in development
+    const isDev = process.env.NODE_ENV === 'development';
+    const hasValidSecret = authHeader === `Bearer ${cronSecret}`;
+
+    if (!isDev && !hasValidSecret) {
+      console.log('❌ Unauthorized cron request');
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     console.log('🤖 Daily content generation started');
 
     // Get today's day of week (0 = Sunday, 6 = Saturday)

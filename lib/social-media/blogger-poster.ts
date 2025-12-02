@@ -3,7 +3,7 @@ import { BasePoster } from './base-poster';
 import { PostingResult } from './types';
 
 export class BloggerPoster extends BasePoster {
-  platform = 'BLOGGER';
+  platform = 'BLOGGER' as const;
 
   async isEnabled(): Promise<boolean> {
     return !!(

@@ -3,7 +3,7 @@ import { BasePoster } from './base-poster';
 import { PostingResult } from './types';
 
 export class TwitterPoster extends BasePoster {
-  platform = 'TWITTER';
+  platform = 'TWITTER' as const;
   private client: TwitterApi | null = null;
 
   private initClient() {

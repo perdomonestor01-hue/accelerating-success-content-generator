@@ -5,8 +5,60 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+// Enums
+enum Topic {
+  SCIENCE
+  BIOLOGY
+}
+
+enum ContentAngle {
+  TIME_SAVER
+  BILINGUAL
+  ENGAGEMENT
+  STAAR_PREP
+  STUDENT_SUCCESS
+  TEACHER_TESTIMONIAL
+}
+
+enum ContentStatus {
+  DRAFT
+  APPROVED
+  SCHEDULED
+  POSTED
+  FAILED
+  REJECTED
+}
+
+enum TestimonialTheme {
+  GENERAL
+  LOW_PREP
+  ENGAGEMENT
+  TEACHER_LOVE
+}
+
+enum UserRole {
+  ADMIN
+  EDITOR
+  VIEWER
+}
+
+enum Platform {
+  TWITTER
+  FACEBOOK
+  LINKEDIN
+  BLOGGER
+  TUMBLR
+}
+
+enum PostingStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  RATE_LIMITED
 }
 
 // Main content table - stores all generated social media posts
@@ -17,10 +69,10 @@ model Content {
 
   // Content metadata
   ideaTitle       String // e.g., "The Sunday Prep Struggle"
-  topic           String // Topic enum values as strings
+  topic           Topic
   specificConcept String // e.g., "weather & water cycle"
   gradeLevel      String // e.g., "4th-5th", "3rd", "6-8"
-  contentAngle    String // ContentAngle enum values as strings
+  contentAngle    ContentAngle
 
   // Generated posts for each platform
   linkedinPost  String
@@ -38,7 +90,7 @@ model Content {
   postingHistory PostingHistory[]
 
   // Workflow status
-  status       String @default("DRAFT") // ContentStatus enum values as strings
+  status       ContentStatus @default(DRAFT)
   scheduledFor DateTime?
   postedAt     DateTime?
 
@@ -66,7 +118,7 @@ model Testimonial {
   title      String
   youtubeUrl String
   duration   String // e.g., "56s", "41s"
-  theme      String // TestimonialTheme enum values as strings
+  theme      TestimonialTheme
   usageCount Int       @default(0) // Track how many times it's been used
   createdAt  DateTime  @default(now())
 
@@ -79,8 +131,8 @@ model Testimonial {
 model ScheduleConfig {
   id                    String   @id @default(uuid())
   dayOfWeek             Int // 0-6 (Sunday-Saturday)
-  topicPreference       String? // Topic enum values as strings
-  contentAnglePreference String? // ContentAngle enum values as strings
+  topicPreference       Topic?
+  contentAnglePreference ContentAngle?
   enabled               Boolean  @default(true)
   customPromptOverride  String?
 
@@ -90,7 +142,7 @@ model ScheduleConfig {
 // Social media platform configuration
 model SocialMediaConfig {
   id        String   @id @default(uuid())
-  platform  String   @unique // "TWITTER" | "FACEBOOK" | "LINKEDIN" | "BLOGGER" | "TUMBLR"
+  platform  Platform @unique
   enabled   Boolean  @default(false)
 
   // OAuth credentials (will be encrypted in code)
@@ -113,8 +165,8 @@ model PostingHistory {
   contentId   String
   content     Content  @relation(fields: [contentId], references: [id], onDelete: Cascade)
 
-  platform    String   // "TWITTER" | "FACEBOOK" | "LINKEDIN" | "BLOGGER" | "TUMBLR"
-  status      String   // "PENDING" | "SUCCESS" | "FAILED" | "RATE_LIMITED"
+  platform    Platform
+  status      PostingStatus
 
   platformPostId String? // ID of post on the platform
   platformUrl    String? // URL to the posted content
@@ -130,22 +182,13 @@ model PostingHistory {
   @@index([status])
 }
 
-// Enums (as String values for SQLite compatibility)
-// Topic: "SCIENCE" | "BIOLOGY"
-// ContentAngle: "TIME_SAVER" | "BILINGUAL" | "ENGAGEMENT" | "STAAR_PREP" | "STUDENT_SUCCESS" | "TEACHER_TESTIMONIAL"
-// ContentStatus: "DRAFT" | "APPROVED" | "SCHEDULED" | "POSTED" | "FAILED" | "REJECTED"
-// TestimonialTheme: "GENERAL" | "LOW_PREP" | "ENGAGEMENT" | "TEACHER_LOVE"
-// UserRole: "ADMIN" | "EDITOR" | "VIEWER"
-// Platform: "TWITTER" | "FACEBOOK" | "LINKEDIN" | "BLOGGER" | "TUMBLR"
-// PostingStatus: "PENDING" | "SUCCESS" | "FAILED" | "RATE_LIMITED"
-
 // User model for authentication
 model User {
   id            String    @id @default(uuid())
   email         String    @unique
   password      String    // Hashed password
   name          String?
-  role          String    @default("ADMIN") // UserRole enum values as strings
+  role          UserRole  @default(ADMIN)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 

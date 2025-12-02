@@ -12,7 +12,8 @@
     "db:seed": "tsx prisma/seed.ts",
     "postinstall": "prisma generate",
     "setup-tokens": "node scripts/setup-tokens.js",
-    "test-connections": "node scripts/test-connections.js"
+    "test-connections": "node scripts/test-connections.js",
+    "get-all-tokens": "node scripts/oauth/get-all-tokens.js"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
