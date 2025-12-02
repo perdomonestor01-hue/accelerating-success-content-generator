@@ -82,17 +82,20 @@ export async function GET(request: NextRequest) {
     const angles = Object.values(ContentAngle);
     const contentAngle = scheduleConfig.contentAnglePreference || angles[Math.floor(Math.random() * angles.length)];
 
-    // Get a testimonial video (rotate through them)
-    const testimonials = await prisma.testimonial.findMany({
+    // Get a testimonial video (random selection with weighted rotation)
+    // Fetch all testimonials, prioritize less-used ones but add randomness
+    const allTestimonials = await prisma.testimonial.findMany({
       orderBy: { usageCount: 'asc' },
-      take: 1,
     });
 
-    if (testimonials.length === 0) {
+    if (allTestimonials.length === 0) {
       throw new Error('No testimonial videos available');
     }
 
-    const testimonial = testimonials[0];
+    // Pick randomly from the top 3 least-used testimonials (or all if fewer than 3)
+    const poolSize = Math.min(3, allTestimonials.length);
+    const testimonialPool = allTestimonials.slice(0, poolSize);
+    const testimonial = testimonialPool[Math.floor(Math.random() * poolSize)];
 
     console.log(`Generating: ${topic} - ${concept} (${gradeLevel}) with ${contentAngle} angle`);
 
