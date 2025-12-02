@@ -61,39 +61,55 @@ export class TumblrPoster extends BasePoster {
 
   async post(content: string, mediaUrl?: string): Promise<PostingResult> {
     try {
-      const url = `https://api.tumblr.com/v2/blog/${process.env.TUMBLR_BLOG_IDENTIFIER}/posts`;
+      const blogId = process.env.TUMBLR_BLOG_IDENTIFIER;
+      // Use legacy /post endpoint with form-encoded data (more reliable)
+      const url = `https://api.tumblr.com/v2/blog/${blogId}.tumblr.com/post`;
       const token = {
         key: process.env.TUMBLR_ACCESS_TOKEN || '',
         secret: process.env.TUMBLR_ACCESS_SECRET || '',
       };
 
-      const postData = {
+      // Extract title from first line, rest is body
+      const lines = content.split('\n');
+      const title = lines[0].replace(/^#*\s*/, '').substring(0, 100); // Remove markdown headers, limit length
+      const body = lines.slice(1).join('\n').trim() || content;
+
+      // Form data for legacy endpoint
+      const formData = new URLSearchParams({
         type: 'text',
-        title: content.split('\n')[0],
-        body: content,
+        title: title,
+        body: body,
+        tags: 'AcceleratingSuccess,education,teachers,science,bilingual',
+      });
+
+      // OAuth signature needs to include form data
+      const requestData = {
+        url,
+        method: 'POST',
+        data: Object.fromEntries(formData),
       };
 
       const authHeader = this.oauth.toHeader(
-        this.oauth.authorize({ url, method: 'POST' }, token)
+        this.oauth.authorize(requestData, token)
       );
 
-      const response = await axios.post(url, postData, {
+      const response = await axios.post(url, formData.toString(), {
         headers: {
           ...authHeader,
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
       });
 
-      const postId = response.data.response.id;
+      const postId = response.data.response.id_string || response.data.response.id;
 
       return {
         success: true,
         platform: this.platform,
         postId: postId.toString(),
-        postUrl: `https://${process.env.TUMBLR_BLOG_IDENTIFIER}/post/${postId}`,
+        postUrl: `https://${blogId}.tumblr.com/post/${postId}`,
       };
     } catch (error: any) {
-      console.error('Tumblr posting error:', error);
+      console.error('Tumblr posting error:', error.response?.data || error.message);
 
       if (error.response?.status === 429) {
         return {

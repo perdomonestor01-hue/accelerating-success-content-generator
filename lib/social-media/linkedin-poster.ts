@@ -32,26 +32,31 @@ export class LinkedInPoster extends BasePoster {
 
   async post(content: string, mediaUrl?: string): Promise<PostingResult> {
     try {
+      const personUrn = process.env.LINKEDIN_PERSON_URN;
+
+      // Use UGC Posts API (more reliable than rest/posts)
       const response = await axios.post(
-        'https://api.linkedin.com/rest/posts',
+        'https://api.linkedin.com/v2/ugcPosts',
         {
-          author: process.env.LINKEDIN_PERSON_URN,
-          commentary: content,
-          visibility: 'PUBLIC',
-          distribution: {
-            feedDistribution: 'MAIN_FEED',
-            targetEntities: [],
-            thirdPartyDistributionChannels: [],
-          },
+          author: `urn:li:person:${personUrn}`,
           lifecycleState: 'PUBLISHED',
-          isReshareDisabledByAuthor: false,
+          specificContent: {
+            'com.linkedin.ugc.ShareContent': {
+              shareCommentary: {
+                text: content,
+              },
+              shareMediaCategory: 'NONE',
+            },
+          },
+          visibility: {
+            'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC',
+          },
         },
         {
           headers: {
             Authorization: `Bearer ${process.env.LINKEDIN_ACCESS_TOKEN}`,
             'Content-Type': 'application/json',
             'X-Restli-Protocol-Version': '2.0.0',
-            'LinkedIn-Version': '202401',
           },
         }
       );
@@ -65,7 +70,7 @@ export class LinkedInPoster extends BasePoster {
         postUrl: `https://www.linkedin.com/feed/update/${postId}`,
       };
     } catch (error: any) {
-      console.error('LinkedIn posting error:', error);
+      console.error('LinkedIn posting error:', error.response?.data || error.message);
 
       if (error.response?.status === 429) {
         return {
