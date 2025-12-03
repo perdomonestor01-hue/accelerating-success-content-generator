@@ -7,9 +7,10 @@ import { PostingManager } from '@/lib/social-media/posting-manager';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-// Predefined concepts for each topic - ALIGNED WITH ACCELERATING SUCCESS WEBSITE
+// Predefined concepts for each topic - ALIGNED WITH TEKS CHAPTER 112
+// Elementary: Subchapter A | Middle School: Subchapter B (§112.26-112.28)
 const topicConcepts: Record<Topic, string[]> = {
-  // Physical Science (3rd-5th grade)
+  // Physical Science (Grades 3-5) - TEKS Chapter 112, Subchapter A
   PHYSICAL_SCIENCE: [
     'matter & states of matter',
     'combining materials',
@@ -19,7 +20,7 @@ const topicConcepts: Record<Topic, string[]> = {
     'circuits & electricity',
     'light & energy transformation',
   ],
-  // Earth Science (3rd-5th grade)
+  // Earth Science (Grades 3-5) - TEKS Chapter 112, Subchapter A
   EARTH_SCIENCE: [
     'weather & seasons',
     'climate patterns',
@@ -29,7 +30,7 @@ const topicConcepts: Record<Topic, string[]> = {
     'natural resources',
     'conservation & environmental changes',
   ],
-  // Life Science (3rd-5th grade)
+  // Life Science (Grades 3-5) - TEKS Chapter 112, Subchapter A
   LIFE_SCIENCE: [
     'animal adaptations',
     'plant adaptations',
@@ -38,29 +39,75 @@ const topicConcepts: Record<Topic, string[]> = {
     'fossils & prehistoric life',
     'life cycles',
   ],
-  // Biology (6th, 8th grade) - includes all science areas at middle school level
+  // Biology/Middle School Science (Grades 6-8) - TEKS Chapter 112, Subchapter B
+  // §112.26 (Grade 6), §112.27 (Grade 7), §112.28 (Grade 8)
   BIOLOGY: [
-    // Core Biology
-    'cells & cell structure',
-    'genetics & heredity',
-    'body systems',
-    // Physical Science (6th-8th)
-    'matter & chemical changes',
-    'forces & motion',
-    'energy transformations',
-    // Earth Science (6th-8th)
-    'Earth systems & processes',
-    'weather & climate',
-    'natural resources & conservation',
-    // Life Science (6th-8th)
-    'ecosystems & biomes',
-    'organism interactions',
-    'evolution & adaptation',
+    // Grade 6 Matter & Energy (§112.26)
+    'solids, liquids & gases (structure & kinetic energy)',
+    'pure substances vs mixtures (homogeneous & heterogeneous)',
+    'metals, nonmetals & metalloids on periodic table',
+    'density of substances',
+    'chemical changes (gas production, precipitate, color change)',
+    // Grade 6 Force, Motion & Energy (§112.26)
+    'forces: gravity, friction, magnetism, applied forces',
+    'Newton\'s Third Law of Motion',
+    'potential vs kinetic energy',
+    'transverse & longitudinal waves',
+    // Grade 6 Earth & Space (§112.26)
+    'seasons & Earth\'s tilt',
+    'ocean tides (gravitational forces)',
+    'Earth\'s spheres (biosphere, hydrosphere, atmosphere, geosphere)',
+    'layers of Earth (core, mantle, crust)',
+    'rock cycle (metamorphic, igneous, sedimentary)',
+    // Grade 6 Organisms & Environments (§112.26)
+    'ecosystems (biotic & abiotic factors)',
+    'symbiotic relationships (mutualism, parasitism, commensalism)',
+    'cell theory & cell characteristics',
+    // Grade 7 Matter & Energy (§112.27)
+    'elements vs compounds (atoms, molecules, formulas)',
+    'periodic table & chemical formulas',
+    'physical vs chemical changes',
+    'aqueous solutions (solute, solvent, concentration)',
+    // Grade 7 Force, Motion & Energy (§112.27)
+    'calculating average speed (distance & time)',
+    'speed vs velocity',
+    'Newton\'s First Law of Motion',
+    'thermal energy (conduction, convection, radiation)',
+    // Grade 7 Earth & Space (§112.27)
+    'solar system objects (planets, moons, asteroids, comets)',
+    'plate tectonics (earthquakes, volcanoes, mountains)',
+    // Grade 7 Organisms & Environments (§112.27)
+    'energy pyramids & trophic levels',
+    'human body systems',
+    'cells → tissues → organs → organ systems',
+    'natural & artificial selection',
+    'taxonomic classification',
+    // Grade 8 Matter & Energy (§112.28)
+    'properties of water (cohesion, adhesion, surface tension)',
+    'acids & bases (pH)',
+    'conservation of mass in chemical reactions',
+    'photosynthesis equation',
+    // Grade 8 Force, Motion & Energy (§112.28)
+    'Newton\'s Second Law (F=ma)',
+    'all three Newton\'s Laws together',
+    'electromagnetic spectrum & applications',
+    'wave characteristics (amplitude, frequency, wavelength)',
+    // Grade 8 Earth & Space (§112.28)
+    'star life cycles & Hertzsprung-Russell diagram',
+    'galaxy types (spiral, elliptical, irregular)',
+    'weather systems & climate',
+    'carbon cycle',
+    // Grade 8 Organisms & Environments (§112.28)
+    'cell organelles & functions',
+    'genes & chromosomes (inherited traits)',
+    'ecological succession',
+    'biodiversity & ecosystem stability',
   ],
 };
 
-// Grade levels that Accelerating Success actually serves
-const gradeLevels = ['3rd', '4th', '5th', '3rd-5th', '6th', '8th'];
+// Grade levels that Accelerating Success serves - aligned to TEKS Chapter 112
+// Elementary (Subchapter A) + Middle School (Subchapter B: §112.26-112.28)
+const gradeLevels = ['3rd', '4th', '5th', '3rd-5th', '6th', '7th', '8th', '6th-8th'];
 
 const topicDescriptions: Record<Topic, string> = {
   PHYSICAL_SCIENCE: 'Physical Science',

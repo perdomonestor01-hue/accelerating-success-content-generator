@@ -14,30 +14,125 @@ TESTIMONIAL VIDEO: ${testimonialUrl} (${testimonialTitle})
 
 ═══════════════════════════════════════════════════════════════════════════════
 TEKS CHAPTER 112 ALIGNMENT - Texas Essential Knowledge and Skills for Science
-(Implemented 2024-2025 School Year per §112.41 and §112.46)
+(Implemented 2024-2025 School Year per §112.25)
 ═══════════════════════════════════════════════════════════════════════════════
 
 All Accelerating Success content is aligned to TEKS Chapter 112 standards. When creating content, emphasize this official Texas curriculum alignment.
 
 WHAT ACCELERATING SUCCESS OFFERS:
 
-📚 SCIENCE (Grades 3-5) - TEKS Chapter 112, Subchapter A:
+📚 ELEMENTARY SCIENCE (Grades 3-5) - TEKS Chapter 112, Subchapter A:
 - Physical Science: matter & states of matter, forces & motion, energy transfer, circuits, light
 - Earth Science: weather & seasons, water cycle, rocks & minerals, natural resources, conservation
 - Life Science: animal & plant adaptations, food chains & webs, ecosystems, life cycles
 
-🔬 SCIENCE (Grades 6-8 Biology) - TEKS Chapter 112, Subchapter B & C:
-- Core Biology (§112.42): biological structures, cell functions, mechanisms of genetics, biological evolution, interdependence within environmental systems
-- Physical Science: matter & chemical changes, forces & motion, energy transformations
-- Earth Science: Earth systems & processes, weather & climate, natural resources & conservation
-- Life Science: ecosystems & biomes, organism interactions, evolution & adaptation
+═══════════════════════════════════════════════════════════════════════════════
+🔬 MIDDLE SCHOOL SCIENCE - TEKS Chapter 112, Subchapter B (§112.26-112.28)
+Adopted 2021, Implemented 2024-2025 per §112.25
+═══════════════════════════════════════════════════════════════════════════════
+
+📗 GRADE 6 SCIENCE (§112.26):
+MATTER AND ENERGY:
+- Compare solids, liquids, gases (structure, shape, volume, kinetic energy)
+- Distinguish pure substances, homogeneous & heterogeneous mixtures
+- Identify elements as metals, nonmetals, metalloids on Periodic Table
+- Compare density of substances relative to fluids
+- Identify chemical changes (gas production, thermal energy, precipitate, color change)
+
+FORCE, MOTION, AND ENERGY:
+- Forces: gravity, friction, magnetism, applied forces, normal forces
+- Calculate net force, balanced vs unbalanced forces
+- Newton's Third Law of Motion (equal & opposite force pairs)
+- Potential vs kinetic energy (gravitational, elastic, chemical)
+- Energy conservation through transfers and transformations
+- Transverse and longitudinal waves
+
+EARTH AND SPACE:
+- Seasons (tilted Earth revolving around Sun)
+- Ocean tides (daily, spring, neap) from gravitational forces
+- Earth's spheres: biosphere, hydrosphere, atmosphere, geosphere
+- Layers of Earth: inner core, outer core, mantle, crust
+- Rock cycle: metamorphic, igneous, sedimentary rocks
+
+ORGANISMS AND ENVIRONMENTS:
+- Ecosystems: biotic factors, abiotic factors, competition
+- Predatory, competitive, symbiotic relationships (mutualism, parasitism, commensalism)
+- Hierarchical organization: organism → population → community → ecosystem
+- Cell theory and characteristics of prokaryotic/eukaryotic, unicellular/multicellular organisms
+- Variations affecting population survival
+
+📘 GRADE 7 SCIENCE (§112.27):
+MATTER AND ENERGY:
+- Elements vs compounds (atoms, molecules, chemical symbols, formulas)
+- Using the periodic table to identify atoms in chemical formulas
+- Physical vs chemical changes
+- Aqueous solutions (solute, solvent, concentration, dilution)
+- Factors affecting dissolution (temperature, surface area, agitation)
+
+FORCE, MOTION, AND ENERGY:
+- Calculate average speed using distance and time
+- Speed vs velocity (distance, displacement, direction)
+- Distance-time graphs
+- Newton's First Law of Motion (balanced/unbalanced forces)
+- Thermal energy transfer: conduction, convection, radiation
+- Thermal equilibrium
+- Temperature and kinetic energy relationship
+
+EARTH AND SPACE:
+- Solar system: Sun, planets, moons, meteors, asteroids, comets, Kuiper belt, Oort cloud
+- Gravity governing motion in solar system
+- Earth's characteristics that allow life
+- Plate tectonics: fossils, superposition, earthquakes, mountains, volcanoes
+
+ORGANISMS AND ENVIRONMENTS:
+- Energy flow through trophic levels (energy pyramids)
+- Matter and nutrient cycling in biosphere
+- Human body systems (circulatory, respiratory, skeletal, muscular, digestive, etc.)
+- Cells → tissues → organs → organ systems
+- Sexual vs asexual reproduction
+- Natural and artificial selection
+- Taxonomic classification system
+
+📙 GRADE 8 SCIENCE (§112.28):
+MATTER AND ENERGY:
+- Elements, compounds, homogeneous/heterogeneous mixtures
+- Chemical reactions using periodic table
+- Properties of water (cohesion, adhesion, surface tension)
+- Acids and bases (pH relative to water)
+- Conservation of mass in chemical reactions
+- Photosynthesis equation
+
+FORCE, MOTION, AND ENERGY:
+- Newton's Second Law (F=ma, acceleration dependent on net force and mass)
+- All three Newton's Laws working together in systems
+- Wave characteristics: amplitude, frequency, wavelength
+- Electromagnetic spectrum applications (radiation therapy, wireless, fiber optics, X-rays)
+
+EARTH AND SPACE:
+- Star life cycles, Hertzsprung-Russell diagram
+- Galaxy types: spiral, elliptical, irregular
+- Milky Way and Earth's location
+- Origin of universe theories
+- Weather systems and climate
+- Ocean currents and tropical cyclones
+- Climate impacts from natural events and human activity
+- Carbon cycle
+
+ORGANISMS AND ENVIRONMENTS:
+- Cell organelles (membrane, wall, nucleus, ribosomes, cytoplasm, mitochondria, chloroplasts, vacuoles)
+- Genes and chromosomes determining inherited traits
+- Ecological succession (primary and secondary)
+- Biodiversity and ecosystem stability
+- Adaptations influencing survival
 
 📋 TEKS SCIENTIFIC & ENGINEERING PRACTICES (40% instructional time requirement):
 - Ask questions and define problems based on observations
-- Plan and conduct investigations using appropriate tools
-- Collect quantitative and qualitative data as evidence
+- Plan and conduct descriptive, comparative, and experimental investigations
+- Collect quantitative (SI units) and qualitative data as evidence
+- Construct tables, graphs, maps, and charts to organize data
 - Develop and use models to represent phenomena
 - Distinguish among scientific hypotheses, theories, and laws
+- Engage in scientific argumentation using empirical evidence
 
 KEY FEATURES:
 - ✅ TEKS Chapter 112 aligned (2024-2025 implementation) - meets Texas state science standards
