@@ -1,87 +1,92 @@
 #!/bin/bash
 
-# Railway Environment Variables Setup Script
-# Automatically sets all required environment variables for Railway
+# Extract environment variables from .env and create Railway-ready file
+cat > railway-env-vars-filled.txt << 'EOF'
+# ==========================================
+# RAILWAY ENVIRONMENT VARIABLES
+# Copy this entire content to Railway:
+# Dashboard → Service → Variables → RAW Editor
+# ==========================================
 
-set -e
+# CORE CONFIGURATION
+NEXTAUTH_URL=${{RAILWAY_STATIC_URL}}
+NEXTAUTH_SECRET=M/YPcyt6p6lK0Uc/brGnr2L0TUQjoyG+/VXXRY+p0zY=
+CRON_SECRET=01e387550425ee64a3cf22e7564ecd0c14e72242523ec515271af898d6df8966
+ENCRYPTION_KEY=3682b85e4983f0366cf656a1c8705f8566005e20faefb431b6dcf88bba497ab2
 
-echo "🔐 Setting up Railway Environment Variables"
-echo "==========================================="
+# BRAND CONFIGURATION
+EOF
+
+# Append values from .env
+grep "^BRAND_NAME=" .env >> railway-env-vars-filled.txt || echo "BRAND_NAME=Accelerating Success" >> railway-env-vars-filled.txt
+grep "^BRAND_HANDLE=" .env >> railway-env-vars-filled.txt || echo "BRAND_HANDLE=@AccSuccess" >> railway-env-vars-filled.txt
+grep "^SUBSCRIPTION_URL=" .env >> railway-env-vars-filled.txt || echo "SUBSCRIPTION_URL=https://accelerating-success.com/subscriptions/" >> railway-env-vars-filled.txt
+
+cat >> railway-env-vars-filled.txt << 'EOF'
+
+# POSTING CONTROL (start disabled for testing)
+POSTING_ENABLED=false
+
+# AI PROVIDERS
+EOF
+
+grep "^ANTHROPIC_API_KEY=" .env >> railway-env-vars-filled.txt || echo "ANTHROPIC_API_KEY=" >> railway-env-vars-filled.txt
+grep "^GROQ_API_KEY=" .env >> railway-env-vars-filled.txt || echo "GROQ_API_KEY=" >> railway-env-vars-filled.txt
+grep "^DEEPSEEK_API_KEY=" .env >> railway-env-vars-filled.txt || echo "DEEPSEEK_API_KEY=" >> railway-env-vars-filled.txt
+grep "^DEFAULT_AI_PROVIDER=" .env >> railway-env-vars-filled.txt || echo "DEFAULT_AI_PROVIDER=claude" >> railway-env-vars-filled.txt
+
+cat >> railway-env-vars-filled.txt << 'EOF'
+
+# TWITTER/X
+EOF
+
+grep "^TWITTER_API_KEY=" .env >> railway-env-vars-filled.txt || echo "TWITTER_API_KEY=" >> railway-env-vars-filled.txt
+grep "^TWITTER_API_SECRET=" .env >> railway-env-vars-filled.txt || echo "TWITTER_API_SECRET=" >> railway-env-vars-filled.txt
+grep "^TWITTER_ACCESS_TOKEN=" .env >> railway-env-vars-filled.txt || echo "TWITTER_ACCESS_TOKEN=" >> railway-env-vars-filled.txt
+grep "^TWITTER_ACCESS_SECRET=" .env >> railway-env-vars-filled.txt || echo "TWITTER_ACCESS_SECRET=" >> railway-env-vars-filled.txt
+grep "^TWITTER_BEARER_TOKEN=" .env >> railway-env-vars-filled.txt || echo "TWITTER_BEARER_TOKEN=" >> railway-env-vars-filled.txt
+
+cat >> railway-env-vars-filled.txt << 'EOF'
+
+# FACEBOOK
+EOF
+
+grep "^FACEBOOK_APP_ID=" .env >> railway-env-vars-filled.txt || echo "FACEBOOK_APP_ID=" >> railway-env-vars-filled.txt
+grep "^FACEBOOK_APP_SECRET=" .env >> railway-env-vars-filled.txt || echo "FACEBOOK_APP_SECRET=" >> railway-env-vars-filled.txt
+grep "^FACEBOOK_PAGE_ACCESS_TOKEN=" .env >> railway-env-vars-filled.txt || echo "FACEBOOK_PAGE_ACCESS_TOKEN=" >> railway-env-vars-filled.txt
+grep "^FACEBOOK_PAGE_ID=" .env >> railway-env-vars-filled.txt || echo "FACEBOOK_PAGE_ID=" >> railway-env-vars-filled.txt
+
+cat >> railway-env-vars-filled.txt << 'EOF'
+
+# LINKEDIN
+EOF
+
+grep "^LINKEDIN_CLIENT_ID=" .env >> railway-env-vars-filled.txt || echo "LINKEDIN_CLIENT_ID=" >> railway-env-vars-filled.txt
+grep "^LINKEDIN_CLIENT_SECRET=" .env >> railway-env-vars-filled.txt || echo "LINKEDIN_CLIENT_SECRET=" >> railway-env-vars-filled.txt
+grep "^LINKEDIN_ACCESS_TOKEN=" .env >> railway-env-vars-filled.txt || echo "LINKEDIN_ACCESS_TOKEN=" >> railway-env-vars-filled.txt
+grep "^LINKEDIN_PERSON_URN=" .env >> railway-env-vars-filled.txt || echo "LINKEDIN_PERSON_URN=" >> railway-env-vars-filled.txt
+
+cat >> railway-env-vars-filled.txt << 'EOF'
+
+# GOOGLE BLOGGER
+EOF
+
+grep "^GOOGLE_CLIENT_ID=" .env >> railway-env-vars-filled.txt || echo "GOOGLE_CLIENT_ID=" >> railway-env-vars-filled.txt
+grep "^GOOGLE_CLIENT_SECRET=" .env >> railway-env-vars-filled.txt || echo "GOOGLE_CLIENT_SECRET=" >> railway-env-vars-filled.txt
+grep "^GOOGLE_REFRESH_TOKEN=" .env >> railway-env-vars-filled.txt || echo "GOOGLE_REFRESH_TOKEN=" >> railway-env-vars-filled.txt
+grep "^GOOGLE_BLOG_ID=" .env >> railway-env-vars-filled.txt || echo "GOOGLE_BLOG_ID=" >> railway-env-vars-filled.txt
+
+cat >> railway-env-vars-filled.txt << 'EOF'
+
+# TUMBLR
+EOF
+
+grep "^TUMBLR_CONSUMER_KEY=" .env >> railway-env-vars-filled.txt || echo "TUMBLR_CONSUMER_KEY=" >> railway-env-vars-filled.txt
+grep "^TUMBLR_CONSUMER_SECRET=" .env >> railway-env-vars-filled.txt || echo "TUMBLR_CONSUMER_SECRET=" >> railway-env-vars-filled.txt
+grep "^TUMBLR_ACCESS_TOKEN=" .env >> railway-env-vars-filled.txt || echo "TUMBLR_ACCESS_TOKEN=" >> railway-env-vars-filled.txt
+grep "^TUMBLR_ACCESS_SECRET=" .env >> railway-env-vars-filled.txt || echo "TUMBLR_ACCESS_SECRET=" >> railway-env-vars-filled.txt
+grep "^TUMBLR_BLOG_IDENTIFIER=" .env >> railway-env-vars-filled.txt || echo "TUMBLR_BLOG_IDENTIFIER=" >> railway-env-vars-filled.txt
+
 echo ""
-
-# Check if linked to Railway project
-if ! railway status &> /dev/null; then
-    echo "❌ Not linked to a Railway project"
-    echo "Run: railway link"
-    exit 1
-fi
-
-echo "✅ Connected to Railway project"
-echo ""
-
-# Read values from local .env file
-if [ ! -f .env ]; then
-    echo "❌ .env file not found"
-    echo "Make sure you're in the project directory"
-    exit 1
-fi
-
-echo "📖 Reading configuration from .env file..."
-echo ""
-
-# Source the .env file
-source .env
-
-# Set environment variables in Railway
-echo "⚙️  Setting environment variables in Railway..."
-echo ""
-
-railway variables set ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY"
-echo "✅ ANTHROPIC_API_KEY set"
-
-railway variables set GROQ_API_KEY="$GROQ_API_KEY"
-echo "✅ GROQ_API_KEY set"
-
-railway variables set DEEPSEEK_API_KEY="$DEEPSEEK_API_KEY"
-echo "✅ DEEPSEEK_API_KEY set"
-
-railway variables set DEFAULT_AI_PROVIDER="$DEFAULT_AI_PROVIDER"
-echo "✅ DEFAULT_AI_PROVIDER set"
-
-railway variables set SUBSCRIPTION_URL="$SUBSCRIPTION_URL"
-echo "✅ SUBSCRIPTION_URL set"
-
-railway variables set BRAND_NAME="$BRAND_NAME"
-echo "✅ BRAND_NAME set"
-
-railway variables set BRAND_HANDLE="$BRAND_HANDLE"
-echo "✅ BRAND_HANDLE set"
-
-railway variables set TESTIMONIAL_VIDEO_1="$TESTIMONIAL_VIDEO_1"
-echo "✅ TESTIMONIAL_VIDEO_1 set"
-
-railway variables set TESTIMONIAL_VIDEO_2="$TESTIMONIAL_VIDEO_2"
-echo "✅ TESTIMONIAL_VIDEO_2 set"
-
-railway variables set TESTIMONIAL_VIDEO_3="$TESTIMONIAL_VIDEO_3"
-echo "✅ TESTIMONIAL_VIDEO_3 set"
-
-# Generate secure NEXTAUTH_SECRET
-NEXTAUTH_SECRET=$(openssl rand -base64 32)
-railway variables set NEXTAUTH_SECRET="$NEXTAUTH_SECRET"
-echo "✅ NEXTAUTH_SECRET generated and set"
-
-echo ""
-echo "==========================================="
-echo "✅ All environment variables set!"
-echo ""
-echo "⚠️  IMPORTANT: You still need to set NEXTAUTH_URL"
-echo ""
-echo "After your deployment is live:"
-echo "1. Get your Railway public URL (e.g., https://yourapp.up.railway.app)"
-echo "2. Run this command:"
-echo "   railway variables set NEXTAUTH_URL=\"https://your-actual-url.up.railway.app\""
-echo ""
-echo "Or use the Railway dashboard to add it manually."
-echo ""
-echo "==========================================="
+echo "✅ Railway environment variables created: railway-env-vars-filled.txt"
+echo "⚠️  This file contains secrets - do not commit to git!"

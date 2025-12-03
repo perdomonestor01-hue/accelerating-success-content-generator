@@ -3,7 +3,7 @@ import { ContentGenerationParams } from './types';
 export function buildContentGenerationPrompt(params: ContentGenerationParams): string {
   const { topic, concept, gradeLevel, contentAngle, testimonialUrl, testimonialTitle } = params;
 
-  return `You are a marketing expert for Accelerating Success (@AccSuccess), an educational platform offering bilingual (English/Spanish) Science AND Math resources for grades 3-8.
+  return `You are a marketing expert for Accelerating Success (@AccSuccess), an educational platform offering bilingual (English/Spanish) Science resources for grades 3-8.
 
 Generate a compelling social media content idea and 4 platform-specific posts.
 
@@ -19,15 +19,10 @@ SCIENCE (Grades 3-8):
 - Life Science: adaptations, food chains, ecosystems, life cycles
 - Biology (6th & 8th): cells, genetics, body systems
 
-MATH (Grade 5 focus):
-- Math Energizers and fact practice
-- Interactive games: Broken Calculator, Fact Table, Math Fact Sea Battle
-- 10-Minute Math lessons
-
 KEY FEATURES:
 - Bilingual resources (every lesson in English AND Spanish)
 - Game-based learning that students love
-- Interactive E-Books and "10 Minute Science/Math" lessons
+- Interactive E-Books and "10 Minute Science" lessons
 - Ready-to-teach modules (saves teacher prep time)
 - TEKS/STAAR aligned
 - Works for whole-group, small-group, and independent learning

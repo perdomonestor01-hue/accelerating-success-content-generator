@@ -111,21 +111,21 @@ async function main() {
       },
     }),
     prisma.scheduleConfig.upsert({
-      where: { dayOfWeek: 4 }, // Thursday - Math
-      update: { topicPreference: 'MATH' },
+      where: { dayOfWeek: 4 }, // Thursday - Biology
+      update: { topicPreference: 'BIOLOGY' },
       create: {
         dayOfWeek: 4,
-        topicPreference: 'MATH',
+        topicPreference: 'BIOLOGY',
         contentAnglePreference: 'TIME_SAVER',
         enabled: true,
       },
     }),
     prisma.scheduleConfig.upsert({
-      where: { dayOfWeek: 5 }, // Friday - Biology
-      update: { topicPreference: 'BIOLOGY' },
+      where: { dayOfWeek: 5 }, // Friday - Physical Science (rotation)
+      update: { topicPreference: 'PHYSICAL_SCIENCE' },
       create: {
         dayOfWeek: 5,
-        topicPreference: 'BIOLOGY',
+        topicPreference: 'PHYSICAL_SCIENCE',
         contentAnglePreference: 'STAAR_PREP',
         enabled: true,
       },

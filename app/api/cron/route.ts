@@ -45,14 +45,6 @@ const topicConcepts: Record<Topic, string[]> = {
     'body systems',
     'ecosystems & biomes',
   ],
-  // Math (5th grade focus)
-  MATH: [
-    'math facts & fluency',
-    'problem solving strategies',
-    'math games & energizers',
-    'multiplication & division facts',
-    'fractions & decimals',
-  ],
 };
 
 // Grade levels that Accelerating Success actually serves
@@ -63,7 +55,6 @@ const topicDescriptions: Record<Topic, string> = {
   EARTH_SCIENCE: 'Earth Science',
   LIFE_SCIENCE: 'Life Science',
   BIOLOGY: 'Biology',
-  MATH: 'Math',
 };
 
 const angleDescriptions: Record<ContentAngle, string> = {

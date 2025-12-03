@@ -15,7 +15,6 @@ enum Topic {
   EARTH_SCIENCE
   LIFE_SCIENCE
   BIOLOGY
-  MATH
 }
 
 enum ContentAngle {

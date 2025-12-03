@@ -12,7 +12,6 @@ const topicDescriptions: Record<Topic, string> = {
   EARTH_SCIENCE: 'Earth Science',
   LIFE_SCIENCE: 'Life Science',
   BIOLOGY: 'Biology',
-  MATH: 'Math',
 };
 
 const angleDescriptions: Record<ContentAngle, string> = {
