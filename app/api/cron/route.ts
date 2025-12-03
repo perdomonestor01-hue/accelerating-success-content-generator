@@ -38,12 +38,24 @@ const topicConcepts: Record<Topic, string[]> = {
     'fossils & prehistoric life',
     'life cycles',
   ],
-  // Biology (6th, 8th grade)
+  // Biology (6th, 8th grade) - includes all science areas at middle school level
   BIOLOGY: [
+    // Core Biology
     'cells & cell structure',
     'genetics & heredity',
     'body systems',
+    // Physical Science (6th-8th)
+    'matter & chemical changes',
+    'forces & motion',
+    'energy transformations',
+    // Earth Science (6th-8th)
+    'Earth systems & processes',
+    'weather & climate',
+    'natural resources & conservation',
+    // Life Science (6th-8th)
     'ecosystems & biomes',
+    'organism interactions',
+    'evolution & adaptation',
   ],
 };
 

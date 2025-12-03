@@ -13,11 +13,16 @@ CONTENT ANGLE: ${contentAngle}
 TESTIMONIAL VIDEO: ${testimonialUrl} (${testimonialTitle})
 
 WHAT ACCELERATING SUCCESS OFFERS:
-SCIENCE (Grades 3-8):
+SCIENCE (Grades 3-5):
 - Physical Science: matter, forces & motion, energy, circuits, light
 - Earth Science: weather, water cycle, rocks & minerals, conservation
 - Life Science: adaptations, food chains, ecosystems, life cycles
-- Biology (6th & 8th): cells, genetics, body systems
+
+SCIENCE (Grades 6-8 Biology):
+- Core Biology: cells & cell structure, genetics & heredity, body systems
+- Physical Science: matter & chemical changes, forces & motion, energy transformations
+- Earth Science: Earth systems, weather & climate, natural resources & conservation
+- Life Science: ecosystems & biomes, organism interactions, evolution & adaptation
 
 KEY FEATURES:
 - Bilingual resources (every lesson in English AND Spanish)
