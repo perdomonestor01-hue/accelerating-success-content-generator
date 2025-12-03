@@ -12,29 +12,52 @@ GRADE LEVEL: ${gradeLevel}
 CONTENT ANGLE: ${contentAngle}
 TESTIMONIAL VIDEO: ${testimonialUrl} (${testimonialTitle})
 
-WHAT ACCELERATING SUCCESS OFFERS:
-SCIENCE (Grades 3-5):
-- Physical Science: matter, forces & motion, energy, circuits, light
-- Earth Science: weather, water cycle, rocks & minerals, conservation
-- Life Science: adaptations, food chains, ecosystems, life cycles
+═══════════════════════════════════════════════════════════════════════════════
+TEKS CHAPTER 112 ALIGNMENT - Texas Essential Knowledge and Skills for Science
+(Implemented 2024-2025 School Year per §112.41 and §112.46)
+═══════════════════════════════════════════════════════════════════════════════
 
-SCIENCE (Grades 6-8 Biology):
-- Core Biology: cells & cell structure, genetics & heredity, body systems
+All Accelerating Success content is aligned to TEKS Chapter 112 standards. When creating content, emphasize this official Texas curriculum alignment.
+
+WHAT ACCELERATING SUCCESS OFFERS:
+
+📚 SCIENCE (Grades 3-5) - TEKS Chapter 112, Subchapter A:
+- Physical Science: matter & states of matter, forces & motion, energy transfer, circuits, light
+- Earth Science: weather & seasons, water cycle, rocks & minerals, natural resources, conservation
+- Life Science: animal & plant adaptations, food chains & webs, ecosystems, life cycles
+
+🔬 SCIENCE (Grades 6-8 Biology) - TEKS Chapter 112, Subchapter B & C:
+- Core Biology (§112.42): biological structures, cell functions, mechanisms of genetics, biological evolution, interdependence within environmental systems
 - Physical Science: matter & chemical changes, forces & motion, energy transformations
-- Earth Science: Earth systems, weather & climate, natural resources & conservation
+- Earth Science: Earth systems & processes, weather & climate, natural resources & conservation
 - Life Science: ecosystems & biomes, organism interactions, evolution & adaptation
 
+📋 TEKS SCIENTIFIC & ENGINEERING PRACTICES (40% instructional time requirement):
+- Ask questions and define problems based on observations
+- Plan and conduct investigations using appropriate tools
+- Collect quantitative and qualitative data as evidence
+- Develop and use models to represent phenomena
+- Distinguish among scientific hypotheses, theories, and laws
+
 KEY FEATURES:
+- ✅ TEKS Chapter 112 aligned (2024-2025 implementation) - meets Texas state science standards
+- ✅ STAAR-ready practice questions and assessments
 - Bilingual resources (every lesson in English AND Spanish)
 - Game-based learning that students love
 - Interactive E-Books and "10 Minute Science" lessons
 - Ready-to-teach modules (saves teacher prep time)
-- TEKS/STAAR aligned
+- Supports scientific & engineering practices (hands-on investigations)
 - Works for whole-group, small-group, and independent learning
-- Built by experienced Texas educators
+- Built by experienced Texas educators who understand TEKS requirements
 - Subscription link: https://accelerating-success.com/subscriptions/
 - Email signup: https://accelerating-success.com/subscribe
 - Offer: 7-day free trial, no strings attached
+
+IMPORTANT MESSAGING POINTS:
+- Always mention "TEKS-aligned" or "aligned to TEKS Chapter 112" in posts
+- Reference the 2024-2025 school year implementation when relevant
+- Emphasize that content meets Texas state science curriculum requirements
+- Highlight that resources support the 40% hands-on investigation requirement
 
 REQUIREMENTS:
 1. Create a relatable teacher pain point or engaging question for the content idea
@@ -87,20 +110,21 @@ Ever spend your entire Sunday prepping a weather unit... only to have your stude
 Here's what happened when I tried teaching the Water Cycle to my 4th graders last year: I spent 4 hours creating worksheets, finding videos, and printing vocab cards. Monday morning? Half the class was confused, and the other half was bored.
 
 This year, I'm using Accelerating Success for my weather unit, and it's completely different:
-• The platform has a ready-to-teach Water Cycle module with game-based vocab (my kids are OBSESSED with the matching game)
+• The platform has a ready-to-teach Water Cycle module aligned to TEKS Chapter 112 with game-based vocab (my kids are OBSESSED with the matching game)
 • Every lesson comes in English AND Spanish - perfect for my bilingual learners
-• Built-in STAAR practice questions aligned to TEKS
+• Built-in STAAR practice questions that meet the 2024-2025 TEKS requirements
+• Supports the 40% hands-on investigation time with ready-made activities
 • I prep in 10 minutes instead of 4 hours
 
 Check out what this teacher says: [video link]
 
-The best part? I'm seeing WAY more engagement. Students are actually asking to do the vocab games during free time!
+The best part? I'm seeing WAY more engagement. Students are actually asking to do the vocab games during free time - and I know I'm meeting state standards!
 
-🎁 Ready to reclaim your weekends? [Start your free trial](https://accelerating-success.com/subscriptions/) - 7 days, zero commitment.
+🎁 Ready to reclaim your weekends with TEKS-aligned content? [Start your free trial](https://accelerating-success.com/subscriptions/) - 7 days, zero commitment.
 
-Not quite ready? [Join our email list](https://accelerating-success.com/subscribe) for free lesson samples and teaching tips delivered to your inbox!
+Not quite ready? [Join our email list](https://accelerating-success.com/subscribe) for free TEKS-aligned lesson samples and teaching tips delivered to your inbox!
 
-#TeacherLife #ScienceTeacher #STAAR #BilingualEducation #EdTech
+#TeacherLife #ScienceTeacher #STAAR #TEKS #BilingualEducation #EdTech #TexasTeachers
 ---
 
 BILINGUAL REQUIREMENT:
