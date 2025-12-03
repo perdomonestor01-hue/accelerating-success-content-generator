@@ -28,17 +28,20 @@ export function buildContentGenerationPrompt(params: ContentGenerationParams): s
 
   return `You are a marketing expert for Accelerating Success (@AccSuccess), an educational platform offering bilingual (English/Spanish) Science resources for grades 3-8.
 
-⚠️ CRITICAL UNIQUENESS REQUIREMENT ⚠️
-You MUST create COMPLETELY UNIQUE content. DO NOT use these overused phrases:
-- "Sunday Prep Struggle" ❌ BANNED
-- "Ever spend your entire Sunday..." ❌ BANNED
-- "only to have your students zone out" ❌ BANNED
-- "prep in 10 minutes instead of 4 hours" ❌ BANNED (rephrase differently)
+UNIQUENESS REQUIREMENT - READ CAREFULLY:
+You MUST create COMPLETELY UNIQUE content every time.
+BANNED PHRASES (never use these):
+- "Sunday Prep Struggle" - BANNED
+- "Ever spend your entire Sunday" - BANNED
+- "only to have your students zone out" - BANNED
+- Generic prep time comparisons - BANNED
 
-REQUIRED HOOK STYLE FOR THIS POST: ${randomHook}
-REQUIRED TITLE STYLE: ${randomTitle}
+REQUIRED APPROACH FOR THIS POST:
+- Hook style: ${randomHook}
+- Title format: ${randomTitle}
+- Make the title SPECIFIC to ${concept}
 
-Generate a compelling social media content idea and 4 platform-specific posts.
+Generate a compelling social media content idea and platform-specific posts.
 
 TOPIC: ${topic} - ${concept}
 GRADE LEVEL: ${gradeLevel}
@@ -178,7 +181,7 @@ KEY FEATURES:
 - Works for whole-group, small-group, and independent learning
 - Built by experienced Texas educators who understand TEKS requirements
 - Subscription link: https://accelerating-success.com/subscriptions/
-- Email signup: https://accelerating-success.com/subscribe
+- Free resources: https://accelerating-success.com/free-5th-grade-properties-of-matter-online-modules/
 - Offer: 7-day free trial, no strings attached
 
 IMPORTANT MESSAGING POINTS:
@@ -224,9 +227,9 @@ PRIMARY CTA (Trial):
 - Twitter: "Start free trial → https://accelerating-success.com/subscriptions/"
 
 SECONDARY CTA (Email List) - NOT for LinkedIn:
-- Reddit: [Sign up for updates](https://accelerating-success.com/subscribe)
-- Facebook: [Get free resources](https://accelerating-success.com/subscribe)
-- Twitter: "Free resources → https://accelerating-success.com/subscribe"
+- Reddit: [Try our free modules](https://accelerating-success.com/free-5th-grade-properties-of-matter-online-modules/)
+- Facebook: [Get free resources](https://accelerating-success.com/free-5th-grade-properties-of-matter-online-modules/)
+- Twitter: "Free modules → https://accelerating-success.com/free-5th-grade-properties-of-matter-online-modules/"
 
 Keep link text SHORT and actionable!
 
