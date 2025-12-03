@@ -3,7 +3,40 @@ import { ContentGenerationParams } from './types';
 export function buildContentGenerationPrompt(params: ContentGenerationParams): string {
   const { topic, concept, gradeLevel, contentAngle, testimonialUrl, testimonialTitle } = params;
 
+  // Generate a random hook style to force variety
+  const hookStyles = [
+    'pain point (teacher frustration)',
+    'success story (student breakthrough)',
+    'question (thought-provoking)',
+    'comparison (before vs after)',
+    'surprising statistic',
+    'relatable moment (classroom chaos)',
+    'seasonal timing (testing season, back to school)',
+    'student quote or reaction'
+  ];
+  const randomHook = hookStyles[Math.floor(Math.random() * hookStyles.length)];
+
+  // Random title styles to prevent repetition
+  const titleStyles = [
+    'action verb + result',
+    'question format',
+    'the X that changed Y',
+    'why teachers are doing X',
+    'the secret to X'
+  ];
+  const randomTitle = titleStyles[Math.floor(Math.random() * titleStyles.length)];
+
   return `You are a marketing expert for Accelerating Success (@AccSuccess), an educational platform offering bilingual (English/Spanish) Science resources for grades 3-8.
+
+⚠️ CRITICAL UNIQUENESS REQUIREMENT ⚠️
+You MUST create COMPLETELY UNIQUE content. DO NOT use these overused phrases:
+- "Sunday Prep Struggle" ❌ BANNED
+- "Ever spend your entire Sunday..." ❌ BANNED
+- "only to have your students zone out" ❌ BANNED
+- "prep in 10 minutes instead of 4 hours" ❌ BANNED (rephrase differently)
+
+REQUIRED HOOK STYLE FOR THIS POST: ${randomHook}
+REQUIRED TITLE STYLE: ${randomTitle}
 
 Generate a compelling social media content idea and 4 platform-specific posts.
 
