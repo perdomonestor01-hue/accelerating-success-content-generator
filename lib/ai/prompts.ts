@@ -159,9 +159,9 @@ REQUIREMENTS:
 2. Generate 7 EXTENDED posts (LinkedIn, Reddit, Facebook, Twitter/X, Blogger, Tumblr, Pinterest)
 3. Include CONCRETE EXAMPLES showing how teachers actually use the platform
 4. Add testimonial video naturally in the posts
-5. End with DUAL CTAs (offer choice):
+5. End with CTAs:
    - PRIMARY: Start 7-day free trial → subscription link
-   - SECONDARY: Not ready? Join email list for free resources → email signup link
+   - SECONDARY (NOT for LinkedIn): Not ready? Join email list for free resources → email signup link
 6. Platform-specific tone and formatting:
    - LinkedIn: Professional, educator-focused, use [text](url) for links, 3-5 paragraphs
    - Reddit: Authentic, conversational, use [text](url) for markdown links, ask for community input, 3-4 paragraphs
@@ -176,9 +176,9 @@ EXTENDED CONTENT STRUCTURE:
 💡 How it works: Describe 2-3 specific features/benefits
 🎬 Testimonial: Include video with authentic teacher voice
 ✨ Results: What teachers experience (time saved, engagement boost, etc.)
-🎁 Dual CTA:
-   • Option 1: "Ready to try? [Start your free trial](subscription-link) - 7 days, no commitment"
-   • Option 2: "Want to explore first? [Join our email list](email-link) for free lesson samples"
+🎁 CTA:
+   • All platforms: "Ready to try? [Start your free trial](subscription-link) - 7 days, no commitment"
+   • NOT for LinkedIn: "Want to explore first? [Join our email list](email-link) for free lesson samples"
 📱 Hashtags: Relevant to platform and topic
 
 CRITICAL LINK FORMATTING:
@@ -190,36 +190,32 @@ PRIMARY CTA (Trial):
 - Facebook: [Get your free trial](https://accelerating-success.com/subscriptions/)
 - Twitter: "Start free trial → https://accelerating-success.com/subscriptions/"
 
-SECONDARY CTA (Email List):
-- LinkedIn: [Join our email list](https://accelerating-success.com/subscribe)
+SECONDARY CTA (Email List) - NOT for LinkedIn:
 - Reddit: [Sign up for updates](https://accelerating-success.com/subscribe)
 - Facebook: [Get free resources](https://accelerating-success.com/subscribe)
 - Twitter: "Free resources → https://accelerating-success.com/subscribe"
 
 Keep link text SHORT and actionable!
 
-EXAMPLE EXTENDED POST (LinkedIn):
----
-Ever spend your entire Sunday prepping a weather unit... only to have your students zone out on Monday? 🌧️
+CRITICAL - VARIETY REQUIREMENT:
+⚠️ NEVER repeat the same hook or title from previous posts!
+⚠️ Each day's content MUST feel completely fresh and different!
 
-Here's what happened when I tried teaching the Water Cycle to my 4th graders last year: I spent 4 hours creating worksheets, finding videos, and printing vocab cards. Monday morning? Half the class was confused, and the other half was bored.
+VARY YOUR HOOKS - Use a DIFFERENT one each time from categories like:
+• PAIN POINTS: "Late night grading...", "Parent conference stress...", "STAAR anxiety...", "Differentiation headaches...", "ELL student struggles..."
+• QUESTIONS: "What if you could...?", "Remember when...?", "Have you ever...?", "Why do teachers...?"
+• STORYTELLING: "Last Tuesday, a student...", "My principal walked in during...", "A parent email changed..."
+• OBSERVATIONS: "I noticed something...", "Here's what top teachers do...", "The secret to engaged students..."
+• SEASONAL: "Back to school chaos...", "End of semester crunch...", "Testing season survival..."
 
-This year, I'm using Accelerating Success for my weather unit, and it's completely different:
-• The platform has a ready-to-teach Water Cycle module aligned to TEKS Chapter 112 with game-based vocab (my kids are OBSESSED with the matching game)
-• Every lesson comes in English AND Spanish - perfect for my bilingual learners
-• Built-in STAAR practice questions that meet the 2024-2025 TEKS requirements
-• Supports the 40% hands-on investigation time with ready-made activities
-• I prep in 10 minutes instead of 4 hours
+DO NOT USE "Sunday Prep Struggle" or variations of it! Create completely NEW hooks based on the specific ${concept} being taught.
 
-Check out what this teacher says: [video link]
-
-The best part? I'm seeing WAY more engagement. Students are actually asking to do the vocab games during free time - and I know I'm meeting state standards!
-
-🎁 Ready to reclaim your weekends with TEKS-aligned content? [Start your free trial](https://accelerating-success.com/subscriptions/) - 7 days, zero commitment.
-
-Not quite ready? [Join our email list](https://accelerating-success.com/subscribe) for free TEKS-aligned lesson samples and teaching tips delivered to your inbox!
-
-#TeacherLife #ScienceTeacher #STAAR #TEKS #BilingualEducation #EdTech #TexasTeachers
+EXAMPLE HOOKS FOR DIFFERENT TOPICS (use as inspiration, NOT to copy):
+• Newton's Laws: "My students thought they understood force... until the egg drop challenge 🥚"
+• Water Cycle: "Why do kids forget evaporation by the next day? Here's what finally worked..."
+• Photosynthesis: "I used to dread teaching photosynthesis until I discovered this game-changer 🌱"
+• Cells: "That moment when your students can actually LABEL a cell diagram correctly ✨"
+• Ecosystems: "Food webs used to confuse my class. Now they're teaching EACH OTHER."
 ---
 
 BILINGUAL REQUIREMENT:
@@ -227,8 +223,8 @@ Generate content in BOTH English and Spanish. Accelerating Success is a bilingua
 
 Return ONLY valid JSON in this exact format (no markdown, no code blocks):
 {
-  "ideaTitle": "The Sunday Prep Struggle",
-  "linkedinPost": "full LinkedIn post here in ENGLISH...",
+  "ideaTitle": "A UNIQUE creative title based on ${concept} - NEVER use 'Sunday Prep Struggle'",
+  "linkedinPost": "full LinkedIn post here in ENGLISH with a FRESH hook...",
   "redditPost": "full Reddit post here in ENGLISH...",
   "facebookPost": "full Facebook post here in ENGLISH...",
   "twitterPost": "full Twitter post here in ENGLISH (under 280 chars)...",
