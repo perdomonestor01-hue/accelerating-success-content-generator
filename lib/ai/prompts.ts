@@ -1,7 +1,7 @@
 import { ContentGenerationParams } from './types';
 
 export function buildContentGenerationPrompt(params: ContentGenerationParams): string {
-  const { topic, concept, gradeLevel, contentAngle, testimonialUrl, testimonialTitle } = params;
+  const { topic, concept, gradeLevel, contentAngle, testimonialUrl, testimonialTitle, recentTitles, recentHooks } = params;
 
   // Generate a random hook style to force variety
   const hookStyles = [
@@ -26,16 +26,22 @@ export function buildContentGenerationPrompt(params: ContentGenerationParams): s
   ];
   const randomTitle = titleStyles[Math.floor(Math.random() * titleStyles.length)];
 
+  // Build the recent posts section to avoid repetition
+  const recentPostsSection = recentTitles && recentTitles.length > 0
+    ? `
+RECENT POSTS (DO NOT REPEAT THESE - create something COMPLETELY DIFFERENT):
+Previous titles used:
+${recentTitles.map((t, i) => `${i + 1}. "${t}"`).join('\n')}
+
+Previous hooks used:
+${recentHooks?.map((h, i) => `${i + 1}. "${h}"`).join('\n') || 'None'}
+
+YOU MUST CREATE A COMPLETELY DIFFERENT TITLE AND HOOK FROM ALL OF THE ABOVE!
+`
+    : '';
+
   return `You are a marketing expert for Accelerating Success (@AccSuccess), an educational platform offering bilingual (English/Spanish) Science resources for grades 3-8.
-
-UNIQUENESS REQUIREMENT - READ CAREFULLY:
-You MUST create COMPLETELY UNIQUE content every time.
-BANNED PHRASES (never use these):
-- "Sunday Prep Struggle" - BANNED
-- "Ever spend your entire Sunday" - BANNED
-- "only to have your students zone out" - BANNED
-- Generic prep time comparisons - BANNED
-
+${recentPostsSection}
 REQUIRED APPROACH FOR THIS POST:
 - Hook style: ${randomHook}
 - Title format: ${randomTitle}

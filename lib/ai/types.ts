@@ -9,6 +9,9 @@ export interface ContentGenerationParams {
   contentAngle: string;
   testimonialUrl: string;
   testimonialTitle: string;
+  // Recent content to avoid repetition
+  recentTitles?: string[];
+  recentHooks?: string[];
 }
 
 export interface GeneratedContent {

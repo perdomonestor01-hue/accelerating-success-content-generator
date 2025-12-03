@@ -195,6 +195,20 @@ export async function GET(request: NextRequest) {
 
     console.log(`Generating: ${topic} - ${concept} (${gradeLevel}) with ${contentAngle} angle`);
 
+    // Fetch recent content to avoid repetition
+    const recentContent = await prisma.content.findMany({
+      select: { ideaTitle: true, linkedinPost: true },
+      orderBy: { createdAt: 'desc' },
+      take: 7, // Last 7 days of posts
+    });
+
+    const recentTitles = recentContent.map(c => c.ideaTitle);
+    const recentHooks = recentContent.map(c => {
+      // Extract first sentence/hook from LinkedIn post
+      const firstLine = c.linkedinPost?.split('\n')[0] || '';
+      return firstLine.slice(0, 100);
+    });
+
     // Generate content using AI
     const generatedContent = await aiProvider.generateContent({
       topic: topicDescriptions[topic],
@@ -203,6 +217,8 @@ export async function GET(request: NextRequest) {
       contentAngle: angleDescriptions[contentAngle],
       testimonialUrl: testimonial.youtubeUrl,
       testimonialTitle: testimonial.title,
+      recentTitles,
+      recentHooks,
     });
 
     // Save to database
