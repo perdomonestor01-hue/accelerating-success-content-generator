@@ -7,17 +7,63 @@ import { PostingManager } from '@/lib/social-media/posting-manager';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-// Predefined concepts for each topic
+// Predefined concepts for each topic - ALIGNED WITH ACCELERATING SUCCESS WEBSITE
 const topicConcepts: Record<Topic, string[]> = {
-  SCIENCE: ['force & motion', 'matter & energy', 'weather & water cycle', 'ecosystems', 'solar system', 'photosynthesis', 'rocks & minerals'],
-  BIOLOGY: ['cell biology & genetics', 'DNA & heredity', 'evolution', 'cellular respiration', 'mitosis & meiosis', 'molecular biology'],
+  // Physical Science (3rd-5th grade)
+  PHYSICAL_SCIENCE: [
+    'matter & states of matter',
+    'combining materials',
+    'forces & motion',
+    'energy transfer',
+    'conductors & insulators',
+    'circuits & electricity',
+    'light & energy transformation',
+  ],
+  // Earth Science (3rd-5th grade)
+  EARTH_SCIENCE: [
+    'weather & seasons',
+    'climate patterns',
+    'water cycle',
+    'landforms',
+    'rocks & minerals',
+    'natural resources',
+    'conservation & environmental changes',
+  ],
+  // Life Science (3rd-5th grade)
+  LIFE_SCIENCE: [
+    'animal adaptations',
+    'plant adaptations',
+    'food chains & food webs',
+    'ecosystems & habitats',
+    'fossils & prehistoric life',
+    'life cycles',
+  ],
+  // Biology (6th, 8th grade)
+  BIOLOGY: [
+    'cells & cell structure',
+    'genetics & heredity',
+    'body systems',
+    'ecosystems & biomes',
+  ],
+  // Math (5th grade focus)
+  MATH: [
+    'math facts & fluency',
+    'problem solving strategies',
+    'math games & energizers',
+    'multiplication & division facts',
+    'fractions & decimals',
+  ],
 };
 
-const gradeLevels = ['3rd', '4th', '5th', '4th-5th', '6th', '7th', '8th', '6-8'];
+// Grade levels that Accelerating Success actually serves
+const gradeLevels = ['3rd', '4th', '5th', '3rd-5th', '6th', '8th'];
 
 const topicDescriptions: Record<Topic, string> = {
-  SCIENCE: 'Science',
+  PHYSICAL_SCIENCE: 'Physical Science',
+  EARTH_SCIENCE: 'Earth Science',
+  LIFE_SCIENCE: 'Life Science',
   BIOLOGY: 'Biology',
+  MATH: 'Math',
 };
 
 const angleDescriptions: Record<ContentAngle, string> = {

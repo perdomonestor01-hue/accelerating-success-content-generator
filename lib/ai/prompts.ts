@@ -3,7 +3,7 @@ import { ContentGenerationParams } from './types';
 export function buildContentGenerationPrompt(params: ContentGenerationParams): string {
   const { topic, concept, gradeLevel, contentAngle, testimonialUrl, testimonialTitle } = params;
 
-  return `You are a marketing expert for Accelerating Success (@AccSuccess), an educational platform offering bilingual (English/Spanish) science lessons for grades 3-8.
+  return `You are a marketing expert for Accelerating Success (@AccSuccess), an educational platform offering bilingual (English/Spanish) Science AND Math resources for grades 3-8.
 
 Generate a compelling social media content idea and 4 platform-specific posts.
 
@@ -12,17 +12,29 @@ GRADE LEVEL: ${gradeLevel}
 CONTENT ANGLE: ${contentAngle}
 TESTIMONIAL VIDEO: ${testimonialUrl} (${testimonialTitle})
 
-BRAND FACTS:
+WHAT ACCELERATING SUCCESS OFFERS:
+SCIENCE (Grades 3-8):
+- Physical Science: matter, forces & motion, energy, circuits, light
+- Earth Science: weather, water cycle, rocks & minerals, conservation
+- Life Science: adaptations, food chains, ecosystems, life cycles
+- Biology (6th & 8th): cells, genetics, body systems
+
+MATH (Grade 5 focus):
+- Math Energizers and fact practice
+- Interactive games: Broken Calculator, Fact Table, Math Fact Sea Battle
+- 10-Minute Math lessons
+
+KEY FEATURES:
 - Bilingual resources (every lesson in English AND Spanish)
-- Game-based vocabulary learning
+- Game-based learning that students love
+- Interactive E-Books and "10 Minute Science/Math" lessons
 - Ready-to-teach modules (saves teacher prep time)
-- STAAR test aligned
+- TEKS/STAAR aligned
 - Works for whole-group, small-group, and independent learning
-- Built by experienced educators
+- Built by experienced Texas educators
 - Subscription link: https://accelerating-success.com/subscriptions/
 - Email signup: https://accelerating-success.com/subscribe
 - Offer: 7-day free trial, no strings attached
-- Alternative: Join our email list for free resources and updates
 
 REQUIREMENTS:
 1. Create a relatable teacher pain point or engaging question for the content idea

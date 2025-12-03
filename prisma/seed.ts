@@ -78,54 +78,54 @@ async function main() {
 
   console.log(`✅ Created ${testimonials.length} testimonial videos`);
 
-  // Seed default schedule configuration (optional daily rotation)
+  // Seed default schedule configuration - rotating through all subjects
   const scheduleConfigs = await Promise.all([
     prisma.scheduleConfig.upsert({
-      where: { dayOfWeek: 1 }, // Monday
-      update: {},
+      where: { dayOfWeek: 1 }, // Monday - Physical Science
+      update: { topicPreference: 'PHYSICAL_SCIENCE' },
       create: {
         dayOfWeek: 1,
-        topicPreference: 'SCIENCE',
+        topicPreference: 'PHYSICAL_SCIENCE',
         contentAnglePreference: 'TIME_SAVER',
         enabled: true,
       },
     }),
     prisma.scheduleConfig.upsert({
-      where: { dayOfWeek: 2 }, // Tuesday
-      update: {},
+      where: { dayOfWeek: 2 }, // Tuesday - Earth Science
+      update: { topicPreference: 'EARTH_SCIENCE' },
       create: {
         dayOfWeek: 2,
-        topicPreference: 'BIOLOGY',
+        topicPreference: 'EARTH_SCIENCE',
         contentAnglePreference: 'BILINGUAL',
         enabled: true,
       },
     }),
     prisma.scheduleConfig.upsert({
-      where: { dayOfWeek: 3 }, // Wednesday
-      update: {},
+      where: { dayOfWeek: 3 }, // Wednesday - Life Science
+      update: { topicPreference: 'LIFE_SCIENCE' },
       create: {
         dayOfWeek: 3,
-        topicPreference: 'SCIENCE',
+        topicPreference: 'LIFE_SCIENCE',
         contentAnglePreference: 'ENGAGEMENT',
         enabled: true,
       },
     }),
     prisma.scheduleConfig.upsert({
-      where: { dayOfWeek: 4 }, // Thursday
-      update: {},
+      where: { dayOfWeek: 4 }, // Thursday - Math
+      update: { topicPreference: 'MATH' },
       create: {
         dayOfWeek: 4,
-        topicPreference: 'BIOLOGY',
+        topicPreference: 'MATH',
         contentAnglePreference: 'TIME_SAVER',
         enabled: true,
       },
     }),
     prisma.scheduleConfig.upsert({
-      where: { dayOfWeek: 5 }, // Friday
-      update: {},
+      where: { dayOfWeek: 5 }, // Friday - Biology
+      update: { topicPreference: 'BIOLOGY' },
       create: {
         dayOfWeek: 5,
-        topicPreference: 'SCIENCE',
+        topicPreference: 'BIOLOGY',
         contentAnglePreference: 'STAAR_PREP',
         enabled: true,
       },

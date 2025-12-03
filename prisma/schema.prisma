@@ -11,8 +11,11 @@ datasource db {
 
 // Enums
 enum Topic {
-  SCIENCE
+  PHYSICAL_SCIENCE
+  EARTH_SCIENCE
+  LIFE_SCIENCE
   BIOLOGY
+  MATH
 }
 
 enum ContentAngle {
