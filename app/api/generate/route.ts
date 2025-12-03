@@ -8,8 +8,11 @@ export const dynamic = 'force-dynamic';
 
 // Map enum values to display names
 const topicDescriptions: Record<Topic, string> = {
-  SCIENCE: 'Science',
+  PHYSICAL_SCIENCE: 'Physical Science',
+  EARTH_SCIENCE: 'Earth Science',
+  LIFE_SCIENCE: 'Life Science',
   BIOLOGY: 'Biology',
+  MATH: 'Math',
 };
 
 const angleDescriptions: Record<ContentAngle, string> = {
