@@ -208,7 +208,7 @@ VARY YOUR HOOKS - Use a DIFFERENT one each time from categories like:
 • OBSERVATIONS: "I noticed something...", "Here's what top teachers do...", "The secret to engaged students..."
 • SEASONAL: "Back to school chaos...", "End of semester crunch...", "Testing season survival..."
 
-DO NOT USE "Sunday Prep Struggle" or variations of it! Create completely NEW hooks based on the specific ${concept} being taught.
+DO NOT USE "Sunday Prep Struggle" or variations of it! Create completely NEW hooks based on the specific concept being taught.
 
 EXAMPLE HOOKS FOR DIFFERENT TOPICS (use as inspiration, NOT to copy):
 • Newton's Laws: "My students thought they understood force... until the egg drop challenge 🥚"
@@ -223,7 +223,7 @@ Generate content in BOTH English and Spanish. Accelerating Success is a bilingua
 
 Return ONLY valid JSON in this exact format (no markdown, no code blocks):
 {
-  "ideaTitle": "A UNIQUE creative title based on ${concept} - NEVER use 'Sunday Prep Struggle'",
+  "ideaTitle": "A UNIQUE creative title based on the topic - NEVER use Sunday Prep Struggle",
   "linkedinPost": "full LinkedIn post here in ENGLISH with a FRESH hook...",
   "redditPost": "full Reddit post here in ENGLISH...",
   "facebookPost": "full Facebook post here in ENGLISH...",
