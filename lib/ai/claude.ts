@@ -27,8 +27,9 @@ export class ClaudeProvider implements AIProviderClient {
     try {
       const response = await this.client.messages.create({
         model: 'claude-3-5-sonnet-20241022',
-        max_tokens: 4096,
+        max_tokens: 8192,
         temperature: 0.7,
+        system: 'You are a marketing expert. You MUST respond with ONLY valid JSON, no markdown, no explanations, just the JSON object.',
         messages: [
           {
             role: 'user',
@@ -42,13 +43,30 @@ export class ClaudeProvider implements AIProviderClient {
         throw new Error('Unexpected response type from Claude');
       }
 
-      // Extract JSON from the response
-      const jsonMatch = textContent.text.match(/\{[\s\S]*\}/);
+      // Extract JSON from the response - handle various formats
+      let jsonText = textContent.text.trim();
+
+      // Remove markdown code blocks if present
+      if (jsonText.startsWith('```json')) {
+        jsonText = jsonText.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+      } else if (jsonText.startsWith('```')) {
+        jsonText = jsonText.replace(/^```\s*/, '').replace(/\s*```$/, '');
+      }
+
+      // Try to find JSON object in the response
+      const jsonMatch = jsonText.match(/\{[\s\S]*\}/);
       if (!jsonMatch) {
+        console.error('Claude response did not contain JSON:', textContent.text.substring(0, 500));
         throw new Error('No valid JSON found in Claude response');
       }
 
-      const result = JSON.parse(jsonMatch[0]);
+      let result;
+      try {
+        result = JSON.parse(jsonMatch[0]);
+      } catch (parseError) {
+        console.error('Failed to parse JSON:', jsonMatch[0].substring(0, 500));
+        throw new Error('Invalid JSON in Claude response');
+      }
 
       // Validate the response structure
       if (!result.ideaTitle || !result.linkedinPost || !result.redditPost ||
