@@ -1,34 +1,38 @@
 import { ContentGenerationParams } from './types';
 
 export function buildContentGenerationPrompt(params: ContentGenerationParams): string {
-  const { topic, concept, gradeLevel, contentAngle, testimonialUrl, testimonialTitle, recentTitles, recentHooks } = params;
+  const { topic, concept, gradeLevel, contentAngle, testimonialUrl, testimonialTitle, recentTitles, recentHooks, painPoint, teksRef } = params;
 
-  // Generate a random hook style to force variety - TEKS/STAAR focused
-  const hookStyles = [
-    'STAAR anxiety (testing pressure, score goals, admin expectations)',
-    'TEKS coverage panic (so many standards, not enough time)',
-    'success story (student breakthrough on STAAR-tested concept)',
-    'question about STAAR prep (thought-provoking)',
-    'comparison (before vs after TEKS-aligned resources)',
-    'STAAR statistics (passing rates, growth scores)',
-    'relatable moment (classroom chaos during test prep)',
-    'STAAR timeline urgency (testing season countdown)',
-    'student STAAR success quote or reaction',
-    'bilingual STAAR challenge (ELL students and testing)'
-  ];
-  const randomHook = hookStyles[Math.floor(Math.random() * hookStyles.length)];
+  // ═══════════════════════════════════════════════════════════════════════════════
+  // PAIN-POINT DRIVEN CONTENT GENERATION
+  // Instead of generic "Sunday Prep Struggle" repeated with different grade levels,
+  // we now create meaningful, specific content focused on real teacher struggles
+  // ═══════════════════════════════════════════════════════════════════════════════
 
-  // Random title styles to prevent repetition - TEKS/STAAR emphasis
-  const titleStyles = [
-    'STAAR prep breakthrough + result',
-    'TEKS mastery question format',
-    'the TEKS standard that changed my classroom',
-    'why Texas teachers are acing STAAR with X',
-    'the secret to STAAR success in X',
-    'how to cover [TEKS standard] before testing',
-    'STAAR-ready in [timeframe] with [concept]'
-  ];
-  const randomTitle = titleStyles[Math.floor(Math.random() * titleStyles.length)];
+  // Build pain point section if provided (from daily cron)
+  const painPointSection = painPoint ? `
+═══════════════════════════════════════════════════════════════════════════════
+🎯 TODAY'S PAIN POINT FOCUS: "${painPoint.title}"
+═══════════════════════════════════════════════════════════════════════════════
+
+THE STRUGGLE (what teachers experience):
+${painPoint.struggle}
+
+OUR SOLUTION (how Accelerating Success helps):
+${painPoint.solution}
+
+HOOK IDEAS FOR THIS PAIN POINT (use as inspiration, create your own):
+${painPoint.hookIdeas.map((h, i) => `${i + 1}. "${h}"`).join('\n')}
+
+⚠️ CRITICAL: Your content MUST focus on THIS specific pain point. Do NOT write generic content that just swaps out grade levels. The post should make a teacher think: "Yes! I have THAT exact problem. These people understand me."
+
+` : '';
+
+  // TEKS reference section for accuracy
+  const teksSection = teksRef ? `
+TEKS STANDARD REFERENCE: ${teksRef}
+Include this reference in your content for credibility with Texas educators.
+` : '';
 
   // Build the recent posts section to avoid repetition
   const recentPostsSection = recentTitles && recentTitles.length > 0
@@ -45,16 +49,35 @@ YOU MUST CREATE A COMPLETELY DIFFERENT TITLE AND HOOK FROM ALL OF THE ABOVE!
     : '';
 
   return `You are a marketing expert for Accelerating Success (@AccSuccess), an educational platform offering bilingual (English/Spanish) Science resources for grades 3-8.
-${recentPostsSection}
-REQUIRED APPROACH FOR THIS POST:
-- Hook style: ${randomHook}
-- Title format: ${randomTitle}
-- Make the title SPECIFIC to ${concept}
 
-Generate a compelling social media content idea and platform-specific posts.
+═══════════════════════════════════════════════════════════════════════════════
+⚠️ CRITICAL REQUIREMENTS - READ CAREFULLY
+═══════════════════════════════════════════════════════════════════════════════
+
+1. TEKS/GRADE ALIGNMENT IS SACRED
+   - You are writing about: "${concept}" for ${gradeLevel} grade teachers
+   - This topic is ONLY taught at this grade level per Texas TEKS standards
+   - NEVER suggest this topic is taught at a different grade level
+   - If the topic is "DNA & heredity" for 8th grade, do NOT say "4th grade teachers teaching DNA"
+   ${teksSection}
+
+2. MEANINGFUL, SPECIFIC CONTENT (NOT GENERIC)
+   - Write content that makes teachers think "Yes! That's MY exact problem!"
+   - Include specific, concrete examples of classroom scenarios
+   - Reference real challenges like STAAR testing pressure, admin expectations
+   - DON'T just swap out grade levels to create "variety"
+
+3. LONGER, RICHER POSTS
+   - LinkedIn: 1,500-2,000 characters (substantial, story-driven)
+   - Facebook: 1,200-1,500 characters (conversational, shareable)
+   - Reddit: 800-1,200 characters (authentic, community-focused)
+   - Include specific anecdotes, examples, and details
+
+${recentPostsSection}
+${painPointSection}
 
 TOPIC: ${topic} - ${concept}
-GRADE LEVEL: ${gradeLevel}
+GRADE LEVEL: ${gradeLevel} (THIS IS TEKS-VERIFIED - do not change it!)
 CONTENT ANGLE: ${contentAngle}
 TESTIMONIAL VIDEO: ${testimonialUrl} (${testimonialTitle})
 
@@ -131,10 +154,111 @@ ENGAGEMENT HOOK EXAMPLES:
 - "STAAR prep doesn't have to feel like STAAR prep. My students actually ASK for science now."
 - "The game-based TEKS modules that made my class forget they were doing test prep."
 - "From groans to cheers: how I transformed STAAR review in my classroom."
+` : contentAngle === 'PAIN_POINTS' ? `
+🎯 PAIN_POINTS ANGLE - TEACHER STRUGGLE FOCUS
+Address the real daily challenges teachers face. Pick 2-3 pain points to weave into your content:
+
+REQUIRED: Reference specific pain points and how Accelerating Success solves them (see TEACHER PAIN POINTS section below)
 ` : `
 📝 ${contentAngle} ANGLE
 Focus on this specific messaging while maintaining TEKS/STAAR alignment throughout.
 `}
+
+═══════════════════════════════════════════════════════════════════════════════
+🎯 TOP 10 TEACHER PAIN POINTS & HOW ACCELERATING SUCCESS SOLVES THEM
+═══════════════════════════════════════════════════════════════════════════════
+
+USE THESE PAIN POINTS IN YOUR CONTENT! Pick 2-3 that relate to the topic/concept and weave them naturally into your posts.
+
+📌 PAIN POINT 1: NOT ENOUGH TIME TO PLAN LESSONS
+THE STRUGGLE: Teachers spend hours searching, prepping, and modifying materials.
+HOW WE SOLVE IT:
+- Ready-to-use TEKS-aligned modules
+- Interactive games, vocabulary energizers, and visuals that require ZERO prep
+- Printable and digital options that save teachers hours each week
+HOOK IDEAS: "I used to spend 3 hours every Sunday..." / "What if your lessons came ready to teach?"
+
+📌 PAIN POINT 2: PRESSURE TO IMPROVE STAAR 2.0 SCORES
+THE STRUGGLE: Teachers face intense accountability but lack engaging, aligned resources.
+HOW WE SOLVE IT:
+- 100% TEKS-aligned content grades 3–Biology
+- STAAR 2.0 question formats (multi-select, drag & drop, evidence-based responses)
+- High-engagement practice that leads to real gains in mastery
+HOOK IDEAS: "My admin wants STAAR data every Friday..." / "STAAR 2.0 formats used to terrify my students..."
+
+📌 PAIN POINT 3: STUDENTS STRUGGLE WITH ENGAGEMENT
+THE STRUGGLE: Keeping students focused—especially in science—is a daily challenge.
+HOW WE SOLVE IT:
+- Arcade-style games students BEG to play
+- Immediate feedback loops
+- Built-in competition, badges, and game mechanics that motivate learners
+- Engagement skyrockets = behavior challenges drop
+HOOK IDEAS: "From groans to 'Can we play again?'" / "The day my students ASKED for science practice..."
+
+📌 PAIN POINT 4: DIFFICULTY DIFFERENTIATING INSTRUCTION
+THE STRUGGLE: Teachers must support students at multiple reading and skill levels.
+HOW WE SOLVE IT:
+- Bilingual English/Spanish toggles
+- Adjustable difficulty levels
+- Multiple ways for students to access content (games, visuals, vocabulary, modules)
+- Teachers can finally meet students where they are without creating 6 versions of a lesson
+HOOK IDEAS: "Half my class reads below grade level..." / "ELL students AND advanced learners in one room..."
+
+📌 PAIN POINT 5: TOO MANY DISCONNECTED OR LOW-QUALITY MATERIALS
+THE STRUGGLE: Teachers often rely on Pinterest, TPT, or old worksheets that don't align well to TEKS or STAAR 2.0.
+HOW WE SOLVE IT:
+- A fully coherent supplemental ecosystem
+- Vocabulary → visuals → games → modules all aligned
+- No more piecing together random resources
+- Everything consistent, cleanly designed, and TEKS-specific
+HOOK IDEAS: "I was drowning in random TPT downloads..." / "When nothing you find actually matches the TEKS..."
+
+📌 PAIN POINT 6: STUDENTS FORGET VOCABULARY QUICKLY
+THE STRUGGLE: Academic language is often the biggest barrier for students in science.
+HOW WE SOLVE IT:
+- Vocabulary Energizers, flashcards, eBooks, and arcade-style games
+- Built-in repetition & retrieval practice
+- Bilingual supports that improve access
+- Students retain words long-term because they practice them in multiple contexts
+HOOK IDEAS: "My students couldn't remember 'photosynthesis' to save their lives..." / "Academic vocabulary was killing my STAAR scores..."
+
+📌 PAIN POINT 7: TEACHER BURNOUT & COGNITIVE OVERLOAD
+THE STRUGGLE: Teachers feel overwhelmed by new TEKS, new testing formats, and constant initiative fatigue.
+HOW WE SOLVE IT:
+- Simple, intuitive tools designed for Texas teachers
+- No learning curve—teachers click and go
+- Huge value for teachers who need resources that work without adding stress
+HOOK IDEAS: "I was one more initiative away from quitting..." / "When simple actually means simple..."
+
+📌 PAIN POINT 8: HARD TO MANAGE INDEPENDENT PRACTICE
+THE STRUGGLE: Teachers need students meaningfully engaged so they can run small groups.
+HOW WE SOLVE IT:
+- Self-running games that keep students engaged AND quiet
+- Instant feedback students can understand independently
+- Perfect for stations, RTI groups, tutoring rotations, and sub days
+- Teachers finally get time back to work with the kids who need them most
+HOOK IDEAS: "I can finally pull small groups without chaos..." / "The sub folder that actually works..."
+
+📌 PAIN POINT 9: CURRICULUM DOESN'T MATCH THE NEEDS OF THEIR STUDENTS
+THE STRUGGLE: Teachers often feel their core HQIM or district materials aren't enough on their own.
+HOW WE SOLVE IT:
+- A flexible supplemental resource that fits with ANY curriculum
+- Easy add-ins that strengthen core lessons or fill conceptual gaps
+- Perfect for reteach, enrichment, and acceleration
+- Gives teachers the freedom to adjust instruction without creating more work
+HOOK IDEAS: "The textbook doesn't cover it the way STAAR tests it..." / "When your curriculum needs backup..."
+
+📌 PAIN POINT 10: STUDENTS NEED MORE PRACTICE IN STAAR 2.0 FORMAT
+THE STRUGGLE: Even when content is understood, students struggle with the new item types.
+HOW WE SOLVE IT:
+- Games incorporate STAAR 2.0-style interactions:
+  • Drag & drop
+  • Multi-select
+  • Hot spots
+  • Matching
+- Students get comfortable with the FORMAT, not just the content
+- Teachers get better performance because students aren't surprised on test day
+HOOK IDEAS: "My students knew the content but bombed the STAAR format..." / "Drag & drop used to confuse them. Not anymore."
 
 ═══════════════════════════════════════════════════════════════════════════════
 TEKS CHAPTER 112 ALIGNMENT - Texas Essential Knowledge and Skills for Science
@@ -258,15 +382,21 @@ ORGANISMS AND ENVIRONMENTS:
 - Distinguish among scientific hypotheses, theories, and laws
 - Engage in scientific argumentation using empirical evidence
 
-KEY FEATURES:
-- ✅ TEKS Chapter 112 aligned (2024-2025 implementation) - meets Texas state science standards
-- ✅ STAAR-ready practice questions and assessments
-- Bilingual resources (every lesson in English AND Spanish)
-- Game-based learning that students love
-- Interactive E-Books and "10 Minute Science" lessons
-- Ready-to-teach modules (saves teacher prep time)
-- Supports scientific & engineering practices (hands-on investigations)
-- Works for whole-group, small-group, and independent learning
+KEY FEATURES (mapped to Teacher Pain Points):
+- ✅ TEKS Chapter 112 aligned (2024-2025 implementation) → Solves Pain Points #2, #5, #9
+- ✅ STAAR 2.0 ready (drag & drop, multi-select, hot spots) → Solves Pain Points #2, #10
+- ✅ Bilingual English/Spanish toggle → Solves Pain Point #4
+- ✅ Arcade-style games students BEG to play → Solves Pain Points #3, #6, #8
+- ✅ Zero-prep, ready-to-teach modules → Solves Pain Points #1, #7
+- ✅ Vocabulary Energizers with retrieval practice → Solves Pain Point #6
+- ✅ Interactive E-Books and "10 Minute Science" lessons → Solves Pain Points #3, #8
+- ✅ Self-running for independent practice/stations → Solves Pain Point #8
+- ✅ Adjustable difficulty levels → Solves Pain Point #4
+- ✅ Coherent ecosystem (vocabulary → visuals → games → modules) → Solves Pain Point #5
+- ✅ Simple, intuitive - click and go → Solves Pain Point #7
+- ✅ Flexible supplemental (works with ANY curriculum) → Solves Pain Point #9
+- ✅ Immediate feedback loops → Solves Pain Points #3, #8
+- ✅ Competition, badges, game mechanics → Solves Pain Point #3
 - Built by experienced Texas educators who understand TEKS requirements
 - Subscription link: https://accelerating-success.com/subscriptions/
 - Free resources: https://accelerating-success.com/free-5th-grade-properties-of-matter-online-modules/
@@ -373,8 +503,9 @@ LINKEDIN FORMATTING RULES:
 - Use emojis sparingly (1-2 max) - professional tone
 - Bold key phrases using *asterisks* for emphasis
 - Keep paragraphs to 2-3 sentences max
-- Total length: 1,200-1,500 characters (optimal for engagement)
+- Total length: 1,500-2,000 characters (substantial, story-driven content)
 - Use [text](url) format for links
+- Include SPECIFIC classroom scenarios and examples - not generic platitudes
 
 LINKEDIN ENGAGEMENT TRIGGERS:
 - Ask a question at the end: "Any other Texas teachers feeling the STAAR pressure?"
@@ -385,8 +516,9 @@ LINKEDIN DON'Ts:
 - Don't use more than 5 hashtags (looks spammy)
 - Don't include multiple CTAs (confuses the reader)
 - Don't use excessive emojis (unprofessional)
-- Don't make it too long (1,500+ chars = lower engagement)
+- Don't be TOO SHORT - we want meaningful, substantial content (1,500+ chars is GOOD!)
 - Don't forget the "see more" hook (first 2 lines are critical)
+- Don't write generic content that just swaps grade levels - each post must be unique and meaningful
 
 OTHER PLATFORMS:
 - Blogger: Article-style blog post with HTML formatting, 5-7 paragraphs, educational tone, include <h2> headings, strong STAAR/TEKS focus
@@ -437,17 +569,31 @@ VARY YOUR HOOKS - Use a DIFFERENT one each time from categories like:
 • STAAR SUCCESS STORIES: "My students went from 60% to 85% on STAAR practice tests...", "That moment when your class CRUSHES the released STAAR questions..."
 • TEKS-SPECIFIC: "TEKS §112.26 on matter and energy was killing my class until...", "Finally cracked how to teach [TEKS standard] for STAAR..."
 • TESTING TIMELINE: "12 weeks until STAAR. Here's my game plan...", "It's March and I'm panicking about STAAR. Any Texas teachers relate?"
+• PAIN POINT #1 (TIME): "I used to spend 3 hours every Sunday searching for science materials...", "What if your TEKS lessons came ready to teach?", "My weekends are finally mine again..."
+• PAIN POINT #3 (ENGAGEMENT): "From groans to 'Can we play again?'...", "The day my students ASKED for more science practice...", "My classroom went from chaos to engaged in one week..."
+• PAIN POINT #4 (DIFFERENTIATION): "Half my class reads below grade level. Here's how I reach them all...", "ELL students AND advanced learners - same activity, different supports..."
+• PAIN POINT #5 (RANDOM RESOURCES): "I was drowning in random TPT downloads that didn't even match my TEKS...", "From Pinterest chaos to actual TEKS coherence..."
+• PAIN POINT #6 (VOCABULARY): "My students couldn't remember 'photosynthesis' to save their lives...", "Academic vocabulary was killing my STAAR scores. Not anymore..."
+• PAIN POINT #7 (BURNOUT): "I was one more initiative away from quitting teaching...", "When 'simple' actually means simple...", "Finally, resources that don't require a PhD to set up..."
+• PAIN POINT #8 (INDEPENDENT PRACTICE): "I can finally pull small groups without classroom chaos...", "The sub folder that actually works...", "Station rotations that run themselves..."
+• PAIN POINT #10 (STAAR 2.0 FORMAT): "My students knew the content but bombed the STAAR format...", "Drag & drop questions used to confuse them. Not anymore..."
 
 DO NOT USE "Sunday Prep Struggle" or variations of it! Create completely NEW hooks focused on STAAR/TEKS and the specific concept being taught.
 
-EXAMPLE HOOKS FOR DIFFERENT TOPICS (STAAR/TEKS focused - use as inspiration, NOT to copy):
-• Newton's Laws: "My students bombed every STAAR question on forces until I tried this approach 🎯"
-• Water Cycle: "TEKS §112.26 on Earth's water cycle - my students went from confused to confident before STAAR"
-• Photosynthesis: "The photosynthesis TEKS standard that shows up on STAAR every year? Finally cracked it 🌱"
-• Cells: "Cell organelles on STAAR - my ELL students needed bilingual resources that ACTUALLY aligned to TEKS"
-• Ecosystems: "47 TEKS standards to cover before STAAR. Ecosystems alone has 6. Here's how I did it..."
-• Matter & Energy: "Grade 6 STAAR science: Matter and Energy questions made my class struggle. Not anymore."
-• Force & Motion: "STAAR released questions on balanced vs unbalanced forces? My students used to bomb these..."
+EXAMPLE HOOKS FOR DIFFERENT TOPICS (COMBINED: Pain Point + TEKS/STAAR - use as inspiration, NOT to copy):
+
+🔥 COMBINING PAIN POINTS WITH TEKS/STAAR IS KEY! Every hook should address BOTH a teacher struggle AND testing alignment.
+
+• Newton's Laws + TIME SAVING: "I used to spend 4 hours prepping my Force & Motion TEKS unit. Now I click and teach STAAR-ready content in minutes 🎯"
+• Water Cycle + ENGAGEMENT: "My students used to groan at Earth's water cycle. Now they BEG to play the TEKS §112.26 review games before STAAR."
+• Photosynthesis + VOCABULARY: "Academic vocabulary was killing my STAAR scores on photosynthesis. Then I found Vocabulary Energizers..."
+• Cells + DIFFERENTIATION: "Half my class are ELL students taking STAAR in English. Cell organelles in BOTH languages? Game changer. 🌎"
+• Ecosystems + STAAR 2.0 FORMAT: "47 TEKS standards. Ecosystems alone has 6. My students knew the content but bombed the drag & drop questions. Not anymore."
+• Matter & Energy + INDEPENDENT PRACTICE: "Grade 6 Matter & Energy STAAR prep that runs itself while I pull small groups? Yes, please."
+• Force & Motion + BURNOUT: "I was drowning in random TPT worksheets for balanced vs unbalanced forces. Finally found TEKS-aligned resources that actually work."
+• Rock Cycle + COHERENCE: "My STAAR review materials were a mess - some from Pinterest, some from TPT, none actually aligned. Now? One coherent TEKS ecosystem."
+• Plate Tectonics + STAAR PRESSURE: "My admin wants STAAR readiness data every Friday. These TEKS §112.27 resources made that possible without losing my weekends."
+• Energy Transfer + ENGAGEMENT: "From 'Do we HAVE to do science?' to 'Can we play the energy transfer game again?' in one week. STAAR prep that doesn't feel like STAAR prep."
 ---
 
 BILINGUAL REQUIREMENT:

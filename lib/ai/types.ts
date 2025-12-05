@@ -12,6 +12,16 @@ export interface ContentGenerationParams {
   // Recent content to avoid repetition
   recentTitles?: string[];
   recentHooks?: string[];
+  // NEW: Pain point focus for meaningful, specific content
+  painPoint?: {
+    id: string;
+    title: string;
+    struggle: string;
+    solution: string;
+    hookIdeas: string[];
+  };
+  // NEW: TEKS reference for accuracy (e.g., "§112.28")
+  teksRef?: string;
 }
 
 export interface GeneratedContent {

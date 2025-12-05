@@ -7,107 +7,217 @@ import { PostingManager } from '@/lib/social-media/posting-manager';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-// Predefined concepts for each topic - ALIGNED WITH TEKS CHAPTER 112
-// Elementary: Subchapter A | Middle School: Subchapter B (§112.26-112.28)
-const topicConcepts: Record<Topic, string[]> = {
+// ═══════════════════════════════════════════════════════════════════════════════
+// TEKS-ALIGNED CONTENT STRUCTURE
+// Each concept is paired with its correct grade level(s) - NO random grade selection!
+// This ensures we never say "4th grade teachers teaching DNA and heredity"
+// ═══════════════════════════════════════════════════════════════════════════════
+
+interface TEKSAlignedContent {
+  concept: string;
+  grades: string; // The grade(s) that actually teach this concept
+  teksRef?: string; // Optional TEKS reference for accuracy
+}
+
+// TEKS Chapter 112 aligned - each concept with its correct grade level(s)
+const teksAlignedContent: Record<Topic, TEKSAlignedContent[]> = {
   // Physical Science (Grades 3-5) - TEKS Chapter 112, Subchapter A
   PHYSICAL_SCIENCE: [
-    'matter & states of matter',
-    'combining materials',
-    'forces & motion',
-    'energy transfer',
-    'conductors & insulators',
-    'circuits & electricity',
-    'light & energy transformation',
+    { concept: 'states of matter (solid, liquid, gas)', grades: '3rd-5th' },
+    { concept: 'properties of matter', grades: '5th' },
+    { concept: 'mixtures & solutions', grades: '5th' },
+    { concept: 'forces & motion (push, pull)', grades: '3rd-4th' },
+    { concept: 'simple machines', grades: '4th-5th' },
+    { concept: 'forms of energy', grades: '4th-5th' },
+    { concept: 'light & sound energy', grades: '3rd-4th' },
+    { concept: 'heat & thermal energy', grades: '4th-5th' },
+    { concept: 'electrical circuits', grades: '4th-5th' },
+    { concept: 'conductors & insulators', grades: '5th' },
   ],
   // Earth Science (Grades 3-5) - TEKS Chapter 112, Subchapter A
   EARTH_SCIENCE: [
-    'weather & seasons',
-    'climate patterns',
-    'water cycle',
-    'landforms',
-    'rocks & minerals',
-    'natural resources',
-    'conservation & environmental changes',
+    { concept: 'weather patterns', grades: '3rd-4th' },
+    { concept: 'water cycle', grades: '4th-5th' },
+    { concept: 'rocks & minerals', grades: '4th-5th' },
+    { concept: 'fossils', grades: '4th-5th' },
+    { concept: 'soil & erosion', grades: '3rd-4th' },
+    { concept: 'natural resources', grades: '3rd-5th' },
+    { concept: 'Earth\'s surface changes', grades: '4th-5th' },
+    { concept: 'sun, moon & stars', grades: '3rd-4th' },
   ],
   // Life Science (Grades 3-5) - TEKS Chapter 112, Subchapter A
   LIFE_SCIENCE: [
-    'animal adaptations',
-    'plant adaptations',
-    'food chains & food webs',
-    'ecosystems & habitats',
-    'fossils & prehistoric life',
-    'life cycles',
+    { concept: 'life cycles (plants & animals)', grades: '3rd-4th' },
+    { concept: 'animal adaptations', grades: '3rd-5th' },
+    { concept: 'plant structures & functions', grades: '3rd-4th' },
+    { concept: 'food chains & food webs', grades: '4th-5th' },
+    { concept: 'ecosystems & habitats', grades: '4th-5th' },
+    { concept: 'inherited traits', grades: '3rd-4th' },
+    { concept: 'basic needs of organisms', grades: '3rd-4th' },
   ],
-  // Biology/Middle School Science (Grades 6-8) - TEKS Chapter 112, Subchapter B
-  // §112.26 (Grade 6), §112.27 (Grade 7), §112.28 (Grade 8)
+  // Middle School Science (Grades 6-8) - TEKS Chapter 112, Subchapter B
   BIOLOGY: [
-    // Grade 6 Matter & Energy (§112.26)
-    'solids, liquids & gases (structure & kinetic energy)',
-    'pure substances vs mixtures (homogeneous & heterogeneous)',
-    'metals, nonmetals & metalloids on periodic table',
-    'density of substances',
-    'chemical changes (gas production, precipitate, color change)',
-    // Grade 6 Force, Motion & Energy (§112.26)
-    'forces: gravity, friction, magnetism, applied forces',
-    'Newton\'s Third Law of Motion',
-    'potential vs kinetic energy',
-    'transverse & longitudinal waves',
-    // Grade 6 Earth & Space (§112.26)
-    'seasons & Earth\'s tilt',
-    'ocean tides (gravitational forces)',
-    'Earth\'s spheres (biosphere, hydrosphere, atmosphere, geosphere)',
-    'layers of Earth (core, mantle, crust)',
-    'rock cycle (metamorphic, igneous, sedimentary)',
-    // Grade 6 Organisms & Environments (§112.26)
-    'ecosystems (biotic & abiotic factors)',
-    'symbiotic relationships (mutualism, parasitism, commensalism)',
-    'cell theory & cell characteristics',
-    // Grade 7 Matter & Energy (§112.27)
-    'elements vs compounds (atoms, molecules, formulas)',
-    'periodic table & chemical formulas',
-    'physical vs chemical changes',
-    'aqueous solutions (solute, solvent, concentration)',
-    // Grade 7 Force, Motion & Energy (§112.27)
-    'calculating average speed (distance & time)',
-    'speed vs velocity',
-    'Newton\'s First Law of Motion',
-    'thermal energy (conduction, convection, radiation)',
-    // Grade 7 Earth & Space (§112.27)
-    'solar system objects (planets, moons, asteroids, comets)',
-    'plate tectonics (earthquakes, volcanoes, mountains)',
-    // Grade 7 Organisms & Environments (§112.27)
-    'energy pyramids & trophic levels',
-    'human body systems',
-    'cells → tissues → organs → organ systems',
-    'natural & artificial selection',
-    'taxonomic classification',
-    // Grade 8 Matter & Energy (§112.28)
-    'properties of water (cohesion, adhesion, surface tension)',
-    'acids & bases (pH)',
-    'conservation of mass in chemical reactions',
-    'photosynthesis equation',
-    // Grade 8 Force, Motion & Energy (§112.28)
-    'Newton\'s Second Law (F=ma)',
-    'all three Newton\'s Laws together',
-    'electromagnetic spectrum & applications',
-    'wave characteristics (amplitude, frequency, wavelength)',
-    // Grade 8 Earth & Space (§112.28)
-    'star life cycles & Hertzsprung-Russell diagram',
-    'galaxy types (spiral, elliptical, irregular)',
-    'weather systems & climate',
-    'carbon cycle',
-    // Grade 8 Organisms & Environments (§112.28)
-    'cell organelles & functions',
-    'genes & chromosomes (inherited traits)',
-    'ecological succession',
-    'biodiversity & ecosystem stability',
+    // Grade 6 (§112.26)
+    { concept: 'matter & states (particle motion)', grades: '6th', teksRef: '§112.26' },
+    { concept: 'mixtures & pure substances', grades: '6th', teksRef: '§112.26' },
+    { concept: 'density & buoyancy', grades: '6th', teksRef: '§112.26' },
+    { concept: 'forces (gravity, friction, magnetism)', grades: '6th', teksRef: '§112.26' },
+    { concept: 'potential & kinetic energy', grades: '6th', teksRef: '§112.26' },
+    { concept: 'waves (transverse & longitudinal)', grades: '6th', teksRef: '§112.26' },
+    { concept: 'Earth\'s layers & rock cycle', grades: '6th', teksRef: '§112.26' },
+    { concept: 'ecosystems & biomes', grades: '6th', teksRef: '§112.26' },
+    { concept: 'symbiotic relationships', grades: '6th', teksRef: '§112.26' },
+    { concept: 'cell theory basics', grades: '6th', teksRef: '§112.26' },
+    // Grade 7 (§112.27)
+    { concept: 'elements & compounds', grades: '7th', teksRef: '§112.27' },
+    { concept: 'chemical formulas & periodic table', grades: '7th', teksRef: '§112.27' },
+    { concept: 'physical vs chemical changes', grades: '7th', teksRef: '§112.27' },
+    { concept: 'speed, velocity & motion', grades: '7th', teksRef: '§112.27' },
+    { concept: 'Newton\'s First Law (inertia)', grades: '7th', teksRef: '§112.27' },
+    { concept: 'thermal energy transfer', grades: '7th', teksRef: '§112.27' },
+    { concept: 'solar system & space', grades: '7th', teksRef: '§112.27' },
+    { concept: 'plate tectonics', grades: '7th', teksRef: '§112.27' },
+    { concept: 'human body systems', grades: '7th', teksRef: '§112.27' },
+    { concept: 'cells, tissues & organs', grades: '7th', teksRef: '§112.27' },
+    // Grade 8 (§112.28)
+    { concept: 'atoms & atomic structure', grades: '8th', teksRef: '§112.28' },
+    { concept: 'Newton\'s Laws of Motion (all three)', grades: '8th', teksRef: '§112.28' },
+    { concept: 'force, mass & acceleration (F=ma)', grades: '8th', teksRef: '§112.28' },
+    { concept: 'waves & electromagnetic spectrum', grades: '8th', teksRef: '§112.28' },
+    { concept: 'DNA, genes & heredity', grades: '8th', teksRef: '§112.28' },
+    { concept: 'cell organelles & functions', grades: '8th', teksRef: '§112.28' },
+    { concept: 'photosynthesis', grades: '8th', teksRef: '§112.28' },
+    { concept: 'ecological succession', grades: '8th', teksRef: '§112.28' },
+    { concept: 'stars & galaxies', grades: '8th', teksRef: '§112.28' },
+    { concept: 'climate & weather systems', grades: '8th', teksRef: '§112.28' },
   ],
 };
 
-// Grade levels that Accelerating Success serves - aligned to TEKS Chapter 112
-// Elementary (Subchapter A) + Middle School (Subchapter B: §112.26-112.28)
-const gradeLevels = ['3rd', '4th', '5th', '3rd-5th', '6th', '7th', '8th', '6th-8th'];
+// ═══════════════════════════════════════════════════════════════════════════════
+// TEACHER PAIN POINTS - The NEW basis for content diversity
+// Instead of varying grade level, we vary the pain point being addressed
+// ═══════════════════════════════════════════════════════════════════════════════
+
+interface TeacherPainPoint {
+  id: string;
+  title: string;
+  struggle: string;
+  solution: string;
+  hookIdeas: string[];
+}
+
+const teacherPainPoints: TeacherPainPoint[] = [
+  {
+    id: 'TIME',
+    title: 'Not Enough Time to Plan',
+    struggle: 'Teachers spend hours searching, prepping, and modifying materials.',
+    solution: 'Ready-to-use TEKS-aligned modules with interactive games and visuals that require ZERO prep.',
+    hookIdeas: [
+      'I used to spend 3 hours every Sunday searching for science materials...',
+      'What if your TEKS lessons came ready to teach?',
+      'My weekends are finally mine again...',
+    ],
+  },
+  {
+    id: 'STAAR_SCORES',
+    title: 'Pressure to Improve STAAR Scores',
+    struggle: 'Teachers face intense accountability pressure but lack engaging, aligned resources.',
+    solution: '100% TEKS-aligned content with STAAR 2.0 question formats (multi-select, drag & drop, evidence-based).',
+    hookIdeas: [
+      'My admin wants STAAR data every Friday...',
+      'STAAR 2.0 formats used to terrify my students. Not anymore.',
+      '47 TEKS standards. 12 weeks. One stressed teacher. Sound familiar?',
+    ],
+  },
+  {
+    id: 'ENGAGEMENT',
+    title: 'Students Struggle with Engagement',
+    struggle: 'Keeping students focused—especially in science—is a daily challenge.',
+    solution: 'Arcade-style games students BEG to play with immediate feedback and built-in competition.',
+    hookIdeas: [
+      'From groans to "Can we play again?"...',
+      'The day my students ASKED for more science practice...',
+      'My classroom went from chaos to engaged in one week...',
+    ],
+  },
+  {
+    id: 'DIFFERENTIATION',
+    title: 'Difficulty Differentiating Instruction',
+    struggle: 'Teachers must support students at multiple reading and skill levels in the same classroom.',
+    solution: 'Bilingual English/Spanish toggle, adjustable difficulty levels, and multiple ways to access content.',
+    hookIdeas: [
+      'Half my class reads below grade level. Here\'s how I reach them all...',
+      'ELL students AND advanced learners - same activity, different supports...',
+      'Finally, resources that meet EVERY learner where they are...',
+    ],
+  },
+  {
+    id: 'RANDOM_RESOURCES',
+    title: 'Too Many Disconnected Materials',
+    struggle: 'Teachers rely on Pinterest, TPT, or old worksheets that don\'t align to TEKS or STAAR 2.0.',
+    solution: 'A fully coherent ecosystem where vocabulary → visuals → games → modules all align together.',
+    hookIdeas: [
+      'I was drowning in random TPT downloads that didn\'t match my TEKS...',
+      'From Pinterest chaos to actual TEKS coherence...',
+      'When nothing you find actually matches what STAAR tests...',
+    ],
+  },
+  {
+    id: 'VOCABULARY',
+    title: 'Students Forget Vocabulary Quickly',
+    struggle: 'Academic language is often the biggest barrier for students in science.',
+    solution: 'Vocabulary Energizers, flashcards, eBooks, and arcade games with built-in repetition & retrieval practice.',
+    hookIdeas: [
+      'My students couldn\'t remember "photosynthesis" to save their lives...',
+      'Academic vocabulary was killing my STAAR scores. Not anymore...',
+      'The vocabulary retention trick that changed everything...',
+    ],
+  },
+  {
+    id: 'BURNOUT',
+    title: 'Teacher Burnout & Cognitive Overload',
+    struggle: 'Teachers feel overwhelmed by new TEKS, new testing formats, and constant initiative fatigue.',
+    solution: 'Simple, intuitive tools with no learning curve—teachers click and go.',
+    hookIdeas: [
+      'I was one more initiative away from quitting teaching...',
+      'When "simple" actually means simple...',
+      'Finally, resources that don\'t require a PhD to set up...',
+    ],
+  },
+  {
+    id: 'INDEPENDENT_PRACTICE',
+    title: 'Hard to Manage Independent Practice',
+    struggle: 'Teachers need students meaningfully engaged so they can run small groups.',
+    solution: 'Self-running games with instant feedback—perfect for stations, RTI groups, and sub days.',
+    hookIdeas: [
+      'I can finally pull small groups without classroom chaos...',
+      'The sub folder that actually works...',
+      'Station rotations that run themselves...',
+    ],
+  },
+  {
+    id: 'CURRICULUM_GAPS',
+    title: 'Curriculum Doesn\'t Match Student Needs',
+    struggle: 'Core materials often aren\'t enough on their own—teachers need to fill gaps.',
+    solution: 'Flexible supplemental resource that works with ANY curriculum for reteach, enrichment, or acceleration.',
+    hookIdeas: [
+      'The textbook doesn\'t cover it the way STAAR tests it...',
+      'When your curriculum needs backup...',
+      'Filling the gaps my textbook leaves behind...',
+    ],
+  },
+  {
+    id: 'STAAR_FORMAT',
+    title: 'Students Need STAAR 2.0 Format Practice',
+    struggle: 'Even when students understand content, they struggle with new item types.',
+    solution: 'Games with drag & drop, multi-select, hot spots, and matching that mirror STAAR 2.0 formats.',
+    hookIdeas: [
+      'My students knew the content but bombed the STAAR format...',
+      'Drag & drop questions used to confuse them. Not anymore...',
+      'STAAR 2.0 format practice that actually feels like a game...',
+    ],
+  },
+];
 
 const topicDescriptions: Record<Topic, string> = {
   PHYSICAL_SCIENCE: 'Physical Science',
@@ -140,7 +250,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    console.log('🤖 Daily content generation started');
+    console.log('🤖 Daily content generation started (Pain-Point Diversity mode)');
 
     // Get today's day of week (0 = Sunday, 6 = Saturday)
     const today = new Date().getDay();
@@ -163,20 +273,30 @@ export async function GET(request: NextRequest) {
       };
     }
 
+    // ═══════════════════════════════════════════════════════════════════════════
+    // NEW CONTENT SELECTION: Pain Point → TEKS-aligned Topic/Concept
+    // This ensures grade levels ALWAYS match the concepts being discussed
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    // Select a random PAIN POINT as the primary diversity driver
+    const painPoint = teacherPainPoints[Math.floor(Math.random() * teacherPainPoints.length)];
+    console.log(`📍 Pain Point Focus: ${painPoint.title}`);
+
     // Select topic (use preference or random)
     const topics = Object.values(Topic);
     const topic = scheduleConfig.topicPreference || topics[Math.floor(Math.random() * topics.length)];
 
-    // Select concept
-    const concepts = topicConcepts[topic];
-    const concept = concepts[Math.floor(Math.random() * concepts.length)];
+    // Select a TEKS-aligned concept (grade level is now EMBEDDED in the content!)
+    const teksContent = teksAlignedContent[topic];
+    const selectedContent = teksContent[Math.floor(Math.random() * teksContent.length)];
+    const concept = selectedContent.concept;
+    const gradeLevel = selectedContent.grades; // Grade comes FROM the concept, not randomly!
+    const teksRef = selectedContent.teksRef || '';
 
-    // Select grade level
-    const gradeLevel = gradeLevels[Math.floor(Math.random() * gradeLevels.length)];
+    console.log(`📚 Selected: ${concept} (${gradeLevel}) - TEKS alignment guaranteed!`);
 
-    // Select content angle (use preference or random)
-    const angles = Object.values(ContentAngle);
-    const contentAngle = scheduleConfig.contentAnglePreference || angles[Math.floor(Math.random() * angles.length)];
+    // Content angle based on pain point
+    const contentAngle = scheduleConfig.contentAnglePreference || ContentAngle.STAAR_PREP;
 
     // Get a testimonial video (random selection with weighted rotation)
     // Fetch all testimonials, prioritize less-used ones but add randomness
@@ -193,13 +313,14 @@ export async function GET(request: NextRequest) {
     const testimonialPool = allTestimonials.slice(0, poolSize);
     const testimonial = testimonialPool[Math.floor(Math.random() * poolSize)];
 
-    console.log(`Generating: ${topic} - ${concept} (${gradeLevel}) with ${contentAngle} angle`);
+    console.log(`📝 Generating: ${topic} - ${concept} (${gradeLevel})`);
+    console.log(`   Pain Point: "${painPoint.title}" | Angle: ${contentAngle}${teksRef ? ` | TEKS: ${teksRef}` : ''}`);
 
     // Fetch recent content to avoid repetition
     const recentContent = await prisma.content.findMany({
       select: { ideaTitle: true, linkedinPost: true },
       orderBy: { createdAt: 'desc' },
-      take: 7, // Last 7 days of posts
+      take: 10, // Last 10 posts for better variety
     });
 
     const recentTitles = recentContent.map(c => c.ideaTitle);
@@ -209,7 +330,7 @@ export async function GET(request: NextRequest) {
       return firstLine.slice(0, 100);
     });
 
-    // Generate content using AI
+    // Generate content using AI with PAIN POINT and TEKS reference for meaningful, specific content
     const generatedContent = await aiProvider.generateContent({
       topic: topicDescriptions[topic],
       concept,
@@ -219,6 +340,16 @@ export async function GET(request: NextRequest) {
       testimonialTitle: testimonial.title,
       recentTitles,
       recentHooks,
+      // NEW: Pass the pain point for meaningful, teacher-focused content
+      painPoint: {
+        id: painPoint.id,
+        title: painPoint.title,
+        struggle: painPoint.struggle,
+        solution: painPoint.solution,
+        hookIdeas: painPoint.hookIdeas,
+      },
+      // NEW: Pass TEKS reference for accuracy
+      teksRef: teksRef || undefined,
     });
 
     // Save to database
