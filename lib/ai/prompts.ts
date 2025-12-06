@@ -219,7 +219,9 @@ All posts must:
 2. Open with the OPENING PATTERN style
 3. Mention TEKS/STAAR alignment naturally
 4. Include the testimonial video link
-5. End with CTA: [Start free trial](https://accelerating-success.com/subscriptions/)
+5. End with TWO CTAs:
+   - Primary: [Start free trial](https://accelerating-success.com/subscriptions/)
+   - Secondary: [Try free resources](https://accelerating-success.com/free-8th-grade-conservation-of-mass-periodic-table-online-modules-canva-slide/)
 
 LENGTHS:
 • LinkedIn: 1,500-2,000 chars (story-driven, professional)
@@ -251,7 +253,7 @@ HASHTAGS (end of post):
 
 LINKS:
 • Trial: https://accelerating-success.com/subscriptions/
-• Free samples: https://accelerating-success.com/free-5th-grade-properties-of-matter-online-modules/
+• Free resources: https://accelerating-success.com/free-8th-grade-conservation-of-mass-periodic-table-online-modules-canva-slide/
 
 Generate content in BOTH English and Spanish (bilingual platform).
 
