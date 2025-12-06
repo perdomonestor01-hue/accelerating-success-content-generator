@@ -163,7 +163,22 @@ export function buildContentGenerationPrompt(params: ContentGenerationParams): s
     ? `PAIN POINT: "${painPoint.title}" - ${painPoint.struggle}`
     : '';
 
+  // Generate suggested titles based on voice/format/concept to guide the AI away from "Sunday Prep Struggle"
+  const titleSuggestions = [
+    `${gradeLevel} Grade ${concept} - A ${voiceStyle.name}'s Take`,
+    `When ${concept} Finally Clicked for My Students`,
+    `The ${concept} Breakthrough: A ${narrativeFormat.name.split(' ')[0]} Story`,
+    `${concept}: What ${gradeLevel} Grade Teachers Need to Know`,
+    `My ${concept} Teaching Transformation`,
+    `${openingPattern.example.split('.')[0]} - Teaching ${concept}`
+  ];
+
   return `Create social media content for Accelerating Success - bilingual Science resources for Texas teachers (grades 3-8).
+
+⚠️⚠️⚠️ CRITICAL: The title "Sunday Prep Struggle" is BANNED. Do NOT use it. ⚠️⚠️⚠️
+
+SUGGESTED TITLES (pick one or create similar):
+${titleSuggestions.map((t, i) => `${i + 1}. "${t}"`).join('\n')}
 
 ═══════════════════════════════════════════════════════════════════════════════
 🎭 TODAY'S WRITING STYLE (FOLLOW EXACTLY)
