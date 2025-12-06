@@ -29,12 +29,16 @@ export class GroqProvider implements AIProviderClient {
         model: 'llama-3.3-70b-versatile',
         messages: [
           {
+            role: 'system',
+            content: 'You are a marketing expert. You MUST respond with ONLY valid JSON, no markdown, no explanations, just the JSON object. Follow the voice style, narrative format, and opening pattern instructions EXACTLY. NEVER use banned phrases.'
+          },
+          {
             role: 'user',
             content: prompt,
           },
         ],
-        temperature: 0.7,
-        max_tokens: 4096,
+        temperature: 0.8,
+        max_tokens: 8192,
       });
 
       const content = response.choices[0]?.message?.content;
