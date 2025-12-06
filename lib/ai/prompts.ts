@@ -116,7 +116,15 @@ const BANNED_PHRASES = [
   'I hear you',
   'We\'ve all been there',
   'That\'s where',
-  'Enter:'
+  'Enter:',
+  // NO EMAIL LIST - use free resources links instead
+  'email list',
+  'join our email',
+  'subscribe to our',
+  'newsletter',
+  'mailing list',
+  'sign up for our email',
+  'delivered to your inbox',
 ];
 
 // Opening patterns - specific structures for the first 2 lines
@@ -219,9 +227,9 @@ All posts must:
 2. Open with the OPENING PATTERN style
 3. Mention TEKS/STAAR alignment naturally
 4. Include the testimonial video link
-5. End with TWO CTAs:
+5. End with TWO CTAs (NO email list - only these links):
    - Primary: [Start free trial](https://accelerating-success.com/subscriptions/)
-   - Secondary: [Try free resources](https://accelerating-success.com/free-8th-grade-conservation-of-mass-periodic-table-online-modules-canva-slide/)
+   - Secondary: [Try free resources](https://accelerating-success.com/free-5th-grade-properties-of-matter-online-modules/) OR [Free 8th grade modules](https://accelerating-success.com/free-8th-grade-conservation-of-mass-periodic-table-online-modules-canva-slide/)
 
 LENGTHS:
 • LinkedIn: 1,500-2,000 chars (story-driven, professional)
@@ -251,9 +259,10 @@ HASHTAGS (end of post):
 • Vocabulary Energizers for academic language
 • Perfect for stations, RTI groups, independent practice
 
-LINKS:
+LINKS (DO NOT use email list links - only these):
 • Trial: https://accelerating-success.com/subscriptions/
-• Free resources: https://accelerating-success.com/free-8th-grade-conservation-of-mass-periodic-table-online-modules-canva-slide/
+• Free 5th grade: https://accelerating-success.com/free-5th-grade-properties-of-matter-online-modules/
+• Free 8th grade: https://accelerating-success.com/free-8th-grade-conservation-of-mass-periodic-table-online-modules-canva-slide/
 
 Generate content in BOTH English and Spanish (bilingual platform).
 
