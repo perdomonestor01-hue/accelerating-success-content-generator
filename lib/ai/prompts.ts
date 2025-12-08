@@ -54,6 +54,45 @@ const VOICE_STYLES = [
 // Narrative formats - different structural approaches to the content
 const NARRATIVE_FORMATS = [
   {
+    id: 'teacher_transformation',
+    name: 'Teacher Transformation Story',
+    structure: `FOLLOW THIS EXACT 9-PART STRUCTURE:
+
+1. HOOK QUESTION (Line 1): Start with a relatable pain point question + emoji
+   Example: "Ever spend your entire Sunday prepping a solar system unit... only to have your students zone out on Monday? 🌠"
+
+2. PERSONAL FAILURE STORY (2-3 sentences): Share a specific teaching failure with CONCRETE details
+   - Include time spent (hours)
+   - List specific activities (worksheets, videos, vocab cards)
+   - Name the grade level and topic
+   Example: "Here's what happened when I tried teaching the solar system to my 4th graders last year: I spent 4 hours creating worksheets, finding videos, and printing vocab cards."
+
+3. CONTRAST MOMENT (1 sentence): The disappointing result
+   Example: "Monday morning? Half the class was confused, and the other half was bored."
+
+4. TRANSFORMATION STATEMENT (1 sentence): Introduce the change
+   Example: "This year, I'm using Accelerating Success for my solar system unit, and it's completely different:"
+
+5. BULLET BENEFITS (4 specific points): Use • bullets with personality
+   - Each bullet should be specific and feature-focused
+   - Include enthusiastic parenthetical asides like "(my kids are OBSESSED with the matching game)"
+   - Highlight: ready-to-teach modules, bilingual support, STAAR alignment, time savings
+
+6. SOCIAL PROOF (1-2 sentences): Introduce testimonial with context
+   Example: "Check out what this teacher says: [testimonial link]"
+
+7. EMOTIONAL PAYOFF (1-2 sentences): Share the best result emotionally
+   Example: "The best part? I'm seeing WAY more engagement. Students are actually asking to do the vocab games during free time!"
+
+8. DUAL CTAs:
+   - Primary: "Ready to reclaim your weekends? [Start your free trial](link) - 7 days, zero commitment."
+   - Secondary: "Not quite ready? [Try free resources](link) for lesson samples!"
+
+9. HASHTAGS: 5 relevant hashtags at the end`,
+    cta_placement: 'Dual CTAs after emotional payoff',
+    priority: true // This format should be used more often
+  },
+  {
     id: 'before_after',
     name: 'Before/After Transformation',
     structure: 'Paint the "before" picture → describe what changed → show the "after" results',
@@ -92,31 +131,27 @@ const NARRATIVE_FORMATS = [
 ];
 
 // BANNED PHRASES - these should NEVER appear in generated content
+// Note: "reclaim your weekends" is ALLOWED in CTAs (e.g., "Ready to reclaim your weekends?")
 const BANNED_PHRASES = [
-  'Sunday Prep Struggle',
-  'Sunday prep',
-  'prep struggle',
-  'I\'ve been there',
-  'But what if I told you',
-  'game-changer',
-  'Game changer',
-  'Let me tell you',
-  'Here\'s the thing',
-  'Sound familiar?',
-  'Struggling with',
-  'Ready to transform',
-  'Transform your',
-  'reclaim your weekends',
-  'Reclaim your',
-  'save hours',
-  'imagine if',
-  'Imagine if',
-  'What if I said',
-  'tired of spending',
-  'I hear you',
-  'We\'ve all been there',
-  'That\'s where',
-  'Enter:',
+  'Sunday Prep Struggle',       // Overused title - banned
+  'prep struggle',              // Overused phrase
+  'I\'ve been there',           // Too generic
+  'But what if I told you',     // Cliché opener
+  'game-changer',               // Marketing cliché
+  'Game changer',               // Marketing cliché
+  'Let me tell you',            // Weak opener
+  'Here\'s the thing',          // Overused transition
+  'Sound familiar?',            // Too generic
+  'Struggling with',            // Weak opener
+  'Transform your classroom',   // Too generic (specific transforms OK)
+  'imagine if',                 // Cliché opener
+  'Imagine if',                 // Cliché opener
+  'What if I said',             // Cliché opener
+  'tired of spending',          // Negative tone opener
+  'I hear you',                 // Too sales-y
+  'We\'ve all been there',      // Too generic
+  'That\'s where',              // Weak transition
+  'Enter:',                     // Too dramatic
   // NO EMAIL LIST - use free resources links instead
   'email list',
   'join our email',
@@ -144,11 +179,25 @@ function randomElement<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
+// Select narrative format with priority weighting
+// Teacher Transformation Story has 50% chance, others share remaining 50%
+function selectNarrativeFormat() {
+  const priorityFormat = NARRATIVE_FORMATS.find(f => f.id === 'teacher_transformation');
+  const otherFormats = NARRATIVE_FORMATS.filter(f => f.id !== 'teacher_transformation');
+
+  // 50% chance to use the priority format (Teacher Transformation)
+  if (Math.random() < 0.5 && priorityFormat) {
+    return priorityFormat;
+  }
+
+  return randomElement(otherFormats);
+}
+
 // Get today's variety elements (for logging and transparency)
 export function getVarietyElements() {
   return {
     voiceStyle: randomElement(VOICE_STYLES),
-    narrativeFormat: randomElement(NARRATIVE_FORMATS),
+    narrativeFormat: selectNarrativeFormat(),
     openingPattern: randomElement(OPENING_PATTERNS)
   };
 }
@@ -157,8 +206,9 @@ export function buildContentGenerationPrompt(params: ContentGenerationParams): s
   const { topic, concept, gradeLevel, contentAngle, testimonialUrl, testimonialTitle, recentTitles, recentHooks, painPoint, teksRef } = params;
 
   // Select variety elements for this generation
+  // Using priority selection for narrative format (50% Teacher Transformation)
   const voiceStyle = randomElement(VOICE_STYLES);
-  const narrativeFormat = randomElement(NARRATIVE_FORMATS);
+  const narrativeFormat = selectNarrativeFormat();
   const openingPattern = randomElement(OPENING_PATTERNS);
 
   // Build recent posts section for reference
