@@ -60,19 +60,32 @@ export class ClaudeProvider implements AIProviderClient {
         throw new Error('No valid JSON found in Claude response');
       }
 
-      // Clean up the JSON string - remove control characters that break parsing
+      // Clean up the JSON string - aggressive cleaning for control characters
       let cleanJson = jsonMatch[0]
-        .replace(/[\x00-\x1F\x7F]/g, (char) => {
-          if (char === '\n' || char === '\r' || char === '\t') return char;
-          return ' ';
-        });
+        .replace(/\\n/g, ' ')
+        .replace(/\\r/g, '')
+        .replace(/("(?:[^"\\]|\\.)*")/g, (match) => {
+          return match.replace(/\n/g, ' ').replace(/\r/g, '');
+        })
+        .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, ' ');
 
       let result;
       try {
         result = JSON.parse(cleanJson);
       } catch (parseError) {
-        console.error('Failed to parse JSON:', cleanJson.substring(0, 500));
-        throw new Error(`Invalid JSON in Claude response: ${parseError instanceof Error ? parseError.message : 'unknown'}`);
+        console.log('First JSON parse failed, trying aggressive cleanup...');
+        cleanJson = cleanJson
+          .replace(/\n/g, ' ')
+          .replace(/\r/g, '')
+          .replace(/\t/g, ' ')
+          .replace(/\s+/g, ' ');
+        try {
+          result = JSON.parse(cleanJson);
+          console.log('✅ Aggressive cleanup succeeded');
+        } catch (e) {
+          console.error('Failed to parse JSON:', cleanJson.substring(0, 500));
+          throw new Error(`Invalid JSON in Claude response: ${parseError instanceof Error ? parseError.message : 'unknown'}`);
+        }
       }
 
       // Validate the response structure
