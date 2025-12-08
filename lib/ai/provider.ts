@@ -3,12 +3,17 @@ import { ClaudeProvider } from './claude';
 import { GroqProvider } from './groq';
 import { DeepSeekProvider } from './deepseek';
 
-// Banned phrases that should never appear in titles
+// Banned phrases that should never appear in titles (lowercase for comparison)
 const BANNED_TITLE_PHRASES = [
   'sunday prep struggle',
   'prep struggle',
   'weekend prep',
   'sunday prep',
+  'the struggle is real',
+  'struggle is real',
+  'reclaim your weekends',  // in title (allowed in body CTAs)
+  'game changer',
+  'game-changer',
 ];
 
 // Generate a replacement title if banned phrase is detected

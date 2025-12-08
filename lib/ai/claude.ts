@@ -46,11 +46,11 @@ export class ClaudeProvider implements AIProviderClient {
       // Extract JSON from the response - handle various formats
       let jsonText = textContent.text.trim();
 
-      // Remove markdown code blocks if present
-      if (jsonText.startsWith('```json')) {
-        jsonText = jsonText.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-      } else if (jsonText.startsWith('```')) {
-        jsonText = jsonText.replace(/^```\s*/, '').replace(/\s*```$/, '');
+      // Remove markdown code blocks if present (more thorough)
+      if (jsonText.includes('```json')) {
+        jsonText = jsonText.replace(/```json\s*/g, '').replace(/```\s*/g, '');
+      } else if (jsonText.includes('```')) {
+        jsonText = jsonText.replace(/```\s*/g, '');
       }
 
       // Try to find JSON object in the response
@@ -60,12 +60,19 @@ export class ClaudeProvider implements AIProviderClient {
         throw new Error('No valid JSON found in Claude response');
       }
 
+      // Clean up the JSON string - remove control characters that break parsing
+      let cleanJson = jsonMatch[0]
+        .replace(/[\x00-\x1F\x7F]/g, (char) => {
+          if (char === '\n' || char === '\r' || char === '\t') return char;
+          return ' ';
+        });
+
       let result;
       try {
-        result = JSON.parse(jsonMatch[0]);
+        result = JSON.parse(cleanJson);
       } catch (parseError) {
-        console.error('Failed to parse JSON:', jsonMatch[0].substring(0, 500));
-        throw new Error('Invalid JSON in Claude response');
+        console.error('Failed to parse JSON:', cleanJson.substring(0, 500));
+        throw new Error(`Invalid JSON in Claude response: ${parseError instanceof Error ? parseError.message : 'unknown'}`);
       }
 
       // Validate the response structure

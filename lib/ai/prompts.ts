@@ -56,39 +56,7 @@ const NARRATIVE_FORMATS = [
   {
     id: 'teacher_transformation',
     name: 'Teacher Transformation Story',
-    structure: `FOLLOW THIS EXACT 9-PART STRUCTURE:
-
-1. HOOK QUESTION (Line 1): Start with a relatable pain point question + emoji
-   Example: "Ever spend your entire Sunday prepping a solar system unit... only to have your students zone out on Monday? 🌠"
-
-2. PERSONAL FAILURE STORY (2-3 sentences): Share a specific teaching failure with CONCRETE details
-   - Include time spent (hours)
-   - List specific activities (worksheets, videos, vocab cards)
-   - Name the grade level and topic
-   Example: "Here's what happened when I tried teaching the solar system to my 4th graders last year: I spent 4 hours creating worksheets, finding videos, and printing vocab cards."
-
-3. CONTRAST MOMENT (1 sentence): The disappointing result
-   Example: "Monday morning? Half the class was confused, and the other half was bored."
-
-4. TRANSFORMATION STATEMENT (1 sentence): Introduce the change
-   Example: "This year, I'm using Accelerating Success for my solar system unit, and it's completely different:"
-
-5. BULLET BENEFITS (4 specific points): Use • bullets with personality
-   - Each bullet should be specific and feature-focused
-   - Include enthusiastic parenthetical asides like "(my kids are OBSESSED with the matching game)"
-   - Highlight: ready-to-teach modules, bilingual support, STAAR alignment, time savings
-
-6. SOCIAL PROOF (1-2 sentences): Introduce testimonial with context
-   Example: "Check out what this teacher says: [testimonial link]"
-
-7. EMOTIONAL PAYOFF (1-2 sentences): Share the best result emotionally
-   Example: "The best part? I'm seeing WAY more engagement. Students are actually asking to do the vocab games during free time!"
-
-8. DUAL CTAs:
-   - Primary: "Ready to reclaim your weekends? [Start your free trial](link) - 7 days, zero commitment."
-   - Secondary: "Not quite ready? [Try free resources](link) for lesson samples!"
-
-9. HASHTAGS: 5 relevant hashtags at the end`,
+    structure: 'Hook question with emoji → Personal teaching struggle (specific details) → Disappointing result → Discovery of solution → 4 bullet benefits → Testimonial link → Emotional payoff → Dual CTAs → Hashtags',
     cta_placement: 'Dual CTAs after emotional payoff',
     priority: true // This format should be used more often
   },

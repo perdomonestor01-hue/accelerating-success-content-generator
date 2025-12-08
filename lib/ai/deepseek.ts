@@ -53,13 +53,38 @@ export class DeepSeekProvider implements AIProviderClient {
         throw new Error('No content in DeepSeek response');
       }
 
-      // Extract JSON from the response
-      const jsonMatch = content.match(/\{[\s\S]*\}/);
+      // Extract JSON from the response - handle markdown code blocks
+      let jsonText = content.trim();
+
+      // Remove markdown code blocks if present
+      if (jsonText.includes('```json')) {
+        jsonText = jsonText.replace(/```json\s*/g, '').replace(/```\s*/g, '');
+      } else if (jsonText.includes('```')) {
+        jsonText = jsonText.replace(/```\s*/g, '');
+      }
+
+      // Try to find JSON object
+      const jsonMatch = jsonText.match(/\{[\s\S]*\}/);
       if (!jsonMatch) {
+        console.error('DeepSeek response (first 500 chars):', content.substring(0, 500));
         throw new Error('No valid JSON found in DeepSeek response');
       }
 
-      const result = JSON.parse(jsonMatch[0]);
+      // Clean up the JSON string - remove control characters that break parsing
+      let cleanJson = jsonMatch[0]
+        .replace(/[\x00-\x1F\x7F]/g, (char) => {
+          if (char === '\n' || char === '\r' || char === '\t') return char;
+          return ' ';
+        });
+
+      let result;
+      try {
+        result = JSON.parse(cleanJson);
+      } catch (parseError) {
+        console.error('JSON parse error:', parseError);
+        console.error('Attempted to parse (first 500 chars):', cleanJson.substring(0, 500));
+        throw new Error(`Invalid JSON in DeepSeek response: ${parseError instanceof Error ? parseError.message : 'unknown error'}`);
+      }
 
       // Validate the response structure
       if (!result.ideaTitle || !result.linkedinPost || !result.redditPost ||
