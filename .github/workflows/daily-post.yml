@@ -1,65 +1,38 @@
-name: Daily Content Posting
+name: Daily Content Post
 
 on:
   schedule:
-    # 12:00 PM Central Time = 6:00 PM UTC (CST) or 5:00 PM UTC (CDT)
-    # Using 6 PM UTC for Central Standard Time
-    - cron: '0 18 * * *'
-  workflow_dispatch: # Allow manual trigger for testing
+    # Run at 9:00 AM Central Time (15:00 UTC)
+    - cron: '0 15 * * *'
+  workflow_dispatch:  # Allow manual trigger
 
 jobs:
-  trigger-posting:
+  post-content:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Trigger Daily Content Generation & Posting
-        id: trigger
+      - name: Trigger Daily Content Generation
         run: |
-          echo "🚀 Triggering daily content posting at $(date)"
+          echo "🚀 Triggering daily content generation..."
 
-          RESPONSE=$(curl -s -w "\n%{http_code}" -X GET "${{ secrets.RAILWAY_URL }}/api/cron" \
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X GET \
+            "https://resourceful-love-production.up.railway.app/api/cron" \
             -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
-            -H "Content-Type: application/json" \
-            --max-time 120)
+            -H "Content-Type: application/json")
 
           HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
           BODY=$(echo "$RESPONSE" | sed '$d')
 
-          echo "Response Code: $HTTP_CODE"
-          echo "Response Body: $BODY"
+          echo "Response: $BODY"
+          echo "HTTP Code: $HTTP_CODE"
 
-          # Check if HTTP request was successful
-          if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
-            echo "✅ API call successful!"
-
-            # Parse posting results - count successes
-            SUCCESS_COUNT=$(echo "$BODY" | grep -o '"success":true' | wc -l)
-            TOTAL_PLATFORMS=5
-
-            echo "📊 Platforms posted: $SUCCESS_COUNT / $TOTAL_PLATFORMS"
-
-            # Consider success if at least 2 platforms succeeded (LinkedIn, Blogger, Tumblr typically work)
-            if [ "$SUCCESS_COUNT" -ge 2 ]; then
-              echo "✅ Daily posting completed successfully ($SUCCESS_COUNT platforms)"
-              echo "success=true" >> $GITHUB_OUTPUT
-            else
-              echo "⚠️ Only $SUCCESS_COUNT platforms succeeded"
-              echo "success=partial" >> $GITHUB_OUTPUT
-            fi
+          if [ "$HTTP_CODE" -eq 200 ]; then
+            echo "✅ Content generated and posted successfully!"
           else
-            echo "❌ Failed to trigger daily posting (HTTP $HTTP_CODE)"
-            echo "success=false" >> $GITHUB_OUTPUT
+            echo "❌ Failed with HTTP $HTTP_CODE"
             exit 1
           fi
 
       - name: Log Result
-        if: always()
         run: |
-          echo "📊 Daily posting workflow completed at $(date)"
-          echo ""
-          echo "🔗 Check your social media accounts for new posts:"
-          echo "  ✓ LinkedIn: https://www.linkedin.com/in/isaac-accelerating"
-          echo "  ✓ Blogger: https://acceleratingsuccess25.blogspot.com"
-          echo "  ✓ Tumblr: https://acceleratingsuccess.tumblr.com"
-          echo "  ⚠️ Twitter: Rate limited on Free tier (1 post/day max)"
-          echo "  ⚠️ Facebook: Credentials not configured"
+          echo "📅 Daily post completed at $(date)"
