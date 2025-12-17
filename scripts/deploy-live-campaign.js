@@ -75,7 +75,27 @@ KEY FEATURES:
 - ✅ Bilingual English/Spanish
 - ✅ Arcade-style games
 - ✅ Zero-prep, ready-to-teach
-- Subscription: https://accelerating-success.com/subscriptions/
+
+═══════════════════════════════════════════════════════════════════════════════
+🔗 LINKS (Use ONLY these URLs - embed with [text](url) format)
+═══════════════════════════════════════════════════════════════════════════════
+
+• Trial: https://accelerating-success.com/subscriptions/
+• Free 5th Grade Resources: https://accelerating-success.com/free-5th-grade-properties-of-matter-online-modules/
+• Free 8th Grade Resources: https://accelerating-success.com/free-8th-grade-conservation-of-mass-periodic-table-online-modules-canva-slide/
+
+END every post with TWO CTAs:
+1. [Start your free trial](https://accelerating-success.com/subscriptions/)
+2. [Try FREE resources](https://accelerating-success.com/free-5th-grade-properties-of-matter-online-modules/)
+
+═══════════════════════════════════════════════════════════════════════════════
+🚫 BANNED PHRASES - NEVER USE THESE:
+═══════════════════════════════════════════════════════════════════════════════
+• "email list" / "newsletter" / "mailing list" / "subscribe to our email"
+• "Sunday Prep Struggle" / "prep struggle"
+• "game-changer" / "Game changer"
+• "But what if I told you"
+• "I've been there"
 
 Generate posts for each platform. IMPORTANT - FOLLOW CHARACTER LIMITS:
 - Twitter: MUST be under 270 characters (leave room for link)
@@ -85,10 +105,10 @@ Generate posts for each platform. IMPORTANT - FOLLOW CHARACTER LIMITS:
 Return ONLY valid JSON (no markdown, no code blocks):
 {
   "ideaTitle": "Pain Point + TEKS/STAAR title",
-  "linkedinPost": "full LinkedIn post...",
-  "twitterPost": "UNDER 270 CHARS! Short, punchy, include link",
-  "tumblrPost": "casual Tumblr post...",
-  "bloggerPost": "HTML blog article..."
+  "linkedinPost": "full LinkedIn post with TWO CTAs at end...",
+  "twitterPost": "UNDER 270 CHARS! Short, punchy, include subscription link",
+  "tumblrPost": "casual Tumblr post with both CTAs...",
+  "bloggerPost": "HTML blog article with both CTAs..."
 }`;
 }
 
