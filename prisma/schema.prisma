@@ -76,6 +76,12 @@ model Content {
   gradeLevel      String // e.g., "4th-5th", "3rd", "6-8"
   contentAngle    ContentAngle
 
+  // Variety tracking - prevents repetitive patterns
+  voiceStyle      String? // e.g., "mentor", "frustrated_ally", "storyteller"
+  narrativeFormat String? // e.g., "teacher_transformation", "before_after"
+  openingPattern  String? // e.g., "stat", "quote", "confession"
+  painPointId     String? // e.g., "TIME", "STAAR_SCORES", "ENGAGEMENT"
+
   // Generated posts for each platform
   linkedinPost  String
   redditPost    String

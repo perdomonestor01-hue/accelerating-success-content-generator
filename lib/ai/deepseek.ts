@@ -74,7 +74,7 @@ export class DeepSeekProvider implements AIProviderClient {
       let cleanJson = jsonMatch[0]
         .replace(/\\n/g, ' ')
         .replace(/\\r/g, '')
-        .replace(/("(?:[^"\\]|\\.)*")/g, (match) => {
+        .replace(/("(?:[^"\\]|\\.)*")/g, (match: string) => {
           return match.replace(/\n/g, ' ').replace(/\r/g, '');
         })
         .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, ' ');

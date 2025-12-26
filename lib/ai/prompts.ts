@@ -1,12 +1,12 @@
-import { ContentGenerationParams } from './types';
+import { ContentGenerationParams, VarietySelection } from './types';
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// VARIETY ENGINE - Forces AI to create genuinely different content each time
-// Instead of one massive prompt, we dynamically select structural elements
+// VARIETY ENGINE v2.0 - Enforced Pattern Selection with Exclusion
+// Patterns are selected BEFORE generation, tracked in DB, and excluded on repeat
 // ═══════════════════════════════════════════════════════════════════════════════
 
 // Voice styles - different "personas" the content can take
-const VOICE_STYLES = [
+export const VOICE_STYLES = [
   {
     id: 'mentor',
     name: 'Experienced Mentor',
@@ -52,75 +52,84 @@ const VOICE_STYLES = [
 ];
 
 // Narrative formats - different structural approaches to the content
-const NARRATIVE_FORMATS = [
+export const NARRATIVE_FORMATS = [
   {
     id: 'teacher_transformation',
     name: 'Teacher Transformation Story',
-    structure: 'Hook question with emoji → Personal teaching struggle (specific details) → Disappointing result → Discovery of solution → 4 bullet benefits → Testimonial link → Emotional payoff → Dual CTAs → Hashtags',
-    cta_placement: 'Dual CTAs after emotional payoff',
-    priority: true // This format should be used more often
+    structure: 'Hook with specific moment → Personal teaching struggle (names, details) → Disappointing result → Discovery of solution → 3-4 bullet benefits → Testimonial link → Emotional payoff → Dual CTAs → Hashtags',
+    cta_placement: 'Dual CTAs after emotional payoff'
   },
   {
     id: 'before_after',
     name: 'Before/After Transformation',
-    structure: 'Paint the "before" picture → describe what changed → show the "after" results',
+    structure: 'Paint vivid "before" picture (specific day/moment) → describe the exact change → show concrete "after" results with numbers',
     cta_placement: 'After showing results'
   },
   {
     id: 'problem_solution',
     name: 'Problem Deep-Dive → Solution',
-    structure: 'Explore the problem in detail (make them feel seen) → introduce solution naturally → show how it works',
+    structure: 'Explore the problem in visceral detail (make them feel seen) → pause for impact → introduce solution as discovery → show how it works step by step',
     cta_placement: 'After explaining solution'
   },
   {
     id: 'day_in_life',
     name: 'Day in the Life',
-    structure: 'Describe a specific moment/day → the struggle → the turning point → current reality',
+    structure: 'Start with exact time and place → describe the struggle as it unfolds → the turning point moment → current reality comparison',
     cta_placement: 'Woven naturally into the story'
   },
   {
     id: 'myth_buster',
     name: 'Myth Busting',
-    structure: 'State a common belief → challenge it with your experience → show the alternative reality',
+    structure: 'State a common belief in quotes → challenge it with your specific experience → show the surprising alternative reality with proof',
     cta_placement: 'As proof of the alternative'
   },
   {
     id: 'confession',
     name: 'Teacher Confession',
-    structure: 'Admit something you used to do/think → what you learned → how it changed your teaching',
+    structure: 'Start with "I used to..." admission → describe what you learned the hard way → show the transformation in your teaching with specific example',
     cta_placement: 'As part of what changed'
   },
   {
     id: 'listicle_story',
     name: 'Mini-Listicle with Story',
-    structure: 'Share 3 things you wish you knew earlier → weave personal examples into each → end with the bigger picture',
+    structure: 'Promise "3 things I wish I knew" → each point includes a mini-story from your classroom → end with the bigger picture revelation',
     cta_placement: 'After the third point'
   }
 ];
 
+// Opening patterns - SPECIFIC structures for the first 2 lines (MUST follow exactly)
+export const OPENING_PATTERNS = [
+  { id: 'stat', pattern: 'Open with a SPECIFIC number or statistic', example: '23 TEKS standards tested. 8 weeks left. My students were at 47% mastery.' },
+  { id: 'quote', pattern: 'Open with EXACT words a student or colleague said (in quotes)', example: '"Ms. Rodriguez, can we do the science game again?" I nearly dropped my coffee.' },
+  { id: 'confession', pattern: 'Open with "I used to..." or "I\'ll admit it..."', example: 'I used to think STAAR prep had to be boring. I was so wrong.' },
+  { id: 'contrast', pattern: 'Open with a surprising BEFORE → NOW contrast', example: 'My quietest student became my most vocal science advocate. Here\'s why.' },
+  { id: 'question', pattern: 'Open with a provocative question (NOT rhetorical fluff)', example: 'When did STAAR prep become synonymous with drill-and-kill?' },
+  { id: 'moment', pattern: 'Open with EXACT time and place', example: 'Tuesday, 2:15 PM. My 4th period class was actually arguing about photosynthesis. In a good way.' },
+  { id: 'realization', pattern: 'Open with a sudden "I realized..." moment', example: 'I realized I was spending more time FINDING resources than TEACHING. That had to stop.' },
+  { id: 'challenge', pattern: 'Open by stating a hard truth directly', example: 'Force and motion is one of the hardest TEKS units for 6th graders to grasp.' }
+];
+
 // BANNED PHRASES - these should NEVER appear in generated content
-// Note: "reclaim your weekends" is ALLOWED in CTAs (e.g., "Ready to reclaim your weekends?")
 const BANNED_PHRASES = [
-  'Sunday Prep Struggle',       // Overused title - banned
-  'prep struggle',              // Overused phrase
-  'I\'ve been there',           // Too generic
-  'But what if I told you',     // Cliché opener
-  'game-changer',               // Marketing cliché
-  'Game changer',               // Marketing cliché
-  'Let me tell you',            // Weak opener
-  'Here\'s the thing',          // Overused transition
-  'Sound familiar?',            // Too generic
-  'Struggling with',            // Weak opener
-  'Transform your classroom',   // Too generic (specific transforms OK)
-  'imagine if',                 // Cliché opener
-  'Imagine if',                 // Cliché opener
-  'What if I said',             // Cliché opener
-  'tired of spending',          // Negative tone opener
-  'I hear you',                 // Too sales-y
-  'We\'ve all been there',      // Too generic
-  'That\'s where',              // Weak transition
-  'Enter:',                     // Too dramatic
-  // NO EMAIL LIST - use free resources links instead
+  'Sunday Prep Struggle',
+  'prep struggle',
+  'I\'ve been there',
+  'But what if I told you',
+  'game-changer',
+  'Game changer',
+  'Let me tell you',
+  'Here\'s the thing',
+  'Sound familiar?',
+  'Struggling with',
+  'Transform your classroom',
+  'imagine if',
+  'Imagine if',
+  'What if I said',
+  'tired of spending',
+  'I hear you',
+  'We\'ve all been there',
+  'That\'s where',
+  'Enter:',
   'email list',
   'join our email',
   'subscribe to our',
@@ -128,177 +137,201 @@ const BANNED_PHRASES = [
   'mailing list',
   'sign up for our email',
   'delivered to your inbox',
+  'Are you tired',
+  'Do you find yourself',
+  'Picture this',
+  'Let\'s face it',
+  'The truth is',
+  'Here\'s why',
+  'spoiler alert',
+  'pro tip',
+  'hot take',
 ];
 
-// Opening patterns - specific structures for the first 2 lines
-const OPENING_PATTERNS = [
-  { id: 'stat', pattern: 'Open with a specific number or statistic', example: '23 TEKS standards tested. 8 weeks left. My students were at 47% mastery.' },
-  { id: 'quote', pattern: 'Open with something a student or colleague said', example: '"Ms. Rodriguez, can we do the science game again?" I nearly dropped my coffee.' },
-  { id: 'confession', pattern: 'Open with an honest admission', example: 'I used to think STAAR prep had to be boring. I was so wrong.' },
-  { id: 'contrast', pattern: 'Open with a surprising contrast', example: 'My quietest student became my most vocal science advocate. Here\'s why.' },
-  { id: 'question', pattern: 'Open with a thought-provoking question', example: 'When did STAAR prep become synonymous with drill-and-kill?' },
-  { id: 'moment', pattern: 'Open with a specific moment in time', example: 'Tuesday, 2:15 PM. My 4th period class was actually arguing about photosynthesis. In a good way.' },
-  { id: 'realization', pattern: 'Open with a sudden realization', example: 'I realized I was spending more time FINDING resources than TEACHING. That had to stop.' },
-  { id: 'challenge', pattern: 'Open by stating a challenge directly', example: 'Force and motion is one of the hardest TEKS units for 6th graders to grasp.' }
-];
-
-// Helper to select random element
-function randomElement<T>(arr: T[]): T {
-  return arr[Math.floor(Math.random() * arr.length)];
+// Helper to select random element, EXCLUDING recent ones
+function selectExcluding<T extends { id: string }>(arr: T[], excludeIds: string[]): T {
+  const available = arr.filter(item => !excludeIds.includes(item.id));
+  // If all are excluded (unlikely), fall back to full array
+  const pool = available.length > 0 ? available : arr;
+  return pool[Math.floor(Math.random() * pool.length)];
 }
 
-// Select narrative format with priority weighting
-// Teacher Transformation Story has 50% chance, others share remaining 50%
-function selectNarrativeFormat() {
-  const priorityFormat = NARRATIVE_FORMATS.find(f => f.id === 'teacher_transformation');
-  const otherFormats = NARRATIVE_FORMATS.filter(f => f.id !== 'teacher_transformation');
+// Select narrative format with priority weighting, excluding recent
+function selectNarrativeFormat(excludeIds: string[]) {
+  const available = NARRATIVE_FORMATS.filter(f => !excludeIds.includes(f.id));
+  const pool = available.length > 0 ? available : NARRATIVE_FORMATS;
 
-  // 50% chance to use the priority format (Teacher Transformation)
-  if (Math.random() < 0.5 && priorityFormat) {
+  // Teacher Transformation gets 30% chance (reduced from 50%)
+  const priorityFormat = pool.find(f => f.id === 'teacher_transformation');
+  const otherFormats = pool.filter(f => f.id !== 'teacher_transformation');
+
+  if (Math.random() < 0.3 && priorityFormat) {
     return priorityFormat;
   }
 
-  return randomElement(otherFormats);
+  return otherFormats[Math.floor(Math.random() * otherFormats.length)] || pool[0];
 }
 
-// Get today's variety elements (for logging and transparency)
-export function getVarietyElements() {
+/**
+ * Select variety elements BEFORE generation, excluding recent patterns
+ * This is the KEY function - it ensures we don't repeat patterns
+ */
+export function selectVarietyElements(recentPatterns?: {
+  voiceStyles: string[];
+  narrativeFormats: string[];
+  openingPatterns: string[];
+}): VarietySelection {
+  const excludeVoice = recentPatterns?.voiceStyles || [];
+  const excludeNarrative = recentPatterns?.narrativeFormats || [];
+  const excludeOpening = recentPatterns?.openingPatterns || [];
+
   return {
-    voiceStyle: randomElement(VOICE_STYLES),
-    narrativeFormat: selectNarrativeFormat(),
-    openingPattern: randomElement(OPENING_PATTERNS)
+    voiceStyle: selectExcluding(VOICE_STYLES, excludeVoice),
+    narrativeFormat: selectNarrativeFormat(excludeNarrative),
+    openingPattern: selectExcluding(OPENING_PATTERNS, excludeOpening)
   };
 }
 
 export function buildContentGenerationPrompt(params: ContentGenerationParams): string {
-  const { topic, concept, gradeLevel, contentAngle, testimonialUrl, testimonialTitle, recentTitles, recentHooks, painPoint, teksRef } = params;
+  const {
+    topic, concept, gradeLevel, contentAngle, testimonialUrl, testimonialTitle,
+    recentTitles, recentHooks, painPoint, teksRef, varietyElements
+  } = params;
 
-  // Select variety elements for this generation
-  // Using priority selection for narrative format (50% Teacher Transformation)
-  const voiceStyle = randomElement(VOICE_STYLES);
-  const narrativeFormat = selectNarrativeFormat();
-  const openingPattern = randomElement(OPENING_PATTERNS);
+  // Use provided variety elements OR select new ones (should be provided by cron)
+  const voiceStyle = varietyElements?.voiceStyle || selectExcluding(VOICE_STYLES, []);
+  const narrativeFormat = varietyElements?.narrativeFormat || selectNarrativeFormat([]);
+  const openingPattern = varietyElements?.openingPattern || selectExcluding(OPENING_PATTERNS, []);
 
   // Build recent posts section for reference
   const recentPostsSection = recentTitles && recentTitles.length > 0
-    ? `AVOID THESE RECENT TITLES: ${recentTitles.slice(0, 5).join(', ')}`
+    ? `\n⚠️ DO NOT USE THESE RECENT TITLES: ${recentTitles.slice(0, 5).join(' | ')}`
     : '';
 
   // Pain point focus if provided
-  const painPointFocus = painPoint
-    ? `PAIN POINT: "${painPoint.title}" - ${painPoint.struggle}`
+  const painPointSection = painPoint
+    ? `
+═══════════════════════════════════════════════════════════════════════════════
+🎯 PAIN POINT FOCUS (Build content around THIS specific struggle)
+═══════════════════════════════════════════════════════════════════════════════
+
+"${painPoint.title}"
+TEACHER'S STRUGGLE: ${painPoint.struggle}
+YOUR SOLUTION TO OFFER: ${painPoint.solution}
+
+HOOK IDEAS (use one or create similar):
+${painPoint.hookIdeas.map((h, i) => `${i + 1}. "${h}"`).join('\n')}`
     : '';
 
-  // Generate suggested titles based on voice/format/concept to guide the AI away from "Sunday Prep Struggle"
-  const titleSuggestions = [
-    `${gradeLevel} Grade ${concept} - A ${voiceStyle.name}'s Take`,
-    `When ${concept} Finally Clicked for My Students`,
-    `The ${concept} Breakthrough: A ${narrativeFormat.name.split(' ')[0]} Story`,
-    `${concept}: What ${gradeLevel} Grade Teachers Need to Know`,
-    `My ${concept} Teaching Transformation`,
-    `${openingPattern.example.split('.')[0]} - Teaching ${concept}`
-  ];
-
-  return `Create social media content for Accelerating Success - bilingual Science resources for Texas teachers (grades 3-8).
-
-⚠️⚠️⚠️ CRITICAL: The title "Sunday Prep Struggle" is BANNED. Do NOT use it. ⚠️⚠️⚠️
-
-SUGGESTED TITLES (pick one or create similar):
-${titleSuggestions.map((t, i) => `${i + 1}. "${t}"`).join('\n')}
+  return `You are writing social media content for Accelerating Success - bilingual Science resources for Texas K-8 teachers.
 
 ═══════════════════════════════════════════════════════════════════════════════
-🎭 TODAY'S WRITING STYLE (FOLLOW EXACTLY)
+⚠️⚠️⚠️ CRITICAL REQUIREMENTS - READ FIRST ⚠️⚠️⚠️
 ═══════════════════════════════════════════════════════════════════════════════
 
-VOICE: ${voiceStyle.name}
-${voiceStyle.description}
+1. Your FIRST LINE must follow this EXACT opening pattern: "${openingPattern.pattern}"
+   EXAMPLE: "${openingPattern.example}"
 
-NARRATIVE FORMAT: ${narrativeFormat.name}
-Structure: ${narrativeFormat.structure}
+2. Write in the "${voiceStyle.name}" voice throughout:
+   ${voiceStyle.description}
 
-OPENING PATTERN: ${openingPattern.pattern}
-Example: "${openingPattern.example}"
+3. Follow the "${narrativeFormat.name}" structure:
+   ${narrativeFormat.structure}
 
-═══════════════════════════════════════════════════════════════════════════════
-🚫 BANNED PHRASES - NEVER USE THESE
-═══════════════════════════════════════════════════════════════════════════════
-${BANNED_PHRASES.map(p => `• "${p}"`).join('\n')}
+4. The title "Sunday Prep Struggle" and phrase "prep struggle" are BANNED.
 
-If you use ANY of these phrases, the content will be rejected.
-
-═══════════════════════════════════════════════════════════════════════════════
-📝 CONTENT DETAILS
-═══════════════════════════════════════════════════════════════════════════════
-
-TOPIC: ${concept} for ${gradeLevel} grade (TEKS-verified${teksRef ? ` - ${teksRef}` : ''})
-ANGLE: ${contentAngle}
-${painPointFocus}
-TESTIMONIAL: ${testimonialUrl}
+5. Return ONLY valid JSON - no markdown, no code blocks, no explanation.
 ${recentPostsSection}
 
 ═══════════════════════════════════════════════════════════════════════════════
-📊 PLATFORM REQUIREMENTS
+🚫 BANNED PHRASES - Using ANY of these will REJECT the content
 ═══════════════════════════════════════════════════════════════════════════════
-
-All posts must:
-1. Follow the VOICE and NARRATIVE FORMAT above exactly
-2. Open with the OPENING PATTERN style
-3. Mention TEKS/STAAR alignment naturally
-4. Include the testimonial video link
-5. End with TWO CTAs (NO email list - only these links):
-   - Primary: [Start free trial](https://accelerating-success.com/subscriptions/)
-   - Secondary: [Try free resources](https://accelerating-success.com/free-5th-grade-properties-of-matter-online-modules/) OR [Free 8th grade modules](https://accelerating-success.com/free-8th-grade-conservation-of-mass-periodic-table-online-modules-canva-slide/)
-
-LENGTHS:
-• LinkedIn: 1,500-2,000 chars (story-driven, professional)
-• Facebook: 1,200-1,500 chars (friendly, shareable)
-• Reddit: 800-1,200 chars (authentic, community tone)
-• Twitter: Under 280 chars
-• Blogger: 5-7 paragraphs with HTML headings
-• Tumblr: 3-4 casual paragraphs
-
-LINKS: Use [text](url) format. Keep link text SHORT (2-3 words).
-
-HASHTAGS (end of post):
-• LinkedIn: 3-5 max (#STAAR #TEKS #TexasTeachers + topic)
-• Facebook/Tumblr: 4-6
-• Reddit: None
-• Twitter: 2-3
+${BANNED_PHRASES.map(p => `• "${p}"`).join('\n')}
 
 ═══════════════════════════════════════════════════════════════════════════════
-🎯 ACCELERATING SUCCESS KEY BENEFITS (weave 2-3 into content)
+📝 CONTENT REQUIREMENTS
 ═══════════════════════════════════════════════════════════════════════════════
 
-• TEKS Chapter 112 aligned (2024-2025 implementation)
-• Bilingual English/Spanish toggle for every resource
-• Arcade-style games students love (not drill-and-kill)
-• STAAR 2.0 format practice (drag & drop, multi-select)
-• Ready-to-teach modules - zero prep time
-• Vocabulary Energizers for academic language
-• Perfect for stations, RTI groups, independent practice
+TOPIC: ${concept} for ${gradeLevel} grade${teksRef ? ` (${teksRef})` : ''}
+ANGLE: ${contentAngle}
+TESTIMONIAL VIDEO: ${testimonialUrl}
+${painPointSection}
 
-LINKS (DO NOT use email list links - only these):
+═══════════════════════════════════════════════════════════════════════════════
+🎭 VOICE & STRUCTURE ENFORCEMENT
+═══════════════════════════════════════════════════════════════════════════════
+
+VOICE: ${voiceStyle.name}
+- ${voiceStyle.description}
+- Opening style: ${voiceStyle.openingStyle}
+- Example tone: "${voiceStyle.example}"
+
+NARRATIVE: ${narrativeFormat.name}
+- Structure: ${narrativeFormat.structure}
+- CTA placement: ${narrativeFormat.cta_placement}
+
+OPENING (MUST follow this pattern):
+- Pattern: ${openingPattern.pattern}
+- Your first line MUST match this style: "${openingPattern.example}"
+
+═══════════════════════════════════════════════════════════════════════════════
+📊 PLATFORM SPECS
+═══════════════════════════════════════════════════════════════════════════════
+
+LINKEDIN (1,500-2,000 chars):
+- Professional but warm
+- Start with the EXACT opening pattern above
+- Use line breaks for readability
+- End with 3-5 hashtags: #STAAR #TEKS #TexasTeachers + topic-specific
+
+FACEBOOK (1,200-1,500 chars):
+- Friendly, shareable
+- Same opening pattern
+- 4-6 hashtags at end
+
+REDDIT (800-1,200 chars):
+- Authentic community voice
+- NO hashtags
+- Less promotional tone
+
+TWITTER (under 280 chars):
+- Punchy, single insight
+- 2-3 hashtags max
+
+BLOGGER (5-7 paragraphs):
+- HTML with <h2> headings
+- SEO-friendly title
+- Detailed, educational
+
+TUMBLR (3-4 paragraphs):
+- Casual, creative
+- 4-6 tags at end
+
+═══════════════════════════════════════════════════════════════════════════════
+🔗 LINKS (Use ONLY these - embed with [text](url) format)
+═══════════════════════════════════════════════════════════════════════════════
+
 • Trial: https://accelerating-success.com/subscriptions/
 • Free 5th grade: https://accelerating-success.com/free-5th-grade-properties-of-matter-online-modules/
 • Free 8th grade: https://accelerating-success.com/free-8th-grade-conservation-of-mass-periodic-table-online-modules-canva-slide/
+• Testimonial: ${testimonialUrl}
 
-Generate content in BOTH English and Spanish (bilingual platform).
+END every post with TWO CTAs:
+1. [Start your free trial](https://accelerating-success.com/subscriptions/)
+2. [Try free resources](https://accelerating-success.com/free-5th-grade-properties-of-matter-online-modules/)
 
-Return ONLY valid JSON (no markdown, no code blocks):
+═══════════════════════════════════════════════════════════════════════════════
+✅ OUTPUT FORMAT - Return ONLY this JSON structure
+═══════════════════════════════════════════════════════════════════════════════
+
 {
-  "ideaTitle": "Creative title reflecting the ${voiceStyle.id} voice and ${narrativeFormat.id} format",
-  "linkedinPost": "Full post following ${voiceStyle.name} voice, ${narrativeFormat.name} structure, opening with ${openingPattern.pattern}",
-  "redditPost": "Authentic community post (no hashtags)",
-  "facebookPost": "Friendly shareable post",
+  "ideaTitle": "Creative title (NOT Sunday Prep Struggle)",
+  "linkedinPost": "Full LinkedIn post starting with ${openingPattern.pattern}",
+  "redditPost": "Reddit post (no hashtags)",
+  "facebookPost": "Facebook post",
   "twitterPost": "Under 280 chars",
   "bloggerPost": "HTML article with <h2> headings",
-  "tumblrPost": "Casual 3-4 paragraphs",
-  "linkedinPostEs": "Spanish version",
-  "redditPostEs": "Spanish version",
-  "facebookPostEs": "Spanish version",
-  "twitterPostEs": "Spanish version under 280 chars",
-  "bloggerPostEs": "Spanish HTML article",
-  "tumblrPostEs": "Spanish casual post"
+  "tumblrPost": "Casual 3-4 paragraphs"
 }`;
 }
 
@@ -307,12 +340,30 @@ export function buildRecycleVariationPrompt(
   originalLinkedin: string,
   params: ContentGenerationParams
 ): string {
-  const { topic, concept, testimonialUrl } = params;
+  const { topic, concept, testimonialUrl, varietyElements } = params;
 
-  return `Take this successful content idea and create a FRESH VARIATION.
+  // Use NEW variety elements for the recycled version
+  const voiceStyle = varietyElements?.voiceStyle || selectExcluding(VOICE_STYLES, []);
+  const narrativeFormat = varietyElements?.narrativeFormat || selectNarrativeFormat([]);
+  const openingPattern = varietyElements?.openingPattern || selectExcluding(OPENING_PATTERNS, []);
 
-ORIGINAL IDEA: "${originalIdeaTitle}"
-ORIGINAL LINKEDIN POST: "${originalLinkedin}"
+  return `Take this content and create a COMPLETELY DIFFERENT version using a new voice and structure.
+
+ORIGINAL: "${originalIdeaTitle}"
+ORIGINAL POST: "${originalLinkedin.substring(0, 500)}..."
+
+═══════════════════════════════════════════════════════════════════════════════
+🆕 NEW VOICE & STRUCTURE (Must be noticeably different from original)
+═══════════════════════════════════════════════════════════════════════════════
+
+VOICE: ${voiceStyle.name}
+${voiceStyle.description}
+
+NARRATIVE: ${narrativeFormat.name}
+${narrativeFormat.structure}
+
+OPENING PATTERN: ${openingPattern.pattern}
+Example: "${openingPattern.example}"
 
 Keep:
 - Same topic: ${topic} - ${concept}
@@ -320,28 +371,16 @@ Keep:
 - Same testimonial video: ${testimonialUrl}
 - Same subscription offer: 7-day free trial
 
-Change:
-- Different hook/pain point (new teacher struggle or question)
-- Different storytelling approach
-- Fresh wording throughout (not copy-paste)
-- Different hashtags
-
-Example variations of "Sunday Prep Struggle":
-- "Monday Morning Panic Mode"
-- "Ever wake up at 2am stressing about lesson plans?"
-- "The Teacher's Weeknight Struggle"
-
-Generate 4 new platform posts that feel completely fresh but deliver the same value.
-
-CRITICAL: Use embedded links, not raw URLs:
-- LinkedIn: [text](url)
-- Reddit: [text](url)
-- Facebook: [text](url)
-- Twitter: "text → url"
+Change EVERYTHING ELSE:
+- Different opening (follow the pattern above)
+- Different story angle
+- Different tone (match the voice above)
+- Different structure (match the narrative above)
+- Fresh wording throughout
 
 Return ONLY valid JSON:
 {
-  "ideaTitle": "new idea title here",
+  "ideaTitle": "new title here",
   "linkedinPost": "...",
   "redditPost": "...",
   "facebookPost": "...",

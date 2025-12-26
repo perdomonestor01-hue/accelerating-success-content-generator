@@ -26,10 +26,17 @@ export class ClaudeProvider implements AIProviderClient {
 
     try {
       const response = await this.client.messages.create({
-        model: 'claude-3-5-sonnet-20241022',
+        model: 'claude-sonnet-4-20250514',
         max_tokens: 8192,
-        temperature: 0.7,
-        system: 'You are a marketing expert. You MUST respond with ONLY valid JSON, no markdown, no explanations, just the JSON object.',
+        temperature: 0.9, // Increased for more creative variety
+        system: `You are a creative marketing copywriter for educational products.
+
+CRITICAL RULES:
+1. You MUST respond with ONLY valid JSON - no markdown code blocks, no explanations
+2. You MUST follow the exact VOICE, NARRATIVE STRUCTURE, and OPENING PATTERN specified
+3. Each post must feel genuinely DIFFERENT - avoid formulaic patterns
+4. Never use banned phrases - they will cause rejection
+5. The opening line is the MOST important - it must match the specified pattern exactly`,
         messages: [
           {
             role: 'user',

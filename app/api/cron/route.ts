@@ -3,6 +3,7 @@ import { prisma } from '@/lib/db';
 import { aiProvider } from '@/lib/ai/provider';
 import { Topic, ContentAngle } from '@prisma/client';
 import { PostingManager } from '@/lib/social-media/posting-manager';
+import { selectVarietyElements } from '@/lib/ai/prompts';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -316,21 +317,41 @@ export async function GET(request: NextRequest) {
     console.log(`📝 Generating: ${topic} - ${concept} (${gradeLevel})`);
     console.log(`   Pain Point: "${painPoint.title}" | Angle: ${contentAngle}${teksRef ? ` | TEKS: ${teksRef}` : ''}`);
 
-    // Fetch recent content to avoid repetition
+    // Fetch recent content to avoid repetition - including variety patterns
     const recentContent = await prisma.content.findMany({
-      select: { ideaTitle: true, linkedinPost: true },
+      select: {
+        ideaTitle: true,
+        linkedinPost: true,
+        voiceStyle: true,
+        narrativeFormat: true,
+        openingPattern: true,
+        painPointId: true,
+      },
       orderBy: { createdAt: 'desc' },
-      take: 10, // Last 10 posts for better variety
+      take: 5, // Last 5 posts for pattern exclusion
     });
 
     const recentTitles = recentContent.map(c => c.ideaTitle);
     const recentHooks = recentContent.map(c => {
-      // Extract first sentence/hook from LinkedIn post
       const firstLine = c.linkedinPost?.split('\n')[0] || '';
       return firstLine.slice(0, 100);
     });
 
-    // Generate content using AI with PAIN POINT and TEKS reference for meaningful, specific content
+    // Extract recent patterns for EXCLUSION from selection
+    const recentPatterns = {
+      voiceStyles: recentContent.map(c => c.voiceStyle).filter(Boolean) as string[],
+      narrativeFormats: recentContent.map(c => c.narrativeFormat).filter(Boolean) as string[],
+      openingPatterns: recentContent.map(c => c.openingPattern).filter(Boolean) as string[],
+      painPointIds: recentContent.map(c => c.painPointId).filter(Boolean) as string[],
+    };
+
+    console.log(`🔄 Excluding recent patterns: voices=[${recentPatterns.voiceStyles.join(',')}], narratives=[${recentPatterns.narrativeFormats.join(',')}], openings=[${recentPatterns.openingPatterns.join(',')}]`);
+
+    // Select variety elements BEFORE generation, excluding recent patterns
+    const varietyElements = selectVarietyElements(recentPatterns);
+    console.log(`🎭 Selected variety: voice=${varietyElements.voiceStyle.id}, narrative=${varietyElements.narrativeFormat.id}, opening=${varietyElements.openingPattern.id}`);
+
+    // Generate content using AI with variety elements, pain point, and TEKS reference
     const generatedContent = await aiProvider.generateContent({
       topic: topicDescriptions[topic],
       concept,
@@ -340,7 +361,7 @@ export async function GET(request: NextRequest) {
       testimonialTitle: testimonial.title,
       recentTitles,
       recentHooks,
-      // NEW: Pass the pain point for meaningful, teacher-focused content
+      // Pass the pain point for meaningful, teacher-focused content
       painPoint: {
         id: painPoint.id,
         title: painPoint.title,
@@ -348,11 +369,15 @@ export async function GET(request: NextRequest) {
         solution: painPoint.solution,
         hookIdeas: painPoint.hookIdeas,
       },
-      // NEW: Pass TEKS reference for accuracy
+      // Pass TEKS reference for accuracy
       teksRef: teksRef || undefined,
+      // Pass variety elements selected BEFORE generation (excludes recent patterns)
+      varietyElements,
+      // Pass recent patterns for reference
+      recentPatterns,
     });
 
-    // Save to database
+    // Save to database with variety tracking
     const content = await prisma.content.create({
       data: {
         ideaTitle: generatedContent.ideaTitle,
@@ -368,6 +393,11 @@ export async function GET(request: NextRequest) {
         tumblrPost: generatedContent.tumblrPost,
         testimonialId: testimonial.id,
         status: 'DRAFT',
+        // Store variety patterns for future exclusion
+        voiceStyle: varietyElements.voiceStyle.id,
+        narrativeFormat: varietyElements.narrativeFormat.id,
+        openingPattern: varietyElements.openingPattern.id,
+        painPointId: painPoint.id,
       },
     });
 

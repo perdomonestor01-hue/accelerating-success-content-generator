@@ -51,3 +51,6 @@ railway-env-setup.sh
 
 # test files
 test-*.js
+
+# CRITICAL: Claude Code conversation logs
+.claude/

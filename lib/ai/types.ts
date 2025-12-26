@@ -12,7 +12,7 @@ export interface ContentGenerationParams {
   // Recent content to avoid repetition
   recentTitles?: string[];
   recentHooks?: string[];
-  // NEW: Pain point focus for meaningful, specific content
+  // Pain point focus for meaningful, specific content
   painPoint?: {
     id: string;
     title: string;
@@ -20,8 +20,27 @@ export interface ContentGenerationParams {
     solution: string;
     hookIdeas: string[];
   };
-  // NEW: TEKS reference for accuracy (e.g., "§112.28")
+  // TEKS reference for accuracy (e.g., "§112.28")
   teksRef?: string;
+  // Variety elements - selected BEFORE generation and EXCLUDED from recent
+  varietyElements?: {
+    voiceStyle: { id: string; name: string; description: string; openingStyle: string; example: string };
+    narrativeFormat: { id: string; name: string; structure: string; cta_placement: string };
+    openingPattern: { id: string; pattern: string; example: string };
+  };
+  // Recent patterns to EXCLUDE from selection
+  recentPatterns?: {
+    voiceStyles: string[];
+    narrativeFormats: string[];
+    openingPatterns: string[];
+    painPointIds: string[];
+  };
+}
+
+export interface VarietySelection {
+  voiceStyle: { id: string; name: string; description: string; openingStyle: string; example: string };
+  narrativeFormat: { id: string; name: string; structure: string; cta_placement: string };
+  openingPattern: { id: string; pattern: string; example: string };
 }
 
 export interface GeneratedContent {
