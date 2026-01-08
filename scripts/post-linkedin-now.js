@@ -152,57 +152,89 @@ PAIN POINT FOCUS: ${painPoint}
 OPENING HOOK TO USE: ${hook}
 
 ═══════════════════════════════════════════════════════════════════════════════
-POST STRUCTURE (follow exactly):
+🎨 VISUAL STRUCTURE - FOLLOW THIS EXACT FORMAT
 ═══════════════════════════════════════════════════════════════════════════════
 
-1. START with this hook (modify slightly to fit topic): ${hook}
+Your post MUST follow this 6-part visual structure with emoticons:
 
-2. CONNECT to the specific topic (${topic.concept}) and grade level (${topic.grade})
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PART 1: 🎯 HOOK LINE (attention grabber)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Start with: ${hook}
+(Keep it punchy, 1-2 lines max, emoticon at start or end)
 
-3. DESCRIBE the teaching challenge authentically:
-   - The struggle: ${painPoint}
-   - How it affects both English and Spanish-speaking students
-   - The frustration of finding TEKS-aligned, STAAR 2.0-ready resources
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PART 2: 📖 THE STORY/PROBLEM (2-3 short paragraphs)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- Each paragraph = 1-2 sentences MAX
+- Use generous line breaks (blank line between paragraphs)
+- Connect ${topic.concept} to the pain point: ${painPoint}
+- Make it relatable for Texas teachers
 
-4. INTRODUCE THE SOLUTION - Name it specifically:
-   "Accelerating Success" is a bilingual science platform with:
-   - Pick 3-4 of these features (use VARIED emojis, not all checkmarks):
-     • Bilingual modules (English AND Spanish)
-     • Interactive vocabulary games with high engagement
-     • Ready-to-teach lessons (zero prep)
-     • STAAR 2.0 format practice (drag & drop, multi-select)
-     • 100% TEKS Chapter 112 aligned
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PART 3: ✨ SOLUTION BENEFITS (bullet points with emoticons)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Format EXACTLY like this (pick 4 benefits, use DIFFERENT emoticons):
 
-5. TESTIMONIAL - Use this specific quote and link:
-   Quote: ${testimonial.quote}
-   Context: ${testimonial.context}
-   Link: ${testimonial.url}
+✨ What Accelerating Success offers:
 
-   Example format: "Here's ${testimonial.context}: ${testimonial.quote} - watch her story: ${testimonial.url}"
+🔥 Bilingual modules - English AND Spanish side-by-side
+⏰ Zero prep time - ready-to-teach lessons
+📊 STAAR 2.0 format practice (drag & drop, multi-select)
+🎮 Interactive games students actually want to play
+📚 100% TEKS Chapter 112 aligned
 
-6. SHOW transformation with specific results (prep time, engagement, scores)
+EMOTICON GUIDE (use variety):
+🎯 = objectives/goals     ✨ = highlights/magic
+📊 = data/statistics      💡 = insights/tips
+🔥 = exciting results     ⏰ = time-saving
+📚 = educational          🎮 = games/engagement
+🌟 = standout features    🙌 = wins/celebrations
 
-7. END with TWO CTAs (use friendly, non-condescending language):
-   - "Ready to reclaim your weekends? [Start your free trial](https://accelerating-success.com/subscriptions/) - 7 days, zero commitment."
-   - "Want to explore first? [Browse our FREE resources](https://accelerating-success.com/free-5th-grade-properties-of-matter-online-modules/)"
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PART 4: 🎬 TESTIMONIAL (with video link)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Format like this:
 
-8. ADD hashtags at the end (just the hashtag symbols, e.g., #STAAR not "hashtag#STAAR"): ${hashtags}
+🎬 Don't just take my word for it:
+${testimonial.quote} - ${testimonial.context}
+👉 Watch her story: ${testimonial.url}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PART 5: ➡️ DUAL CTAs (clearly formatted)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Format EXACTLY like this:
+
+➡️ Ready to transform your classroom?
+1️⃣ [Start your 7-day free trial](https://accelerating-success.com/subscriptions/)
+2️⃣ [Try FREE 5th grade modules](https://accelerating-success.com/free-5th-grade-properties-of-matter-online-modules/)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PART 6: 🏷️ HASHTAGS (3-5 at the end)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${hashtags}
+
+═══════════════════════════════════════════════════════════════════════════════
+📱 MOBILE-FIRST FORMATTING RULES
+═══════════════════════════════════════════════════════════════════════════════
+- Use GENEROUS line breaks (blank line between every section)
+- Each paragraph = 1-2 sentences MAX
+- Bullet points with emoticons for easy scanning
+- Clear visual sections that pop on mobile screens
+- Total length: 1,400-1,800 characters
 
 ═══════════════════════════════════════════════════════════════════════════════
 🚫 BANNED - NEVER USE:
-- "email list" / "newsletter" / "mailing list" / "Join our email" / "delivered to your inbox"
-- "Sunday Prep Struggle" as a title/phrase
+═══════════════════════════════════════════════════════════════════════════════
+- "email list" / "newsletter" / "mailing list"
+- "Sunday Prep Struggle"
 - "game-changer" / "game changer"
 - "But what if I told you"
 - "I've been there"
-- "Sound familiar?" at the end (ok in hook)
-- "literally BEG to play" or similar hyperbole
-- "Not quite ready?" (sounds condescending)
-- "Check out what this teacher says" (too vague)
-- Five identical emojis in a row (vary them)
-═══════════════════════════════════════════════════════════════════════════════
+- "Sound familiar?" at the end
+- Five identical emojis in a row
 
-Write 1,200-1,500 characters. Be authentic, specific, and grounded. Smooth transitions between sections. Return ONLY the post text.`;
+Return ONLY the post text. No explanations.`;
 
   console.log('📝 Generating content with Claude...\n');
 

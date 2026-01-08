@@ -4,6 +4,9 @@ import { aiProvider } from '@/lib/ai/provider';
 import { Topic, ContentAngle } from '@prisma/client';
 import { PostingManager } from '@/lib/social-media/posting-manager';
 import { selectVarietyElements } from '@/lib/ai/prompts';
+import { imageService } from '@/lib/services/image-service';
+import { getLabForTopic, VirtualLab } from '@/lib/content/virtual-labs';
+import { getBestThumbnail, getThumbnailUrl } from '@/lib/services/youtube-thumbnail';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -351,7 +354,13 @@ export async function GET(request: NextRequest) {
     const varietyElements = selectVarietyElements(recentPatterns);
     console.log(`🎭 Selected variety: voice=${varietyElements.voiceStyle.id}, narrative=${varietyElements.narrativeFormat.id}, opening=${varietyElements.openingPattern.id}`);
 
-    // Generate content using AI with variety elements, pain point, and TEKS reference
+    // ═══════════════════════════════════════════════════════════════════════════
+    // SELECT FEATURED VIRTUAL LAB: Match to topic/concept for relevance
+    // ═══════════════════════════════════════════════════════════════════════════
+    const featuredLab = getLabForTopic(concept, topic);
+    console.log(`🧪 Featured Lab: "${featuredLab.name}" (${featuredLab.subcategory})`);
+
+    // Generate content using AI with variety elements, pain point, featured lab, and TEKS reference
     const generatedContent = await aiProvider.generateContent({
       topic: topicDescriptions[topic],
       concept,
@@ -371,13 +380,98 @@ export async function GET(request: NextRequest) {
       },
       // Pass TEKS reference for accuracy
       teksRef: teksRef || undefined,
+      // Pass featured virtual lab to highlight
+      featuredLab: {
+        name: featuredLab.name,
+        description: featuredLab.description,
+        url: featuredLab.url,
+        subcategory: featuredLab.subcategory,
+      },
       // Pass variety elements selected BEFORE generation (excludes recent patterns)
       varietyElements,
       // Pass recent patterns for reference
       recentPatterns,
     });
 
-    // Save to database with variety tracking
+    // ═══════════════════════════════════════════════════════════════════════════
+    // FETCH IMAGE: Choose between YouTube thumbnail or Unsplash image
+    // - 50% chance: Use testimonial video thumbnail (shows video preview)
+    // - 50% chance: Use Unsplash education image
+    // - Testimonial angle always uses video thumbnail
+    // ═══════════════════════════════════════════════════════════════════════════
+    let imageData = {
+      imageUrl: null as string | null,
+      imageSearchTerm: null as string | null,
+      imagePhotographer: null as string | null,
+    };
+
+    // Decide: use video thumbnail or stock image?
+    const useVideoThumbnail = contentAngle === ContentAngle.TEACHER_TESTIMONIAL || Math.random() < 0.5;
+
+    try {
+      if (useVideoThumbnail) {
+        // Use YouTube testimonial video thumbnail
+        console.log(`🎬 Fetching video thumbnail for testimonial...`);
+        const thumbnailUrl = await getBestThumbnail(testimonial.youtubeUrl);
+
+        if (thumbnailUrl) {
+          imageData = {
+            imageUrl: thumbnailUrl,
+            imageSearchTerm: 'testimonial_video',
+            imagePhotographer: 'YouTube Testimonial',
+          };
+          console.log(`✓ Video thumbnail: ${thumbnailUrl}`);
+        }
+      } else {
+        // Use Unsplash stock image
+        const searchTerm = generatedContent.imageSearchTerm || `${concept} classroom`;
+        console.log(`🖼️ Fetching Unsplash image for: "${searchTerm}"`);
+
+        const image = await imageService.searchImage(searchTerm);
+
+        if (image && image.url) {
+          imageData = {
+            imageUrl: image.url,
+            imageSearchTerm: searchTerm,
+            imagePhotographer: image.photographer,
+          };
+          console.log(`✓ Image found: ${image.url.substring(0, 60)}... (📷 ${image.photographer})`);
+        }
+      }
+
+      // Fallback: if no image obtained, try the other method
+      if (!imageData.imageUrl) {
+        if (useVideoThumbnail) {
+          // Tried video, fallback to Unsplash
+          const searchTerm = generatedContent.imageSearchTerm || `${concept} classroom`;
+          const image = await imageService.searchImage(searchTerm);
+          if (image?.url) {
+            imageData = {
+              imageUrl: image.url,
+              imageSearchTerm: searchTerm,
+              imagePhotographer: image.photographer,
+            };
+            console.log(`✓ Fallback to Unsplash: ${image.url.substring(0, 50)}...`);
+          }
+        } else {
+          // Tried Unsplash, fallback to video thumbnail
+          const thumbnailUrl = getThumbnailUrl(testimonial.youtubeUrl);
+          if (thumbnailUrl) {
+            imageData = {
+              imageUrl: thumbnailUrl,
+              imageSearchTerm: 'testimonial_video',
+              imagePhotographer: 'YouTube Testimonial',
+            };
+            console.log(`✓ Fallback to video thumbnail: ${thumbnailUrl}`);
+          }
+        }
+      }
+    } catch (imageError: any) {
+      console.log(`⚠️ Image fetch failed (non-critical): ${imageError.message}`);
+      // Continue without image - not a critical failure
+    }
+
+    // Save to database with variety tracking and image
     const content = await prisma.content.create({
       data: {
         ideaTitle: generatedContent.ideaTitle,
@@ -391,6 +485,10 @@ export async function GET(request: NextRequest) {
         twitterPost: generatedContent.twitterPost,
         bloggerPost: generatedContent.bloggerPost,
         tumblrPost: generatedContent.tumblrPost,
+        // Image data
+        imageUrl: imageData.imageUrl,
+        imageSearchTerm: imageData.imageSearchTerm,
+        imagePhotographer: imageData.imagePhotographer,
         testimonialId: testimonial.id,
         status: 'DRAFT',
         // Store variety patterns for future exclusion
@@ -446,6 +544,8 @@ export async function GET(request: NextRequest) {
         ideaTitle: content.ideaTitle,
         topic: content.topic,
         concept: content.specificConcept,
+        imageUrl: content.imageUrl,
+        imagePhotographer: content.imagePhotographer,
       },
       posting: postingResults ? {
         enabled: true,

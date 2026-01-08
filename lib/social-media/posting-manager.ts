@@ -99,8 +99,9 @@ export class PostingManager {
         return result;
       }
 
-      // Post to platform
-      const result = await poster.post(postContent);
+      // Post to platform - pass image URL for platforms that support it (LinkedIn, Facebook)
+      const imageUrl = content.imageUrl || undefined;
+      const result = await poster.post(postContent, imageUrl);
 
       // Save to posting history
       await this.savePostingHistory(contentId, result);

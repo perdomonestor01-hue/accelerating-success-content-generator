@@ -90,6 +90,11 @@ model Content {
   bloggerPost   String?
   tumblrPost    String?
 
+  // Image for posts (fetched from Unsplash)
+  imageUrl           String?  // URL of the image to include in posts
+  imageSearchTerm    String?  // Search term used to find the image
+  imagePhotographer  String?  // Attribution for the photographer
+
   // Testimonial video used
   testimonialId String?
   testimonial   Testimonial? @relation(fields: [testimonialId], references: [id])

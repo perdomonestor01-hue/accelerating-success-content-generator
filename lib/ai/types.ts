@@ -22,6 +22,13 @@ export interface ContentGenerationParams {
   };
   // TEKS reference for accuracy (e.g., "§112.28")
   teksRef?: string;
+  // Featured virtual lab to highlight in the post
+  featuredLab?: {
+    name: string;
+    description: string;
+    url: string;
+    subcategory: string;
+  };
   // Variety elements - selected BEFORE generation and EXCLUDED from recent
   varietyElements?: {
     voiceStyle: { id: string; name: string; description: string; openingStyle: string; example: string };
@@ -51,6 +58,10 @@ export interface GeneratedContent {
   twitterPost: string;
   bloggerPost?: string;
   tumblrPost?: string;
+  // Image search term for fetching relevant images
+  imageSearchTerm?: string;
+  // Resolved image URL (populated after image service call)
+  imageUrl?: string;
   // Spanish versions
   linkedinPostEs?: string;
   redditPostEs?: string;

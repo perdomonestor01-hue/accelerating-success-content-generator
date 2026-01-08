@@ -1,0 +1,48 @@
+#!/bin/bash
+# Setup Railway Cron for Accelerating Success
+
+echo "═══════════════════════════════════════════════════════════════"
+echo "🚂 RAILWAY CRON SETUP FOR ACCELERATING SUCCESS"
+echo "═══════════════════════════════════════════════════════════════"
+echo ""
+
+RAILWAY_URL="https://resourceful-love-production.up.railway.app"
+CRON_SECRET="${CRON_SECRET:-your-cron-secret-here}"
+
+echo "📋 STEP 1: Set these environment variables on Railway Dashboard"
+echo "   Go to: https://railway.app → h3b-velocity-core → Variables"
+echo ""
+echo "   TESTIMONIAL_VIDEO_1=https://youtube.com/shorts/FC_5CXTUl9o"
+echo "   TESTIMONIAL_VIDEO_2=https://youtube.com/shorts/fcXj7ms7oqQ"
+echo "   TESTIMONIAL_VIDEO_3=https://youtube.com/shorts/3wWcl8OHDXs"
+echo "   CRON_SECRET=${CRON_SECRET}"
+echo "   POSTING_ENABLED=true"
+echo ""
+
+echo "📋 STEP 2: Set up FREE cron service at cron-job.org"
+echo ""
+echo "   1. Go to: https://cron-job.org/en/signup/"
+echo "   2. Create free account"
+echo "   3. Click 'CREATE CRONJOB'"
+echo "   4. Fill in:"
+echo ""
+echo "      Title: Accelerating Success Daily Post"
+echo "      URL: ${RAILWAY_URL}/api/cron"
+echo "      Schedule: Every day at 9:00 AM (Central Time)"
+echo ""
+echo "   5. Click 'ADVANCED' tab and add header:"
+echo "      Header Name: Authorization"
+echo "      Header Value: Bearer ${CRON_SECRET}"
+echo ""
+echo "   6. Save and enable"
+echo ""
+
+echo "📋 STEP 3: Test the cron endpoint"
+echo ""
+echo "   curl -X GET '${RAILWAY_URL}/api/cron' \\"
+echo "     -H 'Authorization: Bearer ${CRON_SECRET}'"
+echo ""
+
+echo "═══════════════════════════════════════════════════════════════"
+echo "Once set up, posts will automatically generate and publish daily!"
+echo "═══════════════════════════════════════════════════════════════"

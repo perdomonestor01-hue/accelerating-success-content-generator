@@ -195,7 +195,7 @@ export function selectVarietyElements(recentPatterns?: {
 export function buildContentGenerationPrompt(params: ContentGenerationParams): string {
   const {
     topic, concept, gradeLevel, contentAngle, testimonialUrl, testimonialTitle,
-    recentTitles, recentHooks, painPoint, teksRef, varietyElements
+    recentTitles, recentHooks, painPoint, teksRef, varietyElements, featuredLab
   } = params;
 
   // Use provided variety elements OR select new ones (should be provided by cron)
@@ -221,6 +221,22 @@ YOUR SOLUTION TO OFFER: ${painPoint.solution}
 
 HOOK IDEAS (use one or create similar):
 ${painPoint.hookIdeas.map((h, i) => `${i + 1}. "${h}"`).join('\n')}`
+    : '';
+
+  // Featured virtual lab section
+  const featuredLabSection = featuredLab
+    ? `
+═══════════════════════════════════════════════════════════════════════════════
+🧪 FEATURED VIRTUAL LAB (Highlight this specific resource!)
+═══════════════════════════════════════════════════════════════════════════════
+
+LAB NAME: "${featuredLab.name}"
+CATEGORY: ${featuredLab.subcategory}
+DESCRIPTION: ${featuredLab.description}
+DIRECT LINK: ${featuredLab.url}
+
+⭐ IMPORTANT: Mention this specific lab by name in your post!
+Example: "Try our ${featuredLab.name} - ${featuredLab.description.toLowerCase()}"`
     : '';
 
   return `You are writing social media content for Accelerating Success - bilingual Science resources for Texas K-8 teachers.
@@ -256,6 +272,7 @@ TOPIC: ${concept} for ${gradeLevel} grade${teksRef ? ` (${teksRef})` : ''}
 ANGLE: ${contentAngle}
 TESTIMONIAL VIDEO: ${testimonialUrl}
 ${painPointSection}
+${featuredLabSection}
 
 ═══════════════════════════════════════════════════════════════════════════════
 🎭 VOICE & STRUCTURE ENFORCEMENT
@@ -278,34 +295,108 @@ OPENING (MUST follow this pattern):
 📊 PLATFORM SPECS
 ═══════════════════════════════════════════════════════════════════════════════
 
-LINKEDIN (1,500-2,000 chars):
+LINKEDIN (1,500-2,000 chars) - ENHANCED STRUCTURE WITH EMOTICONS:
 - Professional but warm
 - Start with the EXACT opening pattern above
-- Use line breaks for readability
+- USE EMOTICONS strategically to break up sections and add visual appeal:
+  • 🎯 for key points or objectives
+  • ✨ for benefits or highlights
+  • 📊 for data/statistics
+  • 💡 for insights or tips
+  • 🔥 for exciting results
+  • ⏰ for time-saving benefits
+  • 📚 for educational content
+  • 🙌 for celebrations or wins
+  • ➡️ for action items or next steps
+  • 🌟 for standout features
+- STRUCTURE your LinkedIn post like this:
+  1. 🎯 HOOK LINE (attention grabber with emoticon)
+  2. 📖 STORY/PROBLEM (2-3 short paragraphs)
+  3. ✨ SOLUTION BENEFITS (bullet points with emoticons):
+     • 🔥 Benefit 1
+     • ⏰ Benefit 2
+     • 📊 Benefit 3
+  4. 🎬 TESTIMONIAL (link to video if available)
+  5. ➡️ DUAL CTAs (clearly formatted)
+  6. 🏷️ HASHTAGS (3-5)
+- Use line breaks generously for mobile readability
+- Each paragraph should be 1-2 sentences MAX
 - End with 3-5 hashtags: #STAAR #TEKS #TexasTeachers + topic-specific
 
 FACEBOOK (1,200-1,500 chars):
 - Friendly, shareable
 - Same opening pattern
+- Use emoticons (similar to LinkedIn)
 - 4-6 hashtags at end
 
 REDDIT (800-1,200 chars):
 - Authentic community voice
-- NO hashtags
+- NO hashtags, NO emoticons
 - Less promotional tone
 
-TWITTER (under 280 chars):
-- Punchy, single insight
-- 2-3 hashtags max
+TWITTER (under 280 chars) - VISUAL PUNCH:
+- Start with emoticon hook: 🚀 or 🎯 or 💡
+- ONE powerful insight or stat
+- End with CTA + 2-3 hashtags
+- Format: [emoticon] [punchy statement] [link] [hashtags]
+- Example: "🚀 23% STAAR score jump in 6 weeks. Zero extra prep. Try free → [link] #STAAR #TexasTeachers"
 
-BLOGGER (5-7 paragraphs):
-- HTML with <h2> headings
-- SEO-friendly title
-- Detailed, educational
+BLOGGER (HTML blog post) - VISUAL STRUCTURE WITH FORMATTING:
+Create a visually compelling blog post using this HTML structure:
 
-TUMBLR (3-4 paragraphs):
-- Casual, creative
-- 4-6 tags at end
+<article>
+  <h1>[SEO-optimized title with power word]</h1>
+
+  <p>🎯 <strong>[Opening hook - attention-grabbing first sentence]</strong></p>
+
+  <p>[2-3 sentences expanding on the problem/pain point]</p>
+
+  <h2>📖 The Challenge Texas Teachers Face</h2>
+  <p>[Describe the specific teaching struggle authentically - 2-3 sentences]</p>
+
+  <h2>✨ The Solution: What Actually Works</h2>
+  <p>Accelerating Success offers:</p>
+  <ul>
+    <li>🔥 <strong>Bilingual modules</strong> - English AND Spanish side-by-side</li>
+    <li>⏰ <strong>Zero prep time</strong> - ready-to-teach lessons</li>
+    <li>📊 <strong>STAAR 2.0 formats</strong> - drag & drop, multi-select practice</li>
+    <li>🎮 <strong>Interactive games</strong> - students actually want to play</li>
+    <li>📚 <strong>100% TEKS aligned</strong> - Chapter 112 guaranteed</li>
+  </ul>
+
+  <h2>🎬 Real Teacher Results</h2>
+  <p>[Testimonial quote with context]</p>
+  <p>👉 <a href="[testimonial_url]">Watch her full story</a></p>
+
+  <h2>📊 The Transformation</h2>
+  <p>[Specific results: prep time saved, score improvements, engagement changes]</p>
+
+  <h2>➡️ Ready to Try It?</h2>
+  <p><strong>Option 1:</strong> <a href="https://accelerating-success.com/subscriptions/">Start your 7-day free trial</a> - no commitment</p>
+  <p><strong>Option 2:</strong> <a href="https://accelerating-success.com/free-5th-grade-properties-of-matter-online-modules/">Try FREE 5th grade modules</a> - no signup needed</p>
+</article>
+
+TUMBLR (casual blog) - VISUAL STORYTELLING:
+Format with emoticons and casual structure:
+
+🎯 [Attention-grabbing hook]
+
+📖 [2-3 sentence story about the teaching struggle - keep it real and relatable]
+
+[Blank line for visual break]
+
+✨ What's working for me now:
+• 🔥 [Benefit 1 - short and punchy]
+• ⏰ [Benefit 2]
+• 🎮 [Benefit 3]
+• 📊 [Benefit 4]
+
+🎬 [Testimonial quote] - [link to video]
+
+➡️ [Casual CTA - "Worth checking out if you're drowning in lesson planning"]
+[link]
+
+#STAAR #TEKS #TexasTeachers #ScienceEducation #BilingualEd #TeacherLife
 
 ═══════════════════════════════════════════════════════════════════════════════
 🔗 LINKS (Use ONLY these - embed with [text](url) format)
@@ -314,11 +405,14 @@ TUMBLR (3-4 paragraphs):
 • Trial: https://accelerating-success.com/subscriptions/
 • Free 5th grade: https://accelerating-success.com/free-5th-grade-properties-of-matter-online-modules/
 • Free 8th grade: https://accelerating-success.com/free-8th-grade-conservation-of-mass-periodic-table-online-modules-canva-slide/
-• Testimonial: ${testimonialUrl}
+• Elementary Virtual Labs: https://accelerating-success.com/elementary-virtual-labs/
+• Testimonial: ${testimonialUrl}${featuredLab ? `\n• Featured Lab: ${featuredLab.url}` : ''}
 
 END every post with TWO CTAs:
 1. [Start your free trial](https://accelerating-success.com/subscriptions/)
-2. [Try free resources](https://accelerating-success.com/free-5th-grade-properties-of-matter-online-modules/)
+2. ${featuredLab
+  ? `[Try the ${featuredLab.name}](${featuredLab.url})`
+  : '[Try free resources](https://accelerating-success.com/free-5th-grade-properties-of-matter-online-modules/)'}
 
 ═══════════════════════════════════════════════════════════════════════════════
 ✅ OUTPUT FORMAT - Return ONLY this JSON structure
@@ -326,12 +420,13 @@ END every post with TWO CTAs:
 
 {
   "ideaTitle": "Creative title (NOT Sunday Prep Struggle)",
-  "linkedinPost": "Full LinkedIn post starting with ${openingPattern.pattern}",
-  "redditPost": "Reddit post (no hashtags)",
-  "facebookPost": "Facebook post",
-  "twitterPost": "Under 280 chars",
+  "linkedinPost": "Full LinkedIn post with emoticons, structured sections, and line breaks",
+  "redditPost": "Reddit post (no hashtags, no emoticons)",
+  "facebookPost": "Facebook post with emoticons",
+  "twitterPost": "Under 280 chars with 1-2 emoticons",
   "bloggerPost": "HTML article with <h2> headings",
-  "tumblrPost": "Casual 3-4 paragraphs"
+  "tumblrPost": "Casual 3-4 paragraphs",
+  "imageSearchTerm": "2-4 word search term for finding a relevant education/classroom image (e.g., 'science classroom students', 'teacher helping student', 'kids science experiment')"
 }`;
 }
 

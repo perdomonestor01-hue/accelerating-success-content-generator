@@ -2,6 +2,95 @@ import { AIProvider, AIProviderClient, ContentGenerationParams, GeneratedContent
 import { ClaudeProvider } from './claude';
 import { GroqProvider } from './groq';
 import { DeepSeekProvider } from './deepseek';
+import { getAllLabUrls } from '../content/virtual-labs';
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// URL WHITELIST - Only these URLs are allowed in AI-generated content
+// ═══════════════════════════════════════════════════════════════════════════════
+const BASE_ALLOWED_URLS = [
+  'https://accelerating-success.com/subscriptions/',
+  'https://accelerating-success.com/free-5th-grade-properties-of-matter-online-modules/',
+  'https://accelerating-success.com/free-8th-grade-conservation-of-mass-periodic-table-online-modules-canva-slide/',
+  'https://accelerating-success.com/elementary-virtual-labs/',
+  // YouTube domains for testimonials
+  'https://youtube.com/',
+  'https://www.youtube.com/',
+  'https://youtu.be/',
+];
+
+// Get all allowed URLs including virtual labs
+function getAllowedUrls(): string[] {
+  return [...BASE_ALLOWED_URLS, ...getAllLabUrls()];
+}
+
+// Extract all URLs from text content
+function extractUrls(text: string): string[] {
+  const urlRegex = /https?:\/\/[^\s\)\]"'<>]+/gi;
+  const matches = text.match(urlRegex) || [];
+  // Clean trailing punctuation
+  return matches.map(url => url.replace(/[.,;:!?)]+$/, ''));
+}
+
+// Validate that all URLs in content are whitelisted
+function validateUrls(content: GeneratedContent): { valid: boolean; invalidUrls: string[] } {
+  const allowedUrls = getAllowedUrls();
+
+  // Combine all text content
+  const allText = [
+    content.linkedinPost,
+    content.redditPost,
+    content.facebookPost,
+    content.twitterPost,
+    content.bloggerPost || '',
+    content.tumblrPost || '',
+  ].join(' ');
+
+  const foundUrls = extractUrls(allText);
+  const invalidUrls: string[] = [];
+
+  for (const url of foundUrls) {
+    const isAllowed = allowedUrls.some(allowed => url.startsWith(allowed));
+    if (!isAllowed) {
+      invalidUrls.push(url);
+    }
+  }
+
+  return {
+    valid: invalidUrls.length === 0,
+    invalidUrls,
+  };
+}
+
+// Remove invalid URLs from content (replace with subscription URL)
+function sanitizeUrls(content: GeneratedContent): GeneratedContent {
+  const allowedUrls = getAllowedUrls();
+  const fallbackUrl = 'https://accelerating-success.com/subscriptions/';
+
+  const sanitizeText = (text: string): string => {
+    const urls = extractUrls(text);
+    let sanitized = text;
+
+    for (const url of urls) {
+      const isAllowed = allowedUrls.some(allowed => url.startsWith(allowed));
+      if (!isAllowed) {
+        console.log(`🚨 Removing hallucinated URL: ${url}`);
+        sanitized = sanitized.replace(url, fallbackUrl);
+      }
+    }
+
+    return sanitized;
+  };
+
+  return {
+    ...content,
+    linkedinPost: sanitizeText(content.linkedinPost),
+    redditPost: sanitizeText(content.redditPost),
+    facebookPost: sanitizeText(content.facebookPost),
+    twitterPost: sanitizeText(content.twitterPost),
+    bloggerPost: content.bloggerPost ? sanitizeText(content.bloggerPost) : undefined,
+    tumblrPost: content.tumblrPost ? sanitizeText(content.tumblrPost) : undefined,
+  };
+}
 
 // Banned phrases that should never appear in titles (lowercase for comparison)
 const BANNED_TITLE_PHRASES = [
@@ -34,15 +123,23 @@ function generateReplacementTitle(params: ContentGenerationParams): string {
 
 // Validate and fix generated content
 function validateAndFixContent(content: GeneratedContent, params: ContentGenerationParams): GeneratedContent {
+  // 1. Validate and fix title
   const titleLower = content.ideaTitle.toLowerCase();
-
-  // Check if title contains any banned phrases
   const hasBannedPhrase = BANNED_TITLE_PHRASES.some(phrase => titleLower.includes(phrase));
 
   if (hasBannedPhrase) {
     console.log(`⚠️ Banned phrase detected in title: "${content.ideaTitle}". Replacing...`);
     content.ideaTitle = generateReplacementTitle(params);
     console.log(`✅ New title: "${content.ideaTitle}"`);
+  }
+
+  // 2. Validate and sanitize URLs (CRITICAL: prevent AI hallucinations)
+  const urlValidation = validateUrls(content);
+  if (!urlValidation.valid) {
+    console.log(`🚨 AI hallucinated ${urlValidation.invalidUrls.length} invalid URL(s):`);
+    urlValidation.invalidUrls.forEach(url => console.log(`   - ${url}`));
+    content = sanitizeUrls(content);
+    console.log(`✅ URLs sanitized - replaced with approved URLs`);
   }
 
   return content;

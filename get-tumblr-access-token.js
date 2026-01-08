@@ -2,13 +2,14 @@
 
 const crypto = require('crypto');
 
-const CONSUMER_KEY = '0ExvWebB1drJyzPrC52XsYsKWfESbIRg3oZxEZUSMKevV92QIn';
-const CONSUMER_SECRET = 'UmaJGrlQLy5ZrywEOhH5XUyJxsTG9JkjosDUZIyoCgEGmH6fcX';
+// Load from environment variables
+const CONSUMER_KEY = process.env.TUMBLR_CONSUMER_KEY;
+const CONSUMER_SECRET = process.env.TUMBLR_CONSUMER_SECRET;
 
-// From step 1
-const REQUEST_TOKEN = 'z6rmNTFYLokU2alMKqq1PgAdtoIFaOwJGxbBFbm6RCmX8JrVX0';
-const REQUEST_TOKEN_SECRET = 'av9SY5n1vJcTHAav6DiFGHdKp8nqFWyfTdtY1yrQD2o2VBPRhu';
-const OAUTH_VERIFIER = 'Ht9jHx3hU8V2U3I1EmNbyKVNVAWyd5yfk8e3krIBTQDwvvwAaR';
+// From step 1 - set these after running step 1
+const REQUEST_TOKEN = process.env.TUMBLR_REQUEST_TOKEN;
+const REQUEST_TOKEN_SECRET = process.env.TUMBLR_REQUEST_TOKEN_SECRET;
+const OAUTH_VERIFIER = process.env.TUMBLR_OAUTH_VERIFIER;
 
 function generateNonce() {
   return crypto.randomBytes(16).toString('hex');

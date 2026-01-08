@@ -97,18 +97,80 @@ END every post with TWO CTAs:
 • "But what if I told you"
 • "I've been there"
 
-Generate posts for each platform. IMPORTANT - FOLLOW CHARACTER LIMITS:
-- Twitter: MUST be under 270 characters (leave room for link)
-- LinkedIn: 1,200-1,500 characters optimal
-- Others: 500-1000 characters
+═══════════════════════════════════════════════════════════════════════════════
+🎨 PLATFORM-SPECIFIC VISUAL STRUCTURES
+═══════════════════════════════════════════════════════════════════════════════
+
+LINKEDIN (1,400-1,800 chars) - 6-PART VISUAL STRUCTURE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PART 1: 🎯 HOOK LINE (attention grabber with emoticon)
+PART 2: 📖 THE STORY (2-3 short paragraphs, 1-2 sentences each, generous line breaks)
+PART 3: ✨ SOLUTION BENEFITS (bullet points with varied emoticons):
+   🔥 Benefit 1
+   ⏰ Benefit 2
+   📊 Benefit 3
+   🎮 Benefit 4
+PART 4: 🎬 TESTIMONIAL (quote + video link)
+PART 5: ➡️ DUAL CTAs (numbered: 1️⃣ and 2️⃣)
+PART 6: 🏷️ HASHTAGS (3-5)
+
+Use visual separator lines between sections. Mobile-first formatting!
+
+TWITTER (under 270 chars) - VISUAL PUNCH:
+Format: [emoticon] [punchy stat/insight] [CTA link] [2-3 hashtags]
+Example: "🚀 23% STAAR score jump in 6 weeks. Zero prep. Try free → https://accelerating-success.com/subscriptions/ #STAAR #TexasTeachers"
+
+TUMBLR - VISUAL STORYTELLING FORMAT:
+🎯 [Attention-grabbing hook]
+
+📖 [2-3 sentence story about the teaching struggle]
+
+✨ What's working now:
+• 🔥 [Benefit 1]
+• ⏰ [Benefit 2]
+• 🎮 [Benefit 3]
+• 📊 [Benefit 4]
+
+🎬 [Testimonial quote] - [video link]
+
+➡️ [Casual CTA]
+[links]
+
+#STAAR #TEKS #TexasTeachers #ScienceEducation #BilingualEd
+
+BLOGGER - HTML VISUAL STRUCTURE:
+<article>
+  <h1>[SEO title]</h1>
+  <p>🎯 <strong>[Hook]</strong></p>
+  <p>[Problem expansion]</p>
+
+  <h2>📖 The Challenge</h2>
+  <p>[Teaching struggle]</p>
+
+  <h2>✨ The Solution</h2>
+  <ul>
+    <li>🔥 <strong>Bilingual modules</strong> - English AND Spanish</li>
+    <li>⏰ <strong>Zero prep</strong> - ready-to-teach</li>
+    <li>📊 <strong>STAAR 2.0 formats</strong> - drag & drop practice</li>
+    <li>🎮 <strong>Interactive games</strong> - students love them</li>
+  </ul>
+
+  <h2>🎬 Real Results</h2>
+  <p>[Testimonial]</p>
+  <p>👉 <a href="[url]">Watch the full story</a></p>
+
+  <h2>➡️ Get Started</h2>
+  <p><a href="https://accelerating-success.com/subscriptions/">Start free trial</a></p>
+  <p><a href="https://accelerating-success.com/free-5th-grade-properties-of-matter-online-modules/">Try FREE resources</a></p>
+</article>
 
 Return ONLY valid JSON (no markdown, no code blocks):
 {
   "ideaTitle": "Pain Point + TEKS/STAAR title",
-  "linkedinPost": "full LinkedIn post with TWO CTAs at end...",
-  "twitterPost": "UNDER 270 CHARS! Short, punchy, include subscription link",
-  "tumblrPost": "casual Tumblr post with both CTAs...",
-  "bloggerPost": "HTML blog article with both CTAs..."
+  "linkedinPost": "6-part visual structure with emoticons and line breaks...",
+  "twitterPost": "UNDER 270 CHARS! [emoticon] [stat] [link] [hashtags]",
+  "tumblrPost": "Visual storytelling format with emoticon sections...",
+  "bloggerPost": "HTML with emoji headers and bullet lists..."
 }`;
 }
 
