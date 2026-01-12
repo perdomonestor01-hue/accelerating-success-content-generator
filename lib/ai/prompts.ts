@@ -109,8 +109,11 @@ export const OPENING_PATTERNS = [
   { id: 'challenge', pattern: 'Open by stating a hard truth directly', example: 'Force and motion is one of the hardest TEKS units for 6th graders to grasp.' }
 ];
 
-// BANNED PHRASES - these should NEVER appear in generated content
+// ═══════════════════════════════════════════════════════════════════════════════
+// BANNED PHRASES & PATTERNS - these should NEVER appear in generated content
+// ═══════════════════════════════════════════════════════════════════════════════
 const BANNED_PHRASES = [
+  // Generic AI slop phrases
   'Sunday Prep Struggle',
   'prep struggle',
   'I\'ve been there',
@@ -146,6 +149,21 @@ const BANNED_PHRASES = [
   'spoiler alert',
   'pro tip',
   'hot take',
+
+  // ⚠️ FORMULAIC STRUCTURAL PATTERNS (biggest offenders)
+  'What if the key to',
+  'what if the key to',
+  'The key to X wasn\'t Y but Z', // Detect this pattern
+  'wasn\'t about adding more', // Part of common formula
+  'but about filling the gaps', // Part of common formula
+  'Watch how one teacher', // Overused testimonial phrase
+  'solved this problem', // Generic problem-solution language
+  'discover the difference', // Corporate marketing fluff
+  'see the impact', // Vague benefit claim
+  'Start your free trial to discover', // Salesy CTA phrasing
+
+  // Multiple link cramming (unnatural flow)
+  '][', // Detects ](url)[text](url) pattern - too many links together
 ];
 
 // Helper to select random element, EXCLUDING recent ones
@@ -242,6 +260,30 @@ Example: "Try our ${featuredLab.name} - ${featuredLab.description.toLowerCase()}
   return `You are writing social media content for Accelerating Success - bilingual Science resources for Texas K-8 teachers.
 
 ═══════════════════════════════════════════════════════════════════════════════
+⚠️⚠️⚠️ ANTI-SLOP RULES - VIOLATE THESE = CONTENT REJECTED ⚠️⚠️⚠️
+═══════════════════════════════════════════════════════════════════════════════
+
+🚫 FORBIDDEN STRUCTURAL PATTERNS (these make content feel robotic):
+- "What if the key to X wasn't Y but Z?" ← BANNED FORMULA
+- "What if I told you..." ← BANNED
+- Multiple links crammed together like [link1](url)[link2](url2)[link3](url3) ← BANNED
+- Generic testimonial phrases like "Watch how one teacher solved this problem" ← BANNED
+- Vague benefits like "discover the difference" or "see the impact" ← BANNED
+
+✅ AUTHENTIC STORYTELLING REQUIREMENTS:
+- Use SPECIFIC details: names, times, exact numbers, real moments
+- BAD: "My students struggled with the water cycle"
+- GOOD: "Maria stared at her STAAR practice test. Question 12. Water cycle. Blank."
+- BAD: "Teachers love our resources"
+- GOOD: "Thursday morning, 6:47 AM. Ms. Chen had 8 TEKS standards to cover before lunch."
+
+✅ LINK INTEGRATION RULES:
+- Spread links throughout the post naturally
+- NEVER put 3+ links in the same paragraph
+- Integrate as part of the narrative, not tacked on at the end
+- Example: "I tried the free trial → game changer" NOT "Try free resources. Start trial. Watch video."
+
+═══════════════════════════════════════════════════════════════════════════════
 ⚠️⚠️⚠️ CRITICAL REQUIREMENTS - READ FIRST ⚠️⚠️⚠️
 ═══════════════════════════════════════════════════════════════════════════════
 
@@ -254,9 +296,7 @@ Example: "Try our ${featuredLab.name} - ${featuredLab.description.toLowerCase()}
 3. Follow the "${narrativeFormat.name}" structure:
    ${narrativeFormat.structure}
 
-4. The title "Sunday Prep Struggle" and phrase "prep struggle" are BANNED.
-
-5. Return ONLY valid JSON - no markdown, no code blocks, no explanation.
+4. Return ONLY valid JSON - no markdown, no code blocks, no explanation.
 ${recentPostsSection}
 
 ═══════════════════════════════════════════════════════════════════════════════

@@ -105,6 +105,18 @@ const BANNED_TITLE_PHRASES = [
   'game-changer',
 ];
 
+// Banned patterns that should never appear in ANY content (body text)
+const BANNED_BODY_PATTERNS = [
+  'what if the key to',
+  'wasn\'t about adding more',
+  'but about filling the gaps',
+  'watch how one teacher',
+  'solved this problem',
+  'discover the difference',
+  'see the impact',
+  'start your free trial to discover',
+];
+
 // Generate a replacement title if banned phrase is detected
 function generateReplacementTitle(params: ContentGenerationParams): string {
   const { concept, gradeLevel } = params;
@@ -121,6 +133,25 @@ function generateReplacementTitle(params: ContentGenerationParams): string {
   return titleOptions[Math.floor(Math.random() * titleOptions.length)];
 }
 
+// Check for banned patterns in content body
+function checkBannedPatterns(text: string): string[] {
+  const textLower = text.toLowerCase();
+  const found: string[] = [];
+
+  for (const pattern of BANNED_BODY_PATTERNS) {
+    if (textLower.includes(pattern)) {
+      found.push(pattern);
+    }
+  }
+
+  // Check for link cramming: ](url)[text](url) pattern
+  if (text.match(/\]\([^)]+\)\[/)) {
+    found.push('MULTIPLE_LINKS_CRAMMED');
+  }
+
+  return found;
+}
+
 // Validate and fix generated content
 function validateAndFixContent(content: GeneratedContent, params: ContentGenerationParams): GeneratedContent {
   // 1. Validate and fix title
@@ -133,7 +164,26 @@ function validateAndFixContent(content: GeneratedContent, params: ContentGenerat
     console.log(`✅ New title: "${content.ideaTitle}"`);
   }
 
-  // 2. Validate and sanitize URLs (CRITICAL: prevent AI hallucinations)
+  // 2. Check for banned patterns in body content
+  const allBodyText = [
+    content.linkedinPost,
+    content.facebookPost,
+    content.redditPost,
+    content.twitterPost,
+    content.bloggerPost || '',
+    content.tumblrPost || '',
+  ].join(' ');
+
+  const bannedPatternsFound = checkBannedPatterns(allBodyText);
+  if (bannedPatternsFound.length > 0) {
+    console.log(`🚨 CRITICAL: Banned patterns detected in content body:`);
+    bannedPatternsFound.forEach(pattern => console.log(`   - "${pattern}"`));
+    console.log(`⚠️ This content violates anti-slop rules. Consider regenerating.`);
+    // Don't auto-fix body content - log the issue for monitoring
+    // This helps us identify if the AI is still producing slop despite system prompt
+  }
+
+  // 3. Validate and sanitize URLs (CRITICAL: prevent AI hallucinations)
   const urlValidation = validateUrls(content);
   if (!urlValidation.valid) {
     console.log(`🚨 AI hallucinated ${urlValidation.invalidUrls.length} invalid URL(s):`);

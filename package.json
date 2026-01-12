@@ -13,7 +13,8 @@
     "postinstall": "prisma generate",
     "setup-tokens": "node scripts/setup-tokens.js",
     "test-connections": "node scripts/test-connections.js",
-    "get-all-tokens": "node scripts/oauth/get-all-tokens.js"
+    "get-all-tokens": "node scripts/oauth/get-all-tokens.js",
+    "test:integration": "node test-integration.js"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

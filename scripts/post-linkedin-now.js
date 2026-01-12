@@ -152,6 +152,30 @@ PAIN POINT FOCUS: ${painPoint}
 OPENING HOOK TO USE: ${hook}
 
 ═══════════════════════════════════════════════════════════════════════════════
+⚠️⚠️⚠️ ANTI-SLOP RULES - VIOLATE THESE = CONTENT REJECTED ⚠️⚠️⚠️
+═══════════════════════════════════════════════════════════════════════════════
+
+🚫 FORBIDDEN STRUCTURAL PATTERNS (these make content feel robotic):
+- "What if the key to X wasn't Y but Z?" ← BANNED FORMULA - INSTANT REJECTION
+- "What if I told you..." ← BANNED
+- "What if your students could..." ← BANNED
+- Multiple links crammed together like [link1](url)[link2](url2)[link3](url3) ← BANNED
+- Generic testimonial phrases like "Watch how one teacher solved this problem" ← BANNED
+- Vague benefits like "discover the difference" or "see the impact" ← BANNED
+
+✅ AUTHENTIC STORYTELLING REQUIREMENTS:
+- Use SPECIFIC details: names, times, exact numbers, real moments
+- BAD: "My students struggled with the water cycle"
+- GOOD: "Maria stared at her STAAR practice test. Question 12. Water cycle. Blank."
+- BAD: "Teachers love our resources"
+- GOOD: "Thursday morning, 6:47 AM. Ms. Chen had 8 TEKS standards to cover before lunch."
+
+✅ LINK INTEGRATION RULES:
+- Spread links throughout the post naturally
+- NEVER put 3+ links in the same paragraph
+- Integrate as part of the narrative, not tacked on at the end
+
+═══════════════════════════════════════════════════════════════════════════════
 🎨 VISUAL STRUCTURE - FOLLOW THIS EXACT FORMAT
 ═══════════════════════════════════════════════════════════════════════════════
 
@@ -224,14 +248,20 @@ ${hashtags}
 - Total length: 1,400-1,800 characters
 
 ═══════════════════════════════════════════════════════════════════════════════
-🚫 BANNED - NEVER USE:
+🚫 BANNED - NEVER USE (INSTANT REJECTION):
 ═══════════════════════════════════════════════════════════════════════════════
 - "email list" / "newsletter" / "mailing list"
-- "Sunday Prep Struggle"
+- "Sunday Prep Struggle" / "prep struggle"
 - "game-changer" / "game changer"
-- "But what if I told you"
-- "I've been there"
+- "But what if I told you" / "What if I told you"
+- "What if the key to" / "What if your students could"
+- "wasn't about adding more" / "but about filling the gaps"
+- "Watch how one teacher" / "solved this problem"
+- "discover the difference" / "see the impact"
+- "I've been there" / "We've all been there"
 - "Sound familiar?" at the end
+- "Transform your classroom"
+- "Let me tell you" / "Here's the thing"
 - Five identical emojis in a row
 
 Return ONLY the post text. No explanations.`;
@@ -241,10 +271,55 @@ Return ONLY the post text. No explanations.`;
   const message = await client.messages.create({
     model: 'claude-sonnet-4-20250514',
     max_tokens: 2000,
+    system: `You are a TEACHER sharing real classroom experiences with other teachers. You are NOT a corporate marketing writer.
+
+ANTI-SLOP ENFORCEMENT - Your content will be REJECTED if:
+1. You use ANY "What if the key to X wasn't Y but Z?" formulas - INSTANT REJECTION
+2. You use "What if your students could..." - INSTANT REJECTION
+3. You cram multiple links together unnaturally - INSTANT REJECTION
+4. You use vague generic claims without specific details - INSTANT REJECTION
+5. You sound like a corporate salesperson instead of a teacher - INSTANT REJECTION
+6. You use ANY phrases from the banned list - INSTANT REJECTION
+
+WHAT GOOD CONTENT LOOKS LIKE:
+
+BAD (formulaic AI slop):
+"What if the key to mastering the water cycle for STAAR prep wasn't about adding more curriculum, but about filling the gaps with the right resources? Watch how one teacher solved this problem."
+
+GOOD (authentic teacher voice):
+"Tuesday, 2:15 PM. My 4th period was actually ARGUING about evaporation vs condensation. In a good way. Three weeks ago, they couldn't tell me the difference."
+
+Write like a REAL TEACHER sharing a breakthrough, not a marketer pitching a product.`,
     messages: [{ role: 'user', content: prompt }]
   });
 
   let post = message.content[0].text;
+
+  // ANTI-SLOP CHECK: Verify no banned patterns slipped through
+  const bannedPatterns = [
+    'what if the key to',
+    'what if your students could',
+    'what if i told you',
+    'but what if i told you',
+    'wasn\'t about adding more',
+    'but about filling the gaps',
+    'watch how one teacher',
+    'solved this problem',
+    'discover the difference',
+    'see the impact',
+    'transform your classroom',
+    'game-changer',
+    'game changer',
+  ];
+
+  const postLower = post.toLowerCase();
+  const foundPatterns = bannedPatterns.filter(pattern => postLower.includes(pattern));
+
+  if (foundPatterns.length > 0) {
+    console.log('\n🚨 ANTI-SLOP WARNING: Banned patterns detected!');
+    foundPatterns.forEach(p => console.log(`   - "${p}"`));
+    console.log('⚠️  Content may need manual review or regeneration.\n');
+  }
 
   // CLEANUP STEP 1: Remove internal notes (anything between double underscores)
   post = post.replace(/__[^_]+__/g, '').trim();

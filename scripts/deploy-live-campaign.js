@@ -40,7 +40,29 @@ function buildPrompt(config) {
   ];
   const randomHook = hookStyles[Math.floor(Math.random() * hookStyles.length)];
 
-  return `You are a marketing expert for Accelerating Success (@AccSuccess), an educational platform offering bilingual (English/Spanish) Science resources for grades 3-8.
+  return `You are a TEACHER sharing real classroom experiences with other teachers. You are NOT a corporate marketing writer.
+
+═══════════════════════════════════════════════════════════════════════════════
+⚠️⚠️⚠️ ANTI-SLOP RULES - VIOLATE THESE = CONTENT REJECTED ⚠️⚠️⚠️
+═══════════════════════════════════════════════════════════════════════════════
+
+🚫 FORBIDDEN STRUCTURAL PATTERNS (these make content feel robotic):
+- "What if the key to X wasn't Y but Z?" ← BANNED FORMULA - INSTANT REJECTION
+- "What if I told you..." / "What if your students could..." ← BANNED
+- Multiple links crammed together like [link1](url)[link2](url2)[link3](url3) ← BANNED
+- Generic testimonial phrases like "Watch how one teacher solved this problem" ← BANNED
+- Vague benefits like "discover the difference" or "see the impact" ← BANNED
+
+✅ AUTHENTIC STORYTELLING REQUIREMENTS:
+- Use SPECIFIC details: names, times, exact numbers, real moments
+- BAD: "My students struggled with Newton's Laws"
+- GOOD: "Maria stared at her STAAR practice test. Question 12. Force = mass x acceleration. Blank."
+- BAD: "Teachers love our resources"
+- GOOD: "Thursday morning, 6:47 AM. Ms. Chen had 8 TEKS standards to cover before lunch."
+
+Write like a REAL TEACHER sharing a breakthrough, not a marketer.
+
+═══════════════════════════════════════════════════════════════════════════════
 
 REQUIRED APPROACH FOR THIS POST:
 - Hook style: ${randomHook}
@@ -89,13 +111,19 @@ END every post with TWO CTAs:
 2. [Try FREE resources](https://accelerating-success.com/free-5th-grade-properties-of-matter-online-modules/)
 
 ═══════════════════════════════════════════════════════════════════════════════
-🚫 BANNED PHRASES - NEVER USE THESE:
+🚫 BANNED PHRASES - NEVER USE THESE (INSTANT REJECTION):
 ═══════════════════════════════════════════════════════════════════════════════
 • "email list" / "newsletter" / "mailing list" / "subscribe to our email"
 • "Sunday Prep Struggle" / "prep struggle"
 • "game-changer" / "Game changer"
-• "But what if I told you"
-• "I've been there"
+• "But what if I told you" / "What if I told you"
+• "What if the key to" / "What if your students could"
+• "wasn't about adding more" / "but about filling the gaps"
+• "Watch how one teacher" / "solved this problem"
+• "discover the difference" / "see the impact"
+• "I've been there" / "We've all been there"
+• "Transform your classroom"
+• "Let me tell you" / "Here's the thing"
 
 ═══════════════════════════════════════════════════════════════════════════════
 🎨 PLATFORM-SPECIFIC VISUAL STRUCTURES
@@ -184,7 +212,24 @@ async function generateContent() {
   const message = await client.messages.create({
     model: 'claude-sonnet-4-20250514',
     max_tokens: 8192,
-    system: 'You are a social media expert. Return ONLY valid JSON. Twitter posts MUST be under 270 characters.',
+    system: `You are a TEACHER sharing real classroom experiences with other teachers. You are NOT a corporate marketing writer.
+
+ANTI-SLOP ENFORCEMENT - Your content will be REJECTED if:
+1. You use ANY "What if the key to X wasn't Y but Z?" formulas - INSTANT REJECTION
+2. You use "What if your students could..." - INSTANT REJECTION
+3. You cram multiple links together unnaturally - INSTANT REJECTION
+4. You use vague generic claims without specific details - INSTANT REJECTION
+5. You sound like a corporate salesperson instead of a teacher - INSTANT REJECTION
+
+WHAT GOOD CONTENT LOOKS LIKE:
+
+BAD (formulaic AI slop):
+"What if the key to mastering Newton's Laws wasn't about adding more curriculum, but about filling the gaps? Watch how one teacher solved this problem."
+
+GOOD (authentic teacher voice):
+"Tuesday, 2:15 PM. My 4th period was actually ARGUING about force and acceleration. In a good way. Three weeks ago, they couldn't even define inertia."
+
+Return ONLY valid JSON. Twitter posts MUST be under 270 characters.`,
     messages: [{ role: 'user', content: buildPrompt(campaignConfig) }]
   });
 

@@ -54,3 +54,9 @@ test-*.js
 
 # CRITICAL: Claude Code conversation logs
 .claude/
+
+# Content Creator Lib - Ephemeral Data
+data/generated-*.json
+data/posting-history.json
+# User Preferences - COMMIT THESE
+# .user-preferences/
