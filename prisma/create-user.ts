@@ -4,9 +4,14 @@ import * as bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function createUser() {
-  const email = 'info@accelerating-success.com';
-  const password = 'Success2025!!';
-  const name = 'Accelerating Success Admin';
+  const email = process.env.ADMIN_EMAIL || 'info@accelerating-success.com';
+  const password = process.env.ADMIN_PASSWORD || 'CHANGE_ME_IN_ENV';
+  const name = process.env.ADMIN_NAME || 'Accelerating Success Admin';
+
+  if (password === 'CHANGE_ME_IN_ENV') {
+    console.error('❌ Set ADMIN_PASSWORD environment variable before running');
+    process.exit(1);
+  }
 
   console.log('🔐 Creating user account...');
 
